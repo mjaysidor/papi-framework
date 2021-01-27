@@ -5,6 +5,7 @@ namespace config;
 
 use App\Resources\Comment;
 use App\Resources\Post;
+use framework\Config\BootstrapConfig;
 use JetBrains\PhpStorm\Pure;
 
 class Resources implements BootstrapConfig

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace config;
+namespace framework\Config;
 
 interface BootstrapConfig
 {

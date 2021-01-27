@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace config;
 
+use framework\Config\BootstrapConfig;
 use JetBrains\PhpStorm\Pure;
-use migrations\CreateDb;
 use migrations\CreateResources;
 
 class Migrations implements BootstrapConfig

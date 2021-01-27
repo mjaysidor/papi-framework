@@ -6,6 +6,7 @@ namespace config;
 use App\Controller\CommentController;
 use App\Controller\CommentPostController;
 use App\Controller\PostController;
+use framework\Config\BootstrapConfig;
 use JetBrains\PhpStorm\Pure;
 
 class Controllers implements BootstrapConfig
