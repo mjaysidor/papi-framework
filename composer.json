@@ -1,0 +1,19 @@
+{
+    "require": {
+        "mark-php/mark": "^1.1",
+        "php": "^8.0",
+        "ext-pdo": "*",
+        "catfan/medoo": "^1.7",
+        "symfony/yaml": "^5.2"},
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/",
+            "framework\\": "framework/",
+            "config\\": "config/",
+            "migrations\\": "migrations/"
+        }
+    },
+    "require-dev": {
+        "symfony/var-dumper": "^5.2"
+    }
+}

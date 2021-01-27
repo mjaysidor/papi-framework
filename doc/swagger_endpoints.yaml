@@ -1,0 +1,132 @@
+openapi: 3.0.0
+info:
+    description: 'app info'
+    title: title
+    version: '0.1'
+tags:
+    -
+        name: comment
+    -
+        name: post
+    -
+        name: comment_post
+paths:
+    /comment:
+        post:
+            tags:
+                - comment
+            responses:
+                201:
+                    description: 'Resource created'
+                400:
+                    description: 'Invalid body'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                content:
+                                    type: string
+                                up_votes:
+                                    type: integer
+                                down_votes:
+                                    type: integer
+        get:
+            tags:
+                - comment
+            responses:
+                200:
+                    description: 'Retrieves resource data'
+                404:
+                    description: 'Resource not found'
+    '/comment/{id}':
+        get:
+            tags:
+                - comment
+            responses:
+                200:
+                    description: 'Retrieves resource data'
+                404:
+                    description: 'Resource not found'
+            parameters:
+                -
+                    name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+    /comment_post:
+        post:
+            tags:
+                - comment_post
+            responses:
+                201:
+                    description: 'Resource created'
+                400:
+                    description: 'Invalid body'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                comment_id:
+                                    type: integer
+                                post_id:
+                                    type: integer
+    '/comment_post/{comment_id}/{post_id}':
+        delete:
+            tags:
+                - comment_post
+            responses:
+                204:
+                    description: 'Resource deleted'
+                404:
+                    description: 'Resource not found'
+            parameters:
+                -
+                    name: comment_id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+                -
+                    name: post_id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+    /post:
+        post:
+            tags:
+                - post
+            responses:
+                201:
+                    description: 'Resource created'
+                400:
+                    description: 'Invalid body'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                content:
+                                    type: string
+                                created_at:
+                                    type: string
+                                up_votes:
+                                    type: integer
+                                down_votes:
+                                    type: integer
+                                views:
+                                    type: integer
+        get:
+            tags:
+                - post
+            responses:
+                200:
+                    description: 'Retrieves resource data'
+                404:
+                    description: 'Resource not found'

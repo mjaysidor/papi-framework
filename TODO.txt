@@ -1,0 +1,19 @@
+DOING:
+- relations
+    -> testy
+    -> optymalizacja
+    -> GET
+
+- resource doc generator - czy wszystko jest, testy, optymalizacja
+
+- REFACTORING całości - resources, kontrolery, relacje, handlery, itp
+
+TODO:
+
+BACKLOG:
+- security
+- migracje takie, aby uzupełniały na podstawie obecnego stanu bazy
+
+BUGS:
+- konflikt collection endpointów (post/get bez id, put/get by id)
+- uprawnienia przy migracjach tworzenie bazy
