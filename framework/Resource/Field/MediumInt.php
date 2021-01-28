@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace framework\Resource\Field;
 
-class BigInt extends Field
+class MediumInt extends Field
 {
     private ?int $length;
 
@@ -15,7 +15,7 @@ class BigInt extends Field
 
     public function getDefinition(): array
     {
-        $definition = $this->length ? "BIGINT($this->length)" : 'BIGINT';
+        $definition = $this->length ? "MEDIUMINT($this->length)" : 'MEDIUMINT';
 
         return [
             $definition,

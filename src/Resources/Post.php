@@ -6,7 +6,7 @@ namespace App\Resources;
 use framework\Resource\Field\DateTime;
 use framework\Resource\Field\Id;
 use framework\Resource\Field\Integer;
-use framework\Resource\Field\SmallInt;
+use framework\Resource\Field\TinyInt;
 use framework\Resource\Field\Varchar;
 use framework\Resource\Resource;
 use framework\Validator\MinLength;
@@ -25,7 +25,7 @@ class Post extends Resource
             'id'         => new Id(),
             'content'    => new Varchar(500),
             'created_at' => new DateTime(),
-            'up_votes'   => new SmallInt(),
+            'up_votes'   => new TinyInt(),
             'down_votes' => new Integer(),
             'views'      => new Integer(),
         ];

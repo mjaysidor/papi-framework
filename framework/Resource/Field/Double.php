@@ -3,27 +3,28 @@ declare(strict_types=1);
 
 namespace framework\Resource\Field;
 
-class BigInt extends Field
+class Double extends Field
 {
-    private ?int $length;
+    private int $length;
 
-    public function __construct(?int $length = null, ?array $properties = null)
+    private int $precision;
+
+    public function __construct(int $length, int $precision, ?array $properties = null)
     {
         parent::__construct($properties);
         $this->length = $length;
+        $this->precision = $precision;
     }
 
     public function getDefinition(): array
     {
-        $definition = $this->length ? "BIGINT($this->length)" : 'BIGINT';
-
         return [
-            $definition,
+            "DOUBLE($this->length,$this->precision)",
         ];
     }
 
     public function getPHPTypeName(): string
     {
-        return 'integer';
+        return 'double';
     }
 }

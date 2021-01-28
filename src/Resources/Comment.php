@@ -6,7 +6,7 @@ namespace App\Resources;
 use framework\Relation\ManyToMany;
 use framework\Resource\Field\DateTime;
 use framework\Resource\Field\Id;
-use framework\Resource\Field\SmallInt;
+use framework\Resource\Field\TinyInt;
 use framework\Resource\Field\Varchar;
 use framework\Resource\Resource;
 use framework\Validator\MinLength;
@@ -25,8 +25,8 @@ class Comment extends Resource
             'id'         => new Id(),
             'content'    => new Varchar(500),
             'created_at' => new DateTime(),
-            'up_votes'   => new SmallInt(),
-            'down_votes' => new SmallInt(),
+            'up_votes'   => new TinyInt(),
+            'down_votes' => new TinyInt(),
         ];
     }
 
