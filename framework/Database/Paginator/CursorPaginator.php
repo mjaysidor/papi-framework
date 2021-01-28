@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace framework\Database\Paginator;
 
+use framework\Resource\Resource;
+
 class CursorPaginator extends Paginator
 {
     private string $cursor;
@@ -29,7 +31,7 @@ class CursorPaginator extends Paginator
         $this->limit = $limit;
     }
 
-    public function getPaginatedResults(string $resource, array $filters): array
+    public function getPaginatedResults(Resource $resource, array $filters): array
     {
         $filters = $this->addPaginationToFilters($filters);
 

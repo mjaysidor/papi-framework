@@ -7,6 +7,7 @@ use framework\Database\MedooHandler;
 use framework\Relation\ManyToMany;
 use framework\Relation\ManyToManyValidator;
 use framework\Response\JsonResponse;
+use PDOException;
 use Workerman\Protocols\Http\Request;
 
 class ManyToManyHandler
@@ -49,7 +50,7 @@ class ManyToManyHandler
                 ]
             );
             $errorCode = $result->errorCode();
-        } catch (\PDOException $exception) {
+        } catch (PDOException $exception) {
             return new JsonResponse(500, [$exception->getMessage()]);
         }
 
@@ -84,7 +85,7 @@ class ManyToManyHandler
                                         )
                                         ->rowCount()
             ;
-        } catch (\PDOException $exception) {
+        } catch (PDOException $exception) {
             return new JsonResponse(500, [$exception->getMessage()]);
         }
 
@@ -93,5 +94,43 @@ class ManyToManyHandler
         }
 
         return new JsonResponse(404);
+    }
+
+    public static function getRelation(
+        ManyToMany $relation,
+        Request $request
+    ): JsonResponse {
+        if (! RequestMethodChecker::isGet($request)) {
+            return new JsonResponse(405, ['Method not allowed'], ['Allow' => 'GET']);
+        }
+
+        $filters = [];
+
+        if ($stringQuery = $request->queryString()) {
+            parse_str($stringQuery, $filters);
+        }
+
+        $validationErrors = (new ManyToManyQueryValidator())->getValidationErrors($relation, $filters);
+
+        if ($validationErrors) {
+            return new JsonResponse(400, [$validationErrors]);
+        }
+
+        try {
+            $result = MedooHandler::getDbHandler()
+                                  ->select(
+                                      $relation->getTableNameWithoutDatabase(),
+                                      [
+                                          $relation->rootResourceIdField,
+                                          $relation->relatedResourceIdField,
+                                      ],
+                                      $filters
+                                  )
+            ;
+        } catch (PDOException $exception) {
+            return new JsonResponse(500, [$exception->getMessage()]);
+        }
+
+        return new JsonResponse(200, $result);
     }
 }

@@ -24,6 +24,12 @@ class CommentPostController extends ManyToManyController
             }
         );
 
+        $this->get(
+            function ($request) {
+                return ManyToManyHandler::getRelation($this->relation, $request);
+            }
+        );
+
         $this->delete(
             function ($request, $rootResourceId, $relatedResourceId) {
                 return ManyToManyHandler::deleteRelation(

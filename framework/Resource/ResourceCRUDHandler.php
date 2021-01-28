@@ -170,6 +170,12 @@ class ResourceCRUDHandler
             parse_str($stringQuery, $filters);
         }
 
+        $validationErrors = (new ResourceQueryValidator())->getValidationErrors($resource, $filters);
+
+        if ($validationErrors) {
+            return new JsonResponse(400, [$validationErrors]);
+        }
+
         if ($pagination) {
             $paginator = PaginatorFactory::getPaginator($pagination, $filters);
             $result = $paginator->getPaginatedResults($resource, $filters);
