@@ -38,7 +38,7 @@ class CursorPaginator extends Paginator
         return $this->addPaginationLinks((new $resource())->get($filters));
     }
 
-    protected function addPaginationToFilters(array $filters): array
+    public function addPaginationToFilters(array $filters): array
     {
         $columnValueOperator = $this->order === 'ASC' ? '>' : '<';
 
@@ -59,7 +59,7 @@ class CursorPaginator extends Paginator
         );
     }
 
-    protected function addPaginationLinks(array $response): array
+    public function addPaginationLinks(array $response): array
     {
         if (count($response) > $this->limit) {
             unset($response[array_key_last($response)]);
@@ -71,7 +71,6 @@ class CursorPaginator extends Paginator
             $this->previousCursor['cursor'] = reset($response)[$this->column];
             $this->previousCursor['order'] = $this->order === 'ASC' ? 'DESC' : 'ASC';
         }
-
         return array_merge(
             $response,
             [

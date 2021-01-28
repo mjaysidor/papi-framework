@@ -28,6 +28,9 @@ class ManyToManyQueryValidator
         $invalidFields = array_diff(
             array_keys($data),
             [
+                'cursor',
+                'order',
+                'orderBy',
                 $relation->rootResourceIdField,
                 $relation->relatedResourceIdField,
             ]

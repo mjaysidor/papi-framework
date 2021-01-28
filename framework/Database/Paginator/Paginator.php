@@ -12,7 +12,7 @@ abstract class Paginator
 
     abstract public function getPaginatedResults(Resource $resource, array $filters): array;
 
-    abstract protected function addPaginationToFilters(array $filters): array;
+    abstract public function addPaginationToFilters(array $filters): array;
 
-    abstract protected function addPaginationLinks(array $response): array;
+    abstract public function addPaginationLinks(array $response): array;
 }

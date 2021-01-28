@@ -22,7 +22,14 @@ class ResourceQueryValidator
     ): ?string {
         $invalidFields = array_diff(
             array_keys($data),
-            array_keys($resource->getFields())
+            array_merge(
+                array_keys($resource->getFields()),
+                [
+                    'cursor',
+                    'order',
+                    'orderBy',
+                ]
+            )
         );
 
         if (! empty($invalidFields)) {

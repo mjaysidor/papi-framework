@@ -1,13 +1,12 @@
 DOING:
-- relations
-    -> testy
-    -> optymalizacja
-    -> paginacja
 
-- resource doc generator - czy wszystko jest, testy, optymalizacja
+TESTY + OPTYMALIZACJA:
+    - relacje
+    - doc generator
 
 - REFACTORING całości - resources, kontrolery, relacje, handlery, itp
 
+- powiązanie paginatora i order by bez paginacji
 
 TODO:
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace framework\Resource;
 
 use framework\Database\MedooHandler;
+use framework\Database\Paginator\Paginator;
+use framework\Database\Paginator\PaginatorFactory;
 use framework\Relation\ManyToMany;
 use framework\Relation\ManyToManyValidator;
 use framework\Response\JsonResponse;
@@ -98,7 +100,8 @@ class ManyToManyHandler
 
     public static function getRelation(
         ManyToMany $relation,
-        Request $request
+        Request $request,
+        ?int $pagination = Paginator::CURSOR_PAGINATION
     ): JsonResponse {
         if (! RequestMethodChecker::isGet($request)) {
             return new JsonResponse(405, ['Method not allowed'], ['Allow' => 'GET']);
@@ -116,17 +119,28 @@ class ManyToManyHandler
             return new JsonResponse(400, [$validationErrors]);
         }
 
+        $paginator = null;
+
+        if ($pagination) {
+            $paginator = PaginatorFactory::getPaginator($pagination, $filters);
+            $filters = $paginator->addPaginationToFilters($filters);
+        }
+
         try {
             $result = MedooHandler::getDbHandler()
                                   ->select(
                                       $relation->getTableNameWithoutDatabase(),
                                       [
+                                          'id',
                                           $relation->rootResourceIdField,
                                           $relation->relatedResourceIdField,
                                       ],
                                       $filters
                                   )
             ;
+            if ($pagination) {
+                $result = $paginator->addPaginationLinks($result);
+            }
         } catch (PDOException $exception) {
             return new JsonResponse(500, [$exception->getMessage()]);
         }
