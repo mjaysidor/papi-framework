@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace framework\Controller;
 
+use framework\Documentation\OpenApiParamConverter;
 use framework\Worker\App;
 
 abstract class ResourceController extends RESTController
@@ -52,5 +53,10 @@ abstract class ResourceController extends RESTController
         }
 
         return $body;
+    }
+
+    public function getQueryFilters(): array
+    {
+        return OpenApiParamConverter::convertArrayToDoc(array_keys($this->resource->getFields()), OpenApiParamConverter::QUERY);
     }
 }

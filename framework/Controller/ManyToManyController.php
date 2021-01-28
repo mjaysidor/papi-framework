@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace framework\Controller;
 
+use framework\Documentation\OpenApiParamConverter;
 use framework\Relation\ManyToMany;
 use framework\Resource\Field\Id;
 use framework\Worker\App;
@@ -48,5 +49,13 @@ abstract class ManyToManyController extends RESTController
     public function getGETResponseBody(): array
     {
         return $this->getPOSTPUTBody();
+    }
+
+    public function getQueryFilters(): array
+    {
+        return OpenApiParamConverter::convertArrayToDoc(
+            $this->relation->getFields(),
+            OpenApiParamConverter::QUERY
+        );
     }
 }

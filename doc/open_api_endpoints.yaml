@@ -50,6 +50,32 @@ paths:
                                     down_votes: { type: integer }
                 404:
                     description: 'Resource not found'
+            parameters:
+                -
+                    name: id
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: content
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: created_at
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: up_votes
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: down_votes
+                    in: query
+                    schema:
+                        type: string
     '/comment/{id}':
         put:
             tags:
@@ -154,6 +180,22 @@ paths:
                                     post_id: { type: integer }
                 404:
                     description: 'Resource not found'
+            parameters:
+                -
+                    name: id
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: comment_id
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: post_id
+                    in: query
+                    schema:
+                        type: string
     '/comment_post/{comment_id}/{post_id}':
         delete:
             tags:
@@ -220,6 +262,37 @@ paths:
                                     views: { type: integer }
                 404:
                     description: 'Resource not found'
+            parameters:
+                -
+                    name: id
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: content
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: created_at
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: up_votes
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: down_votes
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: views
+                    in: query
+                    schema:
+                        type: string
     '/post/{id}':
         put:
             tags:

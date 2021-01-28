@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace framework\Documentation;
 
 use config\DocumentationConfig;
-use framework\Resource\Field\Id;
 use Symfony\Component\Yaml\Yaml;
 
 class DocGenerator
@@ -54,16 +53,7 @@ class DocGenerator
                 }
 
                 if ($data['params']) {
-                    foreach ($data['params'] as $param) {
-                        $paramsArray['parameters'][] = [
-                            'name'     => $param,
-                            'in'       => 'path',
-                            'required' => true,
-                            'schema'   => [
-                                'type' => (new Id())->getPHPTypeName(),
-                            ],
-                        ];
-                    }
+                    $paramsArray['parameters'] = $data['params'];
                 }
 
                 $doc['paths'][$path][strtolower($method)] = array_merge($tagsAndResponses, $requestBody, $paramsArray);

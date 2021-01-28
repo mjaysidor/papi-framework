@@ -16,6 +16,15 @@ class ManyToMany extends Relation
         $this->relatedResourceIdField = $this->relatedTableName.'_id';
     }
 
+    public function getFields(): array
+    {
+        return [
+            'id',
+            $this->rootResourceIdField,
+            $this->relatedResourceIdField,
+        ];
+    }
+
     public function getRelationFieldName(): ?string
     {
         return null;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace framework\Controller;
 
 use Closure;
+use framework\Documentation\OpenApiParamConverter;
 use framework\Worker\App;
 
 abstract class RESTController
@@ -20,6 +21,8 @@ abstract class RESTController
     abstract public function init(): void;
 
     abstract public function getEndpoint(): string;
+
+    abstract public function getQueryFilters(): array;
 
     abstract public function getEndpointIds(): array;
 
@@ -54,7 +57,7 @@ abstract class RESTController
             $this->getEndpointWithId(),
             $callback,
             [],
-            $this->getEndpointIds(),
+            OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds()),
             $this->getGETResponseBody()
         );
     }
@@ -66,7 +69,7 @@ abstract class RESTController
             $this->getEndpoint(),
             $callback,
             [],
-            [],
+            $this->getQueryFilters(),
             $this->getGETResponseBody()
         );
     }
@@ -78,7 +81,7 @@ abstract class RESTController
             $this->getEndpointWithId(),
             $callback,
             [],
-            $this->getEndpointIds()
+            OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds())
         );
     }
 
@@ -89,7 +92,7 @@ abstract class RESTController
             $this->getEndpointWithId(),
             $callback,
             $this->getPOSTPUTBody(),
-            $this->getEndpointIds()
+            OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds())
         );
     }
 }

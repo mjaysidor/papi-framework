@@ -4,16 +4,14 @@ TESTY + OPTYMALIZACJA:
     - relacje
     - doc generator
 
-- REFACTORING całości - resources, kontrolery, relacje, handlery, itp
-
-- powiązanie paginatora i order by bez paginacji
-
 TODO:
+    - REFACTORING całości - resources, kontrolery, relacje, handlery, itp
+    - powiązanie paginatora i order by bez paginacji
 
 BACKLOG:
-- security
-- migracje takie, aby uzupełniały na podstawie obecnego stanu bazy
+    - security
+    - migracje takie, aby uzupełniały na podstawie obecnego stanu bazy
 
 BUGS:
-- konflikt collection endpointów (post/get bez id, put/get by id)
-- uprawnienia przy migracjach tworzenie bazy
+    - konflikt collection endpointów (post/get bez id, put/get by id)
+    - uprawnienia przy migracjach tworzenie bazy

@@ -130,11 +130,7 @@ class ManyToManyHandler
             $result = MedooHandler::getDbHandler()
                                   ->select(
                                       $relation->getTableNameWithoutDatabase(),
-                                      [
-                                          'id',
-                                          $relation->rootResourceIdField,
-                                          $relation->relatedResourceIdField,
-                                      ],
+                                      $relation->getFields(),
                                       $filters
                                   )
             ;
