@@ -15,7 +15,7 @@ $api->count = 4; // process count
 (new DotEnv(__DIR__.'/.env'))->load();
 (new ControllerInitializer)->init($api);
 
-DocGenerator::generateSwaggerDoc(getcwd().'/doc/swagger_endpoints.yaml',$api->getRouteInfo());
+DocGenerator::generateOpenAPIDocs(getcwd().'/doc/open_api_endpoints.yaml',$api->getRouteInfo());
 
 $api->start();
 

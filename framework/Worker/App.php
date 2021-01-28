@@ -12,20 +12,31 @@ class App extends \Mark\App
         return $this->routeInfo;
     }
 
-    public function addDocumentedRoute($method, $path, $callback, array $body = [], array $urlParameters = []): void
-    {
+    public function addDocumentedRoute(
+        $method,
+        $path,
+        $callback,
+        array $requestBody = [],
+        array $urlParameters = [],
+        array $responseBody = []
+    ): void {
         $methods = (array)$method;
 
         $responses = match ($method) {
             "POST" => APIResponses::getPOSTResponses(),
-            "GET" => APIResponses::getGETResponses(),
+            "GET" => APIResponses::getGETResponses($responseBody),
             "PUT" => APIResponses::getPUTResponses(),
             "DELETE" => APIResponses::getDELETEResponses(),
         };
 
         foreach ($methods as $m) {
-            $this->routeInfo[$m][] = [$this->pathPrefix.$path, $callback, $responses, $body, $urlParameters];
+            $this->routeInfo[$m][] = [
+                $this->pathPrefix.$path,
+                $callback,
+                'responses'    => $responses,
+                'body'         => $requestBody,
+                'params'       => $urlParameters,
+            ];
         }
     }
-    
 }

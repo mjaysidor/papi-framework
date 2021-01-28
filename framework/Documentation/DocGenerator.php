@@ -9,43 +9,43 @@ use Symfony\Component\Yaml\Yaml;
 
 class DocGenerator
 {
-    public static function generateSwaggerDoc(string $directory, array $routes): void
+    public static function generateOpenAPIDocs(string $directory, array $routes): void
     {
         $doc = [];
 
         foreach ($routes as $method => $route) {
             foreach ($route as $data) {
                 $path = $data[0];
-                $tagName = explode('/', $path)[1];
+                $resourceName = explode('/', $path)[1];
                 $tagExists = false;
 
                 foreach ($doc['tags'] ?? [] as $tag) {
-                    if ($tag['name'] === $tagName) {
+                    if ($tag['name'] === $resourceName) {
                         $tagExists = true;
                     }
                 }
 
                 if (! $tagExists) {
                     $doc['tags'][] = [
-                        'name' => $tagName,
+                        'name' => $resourceName,
                     ];
                 }
 
                 $requestBody = [];
                 $paramsArray = [];
                 $tagsAndResponses = [
-                    'tags'      => [$tagName],
-                    'responses' => $data[2],
+                    'tags'      => [$resourceName],
+                    'responses' => $data['responses'],
                 ];
 
-                if ($data[3]) {
+                if ($data['body']) {
                     $requestBody = [
                         'requestBody' => [
                             'content' => [
                                 'application/json' => [
                                     'schema' => [
                                         'type'       => 'object',
-                                        'properties' => $data[3],
+                                        'properties' => $data['body'],
                                     ],
                                 ],
                             ],
@@ -53,10 +53,8 @@ class DocGenerator
                     ];
                 }
 
-                $params = $data[4];
-
-                if ($params) {
-                    foreach ($params as $param) {
+                if ($data['params']) {
+                    foreach ($data['params'] as $param) {
                         $paramsArray['parameters'][] = [
                             'name'     => $param,
                             'in'       => 'path',
@@ -75,7 +73,7 @@ class DocGenerator
         ksort($doc['paths']);
 
         $documentationArray = array_merge(
-            DocumentationConfig::getHeaders(),
+            (new DocumentationConfig())->getOpenAPIHeaders(),
             $doc
         );
 

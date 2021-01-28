@@ -7,11 +7,19 @@ use framework\Config\APIResponsesConfig;
 
 class APIResponses implements APIResponsesConfig
 {
-    public static function getGETResponses(): array
+    public static function getGETResponses(array $body = []): array
     {
         return [
             200 => [
                 'description' => 'Retrieves resource data',
+                'content'     => [
+                    'application/json' => [
+                        'schema' => [
+                            'type'       => 'object',
+                            'properties' => $body,
+                        ],
+                    ],
+                ],
             ],
             404 => [
                 'description' => 'Resource not found',

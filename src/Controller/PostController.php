@@ -23,9 +23,27 @@ class PostController extends ResourceController
             }
         );
 
-        $this->get(
+        $this->put(
+            function ($request, $id) {
+                return ResourceCRUDHandler::updateById($this->resource, $id, $request);
+            }
+        );
+
+        $this->delete(
+            function ($request, $id) {
+                return ResourceCRUDHandler::deleteById($this->resource, $id, $request);
+            }
+        );
+
+        $this->getById(
             function ($request, $id) {
                 return ResourceCRUDHandler::getById($this->resource, $id, $request);
+            }
+        );
+
+        $this->get(
+            function ($request) {
+                return ResourceCRUDHandler::getCollection($this->resource, $request);
             }
         );
     }

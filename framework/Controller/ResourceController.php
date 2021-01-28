@@ -40,4 +40,17 @@ abstract class ResourceController extends RESTController
 
         return $body;
     }
+
+    public function getGETResponseBody(): array
+    {
+        $body = [];
+        foreach ($this->resource->getDefaultReadFields() as $fieldName) {
+            $field = $this->resource->getFields()[$fieldName];
+            $body[$fieldName] = [
+                'type' => $field->getPHPTypeName(),
+            ];
+        }
+
+        return $body;
+    }
 }

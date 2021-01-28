@@ -3,45 +3,26 @@ declare(strict_types=1);
 
 namespace config;
 
-class DocumentationConfig
+use framework\Config\DocumentationConfigGenerator;
+
+class DocumentationConfig extends DocumentationConfigGenerator
 {
-    public static function getHeaders(): array
+    public function getOpenApiVersion(): string
     {
-        return array_merge(
-            self::getOpenApiVersion(),
-            self::getInfo(),
-        );
+        return '3.0.0';
     }
 
-    public static function getOpenApiVersion(): array
+    public function getDescription(): string
     {
-        return [
-            'openapi' => '3.0.0',
-        ];
+        return 'Blog blog blog';
     }
 
-    public static function getInfo(): array
+    public function getTitle(): string
     {
-        return [
-            'info' => [
-                'description' => self::getDescription(),
-                'title'       => self::getTitle(),
-                'version'     => self::getVersion(),
-            ],
-        ];
+        return 'I.H.M.J.';
     }
 
-    public static function getDescription(): string
-    {
-        return 'app info';
-    }
-
-    public static function getTitle(): string
-    {
-        return 'title';
-    }
-
-    public static function getVersion(): string
+    public function getVersion(): string
     {
         return '0.1';
     }

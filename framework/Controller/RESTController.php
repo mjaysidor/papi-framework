@@ -35,6 +35,8 @@ abstract class RESTController
 
     abstract public function getPOSTPUTBody(): array;
 
+    abstract public function getGETResponseBody(): array;
+
     protected function post(Closure $callback): void
     {
         $this->api->addDocumentedRoute(
@@ -52,7 +54,8 @@ abstract class RESTController
             $this->getEndpointWithId(),
             $callback,
             [],
-            $this->getEndpointIds()
+            $this->getEndpointIds(),
+            $this->getGETResponseBody()
         );
     }
 
@@ -61,7 +64,10 @@ abstract class RESTController
         $this->api->addDocumentedRoute(
             'GET',
             $this->getEndpoint(),
-            $callback
+            $callback,
+            [],
+            [],
+            $this->getGETResponseBody()
         );
     }
 

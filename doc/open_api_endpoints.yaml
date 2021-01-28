@@ -1,0 +1,282 @@
+openapi: 3.0.0
+info:
+    description: 'Blog blog blog'
+    title: I.H.M.J.
+    version: '0.1'
+tags:
+    -
+        name: comment
+    -
+        name: post
+    -
+        name: comment_post
+paths:
+    /comment:
+        post:
+            tags:
+                - comment
+            responses:
+                201:
+                    description: 'Resource created'
+                400:
+                    description: 'Invalid body'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                content:
+                                    type: string
+                                up_votes:
+                                    type: integer
+                                down_votes:
+                                    type: integer
+        get:
+            tags:
+                - comment
+            responses:
+                200:
+                    description: 'Retrieves resource data'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id: { type: integer }
+                                    content: { type: string }
+                                    created_at: { type: string }
+                                    up_votes: { type: integer }
+                                    down_votes: { type: integer }
+                404:
+                    description: 'Resource not found'
+    '/comment/{id}':
+        put:
+            tags:
+                - comment
+            responses:
+                200:
+                    description: 'Resource updated'
+                400:
+                    description: 'Invalid body'
+                404:
+                    description: 'Resource not found'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                content:
+                                    type: string
+                                up_votes:
+                                    type: integer
+                                down_votes:
+                                    type: integer
+            parameters:
+                -
+                    name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+        delete:
+            tags:
+                - comment
+            responses:
+                204:
+                    description: 'Resource deleted'
+                404:
+                    description: 'Resource not found'
+            parameters:
+                -
+                    name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+        get:
+            tags:
+                - comment
+            responses:
+                200:
+                    description: 'Retrieves resource data'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id: { type: integer }
+                                    content: { type: string }
+                                    created_at: { type: string }
+                                    up_votes: { type: integer }
+                                    down_votes: { type: integer }
+                404:
+                    description: 'Resource not found'
+            parameters:
+                -
+                    name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+    /comment_post:
+        post:
+            tags:
+                - comment_post
+            responses:
+                201:
+                    description: 'Resource created'
+                400:
+                    description: 'Invalid body'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                comment_id:
+                                    type: integer
+                                post_id:
+                                    type: integer
+    '/comment_post/{comment_id}/{post_id}':
+        delete:
+            tags:
+                - comment_post
+            responses:
+                204:
+                    description: 'Resource deleted'
+                404:
+                    description: 'Resource not found'
+            parameters:
+                -
+                    name: comment_id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+                -
+                    name: post_id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+    /post:
+        post:
+            tags:
+                - post
+            responses:
+                201:
+                    description: 'Resource created'
+                400:
+                    description: 'Invalid body'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                content:
+                                    type: string
+                                created_at:
+                                    type: string
+                                up_votes:
+                                    type: integer
+                                down_votes:
+                                    type: integer
+                                views:
+                                    type: integer
+        get:
+            tags:
+                - post
+            responses:
+                200:
+                    description: 'Retrieves resource data'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id: { type: integer }
+                                    content: { type: string }
+                                    created_at: { type: string }
+                                    up_votes: { type: integer }
+                                    down_votes: { type: integer }
+                                    views: { type: integer }
+                404:
+                    description: 'Resource not found'
+    '/post/{id}':
+        put:
+            tags:
+                - post
+            responses:
+                200:
+                    description: 'Resource updated'
+                400:
+                    description: 'Invalid body'
+                404:
+                    description: 'Resource not found'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                content:
+                                    type: string
+                                created_at:
+                                    type: string
+                                up_votes:
+                                    type: integer
+                                down_votes:
+                                    type: integer
+                                views:
+                                    type: integer
+            parameters:
+                -
+                    name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+        delete:
+            tags:
+                - post
+            responses:
+                204:
+                    description: 'Resource deleted'
+                404:
+                    description: 'Resource not found'
+            parameters:
+                -
+                    name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+        get:
+            tags:
+                - post
+            responses:
+                200:
+                    description: 'Retrieves resource data'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id: { type: integer }
+                                    content: { type: string }
+                                    created_at: { type: string }
+                                    up_votes: { type: integer }
+                                    down_votes: { type: integer }
+                                    views: { type: integer }
+                404:
+                    description: 'Resource not found'
+            parameters:
+                -
+                    name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer

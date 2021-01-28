@@ -23,6 +23,18 @@ class CommentController extends ResourceController
             }
         );
 
+        $this->put(
+            function ($request, $id) {
+                return ResourceCRUDHandler::updateById($this->resource, $id, $request);
+            }
+        );
+
+        $this->delete(
+            function ($request, $id) {
+                return ResourceCRUDHandler::deleteById($this->resource, $id, $request);
+            }
+        );
+
         $this->getById(
             function ($request, $id) {
                 return ResourceCRUDHandler::getById($this->resource, $id, $request);

@@ -44,4 +44,9 @@ abstract class ManyToManyController extends RESTController
             ],
         ];
     }
+
+    public function getGETResponseBody(): array
+    {
+        return $this->getPOSTPUTBody();
+    }
 }
