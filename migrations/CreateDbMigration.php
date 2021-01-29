@@ -4,11 +4,10 @@ declare(strict_types=1);
 namespace migrations;
 
 use config\DatabaseConfig;
-use framework\Migrations\Migration;
 use PDO;
 use PDOException;
 
-class CreateDb extends Migration
+class CreateDbMigration
 {
     public function migrate(): void
     {
@@ -19,15 +18,9 @@ class CreateDb extends Migration
 
         try {
             $dbh = new PDO("mysql:host=$host", $user, $password);
-            $dbh->exec(
-                "CREATE DATABASE IF NOT EXISTS `$name`;
-                GRANT ALL ON `$name`.* TO '$user'@'$host';
-                FLUSH PRIVILEGES;"
-            )
-            or die(print_r($dbh->errorInfo(), true));
-
+            $dbh->exec("CREATE DATABASE IF NOT EXISTS `$name`;");
         } catch (PDOException $e) {
-            die("DB ERROR: ".$e->getMessage());
+            die("DB ERROR: ".$e->getMessage().' AT: '.$e->getTraceAsString());
         }
     }
 }

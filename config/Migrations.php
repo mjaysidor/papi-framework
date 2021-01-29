@@ -5,6 +5,7 @@ namespace config;
 
 use framework\Config\BootstrapConfig;
 use JetBrains\PhpStorm\Pure;
+use migrations\CreateDbMigration;
 use migrations\CreateResources;
 
 class Migrations implements BootstrapConfig
@@ -12,7 +13,7 @@ class Migrations implements BootstrapConfig
     #[Pure] public static function getItems(): array
     {
         return [
-//            CreateDb::class,
+            CreateDbMigration::class,
             CreateResources::class,
         ];
     }

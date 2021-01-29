@@ -5,44 +5,49 @@ namespace config;
 
 use PDO;
 
-class DatabaseConfig
+class DatabaseConfig implements \framework\Config\DatabaseConfig
 {
     public static function getConfig(): array
     {
         return [
-            'database_type' => 'mysql',
-            'database_name' => 'ihmj',
-            'server'        => '127.0.0.1',
-            'username'      => 'mjsidor',
-            'password'      => '!Xplod3r',
-            'option' => [
-                PDO::MYSQL_ATTR_FOUND_ROWS => true
-            ],
+            'database_type' => self::getType(),
+            'database_name' => self::getName(),
+            'server'        => self::getServer(),
+            'username'      => self::getUsername(),
+            'password'      => self::getPassword(),
+            'option'        => self::getOptions(),
         ];
     }
 
     public static function getType(): string
     {
-        return self::getConfig()['database_type'];
+        return 'mysql';
     }
 
     public static function getName(): string
     {
-        return self::getConfig()['database_name'];
+        return 'ihmj';
     }
 
     public static function getServer(): string
     {
-        return self::getConfig()['server'];
+        return '127.0.0.1';
     }
 
     public static function getUsername(): string
     {
-        return self::getConfig()['username'];
+        return 'mjsidor';
     }
 
     public static function getPassword(): string
     {
-        return self::getConfig()['password'];
+        return '!Xplod3r';
+    }
+
+    public static function getOptions(): array
+    {
+        return [
+            PDO::MYSQL_ATTR_FOUND_ROWS => true,
+        ];
     }
 }

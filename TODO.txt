@@ -1,12 +1,12 @@
 DOING:
+- powiązanie paginatora i order by bez paginacji
 
-TESTY + OPTYMALIZACJA:
-    - relacje
-    - doc generator
+    TESTY + OPTYMALIZACJA:
+        - relacje
+        - doc generator
 
 TODO:
     - REFACTORING całości - resources, kontrolery, relacje, handlery, itp
-    - powiązanie paginatora i order by bez paginacji
 
 BACKLOG:
     - security
@@ -14,4 +14,3 @@ BACKLOG:
 
 BUGS:
     - konflikt collection endpointów (post/get bez id, put/get by id)
-    - uprawnienia przy migracjach tworzenie bazy
