@@ -99,8 +99,11 @@ abstract class Resource
             $filters['ORDER'] = [
                 $filters['orderBy'] => $filters['order'] ?? 'ASC',
             ];
+            unset($filters['orderBy']);
         }
-        unset($filters['order'], $filters['orderBy']);
+        if (isset($filters['order'])) {
+            unset($filters['order']);
+        }
     }
 
     public function create(array $data): bool|string
