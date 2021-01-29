@@ -5,12 +5,14 @@ TODO:
 BUGS:
     - konflikt collection endpointów (post/get bez id, put/get by id)
 
-TESTY + REFACTORING + OPTYMALIZACJA:
-    - relacje
-    - paginacja
-    - całość - resources, kontrolery, relacje, handlery, itp
+TESTY:
 
 BACKLOG:
+    - relacje CASCADE
     - security
     - migracje takie, aby uzupełniały na podstawie obecnego stanu bazy
     - postgres
+
+REFACTORING + OPTYMALIZACJA:
+    - paginacja
+    - całość - resources, kontrolery, relacje, handlery, itp

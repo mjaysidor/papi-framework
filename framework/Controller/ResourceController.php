@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace framework\Controller;
 
 use framework\Documentation\OpenApiParamConverter;
+use framework\Resource\Field\Id;
 use framework\Worker\App;
 
 abstract class ResourceController extends RESTController
@@ -33,10 +34,16 @@ abstract class ResourceController extends RESTController
     {
         $body = [];
         foreach ($this->resource->getEditableFields() as $fieldName) {
-            $field = $this->resource->getFields()[$fieldName];
-            $body[$fieldName] = [
-                'type' => $field->getPHPTypeName(),
-            ];
+            if (isset($this->resource->getFields()[$fieldName])) {
+                $field = $this->resource->getFields()[$fieldName];
+                $body[$fieldName] = [
+                    'type' => $field->getPHPTypeName(),
+                ];
+            } else {
+                $body[$fieldName] = [
+                    'type' => (new Id())->getPHPTypeName(),
+                ];
+            }
         }
 
         return $body;
@@ -46,10 +53,16 @@ abstract class ResourceController extends RESTController
     {
         $body = [];
         foreach ($this->resource->getDefaultReadFields() as $fieldName) {
-            $field = $this->resource->getFields()[$fieldName];
-            $body[$fieldName] = [
-                'type' => $field->getPHPTypeName(),
-            ];
+            if (isset($this->resource->getFields()[$fieldName])) {
+                $field = $this->resource->getFields()[$fieldName];
+                $body[$fieldName] = [
+                    'type' => $field->getPHPTypeName(),
+                ];
+            } else {
+                $body[$fieldName] = [
+                    'type' => (new Id())->getPHPTypeName(),
+                ];
+            }
         }
 
         return $body;
