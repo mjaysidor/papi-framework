@@ -2,19 +2,15 @@ DOING:
 
 TODO:
 
+BUGS:
+    - konflikt collection endpointów (post/get bez id, put/get by id)
+
+TESTY + REFACTORING + OPTYMALIZACJA:
+    - relacje
+    - paginacja
+    - całość - resources, kontrolery, relacje, handlery, itp
+
 BACKLOG:
     - security
     - migracje takie, aby uzupełniały na podstawie obecnego stanu bazy
     - postgres
-
-    TESTY, REFACTORING:
-            - relacje
-            - doc generator
-            - całość - resources, kontrolery, relacje, handlery, itp
-
-BUGS:
-    - konflikt collection endpointów (post/get bez id, put/get by id)
-
-OPTYMALIZACJA:
-    - wszystko
-    - paginacja

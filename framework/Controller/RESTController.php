@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace framework\Controller;
 
 use Closure;
+use config\APIResponses;
 use framework\Documentation\OpenApiParamConverter;
 use framework\Worker\App;
 
@@ -46,7 +47,9 @@ abstract class RESTController
             'POST',
             $this->getEndpoint(),
             $callback,
-            $this->getPOSTPUTBody()
+            $this->getPOSTPUTBody(),
+            [],
+            APIResponses::getPOSTResponses()
         );
     }
 
@@ -58,7 +61,7 @@ abstract class RESTController
             $callback,
             [],
             OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds()),
-            $this->getGETResponseBody()
+            APIResponses::getGETResponses($this->getGETResponseBody())
         );
     }
 
@@ -70,7 +73,7 @@ abstract class RESTController
             $callback,
             [],
             $this->getQueryFilters(),
-            $this->getGETResponseBody()
+            APIResponses::getGETResponses($this->getGETResponseBody())
         );
     }
 
@@ -81,7 +84,8 @@ abstract class RESTController
             $this->getEndpointWithId(),
             $callback,
             [],
-            OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds())
+            OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds()),
+            APIResponses::getDELETEResponses()
         );
     }
 
@@ -92,7 +96,8 @@ abstract class RESTController
             $this->getEndpointWithId(),
             $callback,
             $this->getPOSTPUTBody(),
-            OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds())
+            OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds()),
+            APIResponses::getPUTResponses()
         );
     }
 }

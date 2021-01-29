@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace framework\Worker;
 
-use config\APIResponses;
-
 class App extends \Mark\App
 {
     public function getRouteInfo(): array
@@ -18,25 +16,14 @@ class App extends \Mark\App
         $callback,
         array $requestBody = [],
         array $urlParameters = [],
-        array $responseBody = []
+        array $responses = []
     ): void {
-        $methods = (array)$method;
-
-        $responses = match ($method) {
-            "POST" => APIResponses::getPOSTResponses(),
-            "GET" => APIResponses::getGETResponses($responseBody),
-            "PUT" => APIResponses::getPUTResponses(),
-            "DELETE" => APIResponses::getDELETEResponses(),
-        };
-
-        foreach ($methods as $m) {
-            $this->routeInfo[$m][] = [
-                $this->pathPrefix.$path,
-                $callback,
-                'responses'    => $responses,
-                'body'         => $requestBody,
-                'params'       => $urlParameters,
-            ];
-        }
+        $this->routeInfo[$method][] = [
+            $this->pathPrefix.$path,
+            $callback,
+            'responses'  => $responses,
+            'body'       => $requestBody,
+            'parameters' => $urlParameters,
+        ];
     }
 }

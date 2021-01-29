@@ -31,11 +31,6 @@ class DocGenerator
                 }
 
                 $requestBody = [];
-                $paramsArray = [];
-                $tagsAndResponses = [
-                    'tags'      => [$resourceName],
-                    'responses' => $data['responses'],
-                ];
 
                 if ($data['body']) {
                     $requestBody = [
@@ -52,11 +47,14 @@ class DocGenerator
                     ];
                 }
 
-                if ($data['params']) {
-                    $paramsArray['parameters'] = $data['params'];
-                }
-
-                $doc['paths'][$path][strtolower($method)] = array_merge($tagsAndResponses, $requestBody, $paramsArray);
+                $doc['paths'][$path][strtolower($method)] = array_merge(
+                    [
+                        'tags'      => [$resourceName],
+                        'responses' => $data['responses'],
+                    ],
+                    $requestBody,
+                    $data['parameters'] ?? []
+                );
             }
         }
 
