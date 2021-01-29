@@ -53,7 +53,9 @@ class DocGenerator
                         'responses' => $data['responses'],
                     ],
                     $requestBody,
-                    $data['parameters'] ?? []
+                    $data['parameters'] ? [
+                        'parameters' => $data['parameters'],
+                    ] : []
                 );
             }
         }
