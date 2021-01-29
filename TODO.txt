@@ -1,17 +1,19 @@
 DOING:
 - powiązanie paginatora i order by bez paginacji
 
-    TESTY + OPTYMALIZACJA:
-        - relacje
-        - doc generator
 
 TODO:
 
 BACKLOG:
     - security
     - migracje takie, aby uzupełniały na podstawie obecnego stanu bazy
-    - REFACTORING całości - resources, kontrolery, relacje, handlery, itp
     - postgres
+
+    TESTY, REFACTORING + OPTYMALIZACJA:
+            - relacje
+            - doc generator
+            - całość - resources, kontrolery, relacje, handlery, itp
 
 BUGS:
     - konflikt collection endpointów (post/get bez id, put/get by id)
+

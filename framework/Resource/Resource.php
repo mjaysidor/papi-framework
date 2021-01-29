@@ -95,7 +95,7 @@ abstract class Resource
 
     private function addOrderConditions(array &$filters): void
     {
-        if ($filters['orderBy']) {
+        if (isset($filters['orderBy'])) {
             $filters['ORDER'] = [
                 $filters['orderBy'] => $filters['order'] ?? 'ASC',
             ];

@@ -25,7 +25,7 @@ class PaginatorFactory
         $cursor = $filters['cursor'] ?? '';
         $column = $filters['orderBy'] ?? 'id';
         $order = $filters['order'] ?? 'ASC';
-        $limit = $filters['limit'] ? (int)$filters['limit'] : 10;
+        $limit = isset($filters['limit']) ? (int)$filters['limit'] : 10;
         unset($filters['cursor'], $filters['order'], $filters['orderBy'], $filters['limit']);
 
         return new CursorPaginator($cursor, $column, $order, $limit);
