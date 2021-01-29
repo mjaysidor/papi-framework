@@ -19,7 +19,7 @@ class PostController extends ResourceController
     {
         $this->post(
             function ($request) {
-                return ResourceCRUDHandler::create($this->resource, $request, new AddCurrentDate());
+                return ResourceCRUDHandler::create($this->resource, $request);
             }
         );
 

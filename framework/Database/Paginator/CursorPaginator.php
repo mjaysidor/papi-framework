@@ -61,16 +61,17 @@ class CursorPaginator extends Paginator
 
     public function addPaginationLinks(array $response): array
     {
-        if (count($response) > $this->limit) {
+        if (isset($response[$this->limit])) {
             unset($response[array_key_last($response)]);
             $this->nextCursor['cursor'] = end($response)[$this->column];
             $this->nextCursor['order'] = $this->order;
         }
 
-        if (count($response) > 0) {
+        if (isset($response[0])) {
             $this->previousCursor['cursor'] = reset($response)[$this->column];
             $this->previousCursor['order'] = $this->order === 'ASC' ? 'DESC' : 'ASC';
         }
+
         return array_merge(
             $response,
             [
