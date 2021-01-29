@@ -6,11 +6,12 @@ DOING:
         - doc generator
 
 TODO:
-    - REFACTORING całości - resources, kontrolery, relacje, handlery, itp
 
 BACKLOG:
     - security
     - migracje takie, aby uzupełniały na podstawie obecnego stanu bazy
+    - REFACTORING całości - resources, kontrolery, relacje, handlery, itp
+    - postgres
 
 BUGS:
     - konflikt collection endpointów (post/get bez id, put/get by id)

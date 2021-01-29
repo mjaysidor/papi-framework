@@ -4,12 +4,13 @@ declare(strict_types=1);
 namespace migrations;
 
 use config\DatabaseConfig;
+use framework\CLI\ConsoleOutput;
 use PDO;
 use PDOException;
 
 class CreateDbMigration
 {
-    public function migrate(): void
+    public function execute(): void
     {
         $host = DatabaseConfig::getServer();
         $user = DatabaseConfig::getUsername();
@@ -20,7 +21,9 @@ class CreateDbMigration
             $dbh = new PDO("mysql:host=$host", $user, $password);
             $dbh->exec("CREATE DATABASE IF NOT EXISTS `$name`;");
         } catch (PDOException $e) {
-            die("DB ERROR: ".$e->getMessage().' AT: '.$e->getTraceAsString());
+            ConsoleOutput::error("DB ERROR: ".$e->getMessage());
+            die();
         }
+        ConsoleOutput::output('Database created');
     }
 }

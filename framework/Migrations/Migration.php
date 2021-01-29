@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace framework\Migrations;
 
+use framework\CLI\ConsoleOutput;
 use framework\Database\MedooHandler;
 use Medoo\Medoo;
 
@@ -19,5 +20,11 @@ abstract class Migration
         }
     }
 
-    abstract public function migrate(): void;
+    public function execute(): void
+    {
+        $this->migrate();
+        ConsoleOutput::output('Migration executed: '.get_class($this));
+    }
+
+    abstract protected function migrate(): void;
 }

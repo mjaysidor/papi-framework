@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace migrations;
 
 use config\Resources;
+use framework\CLI\ConsoleOutput;
 use framework\Migrations\Migration;
 
 class CreateResources extends Migration
@@ -12,17 +13,27 @@ class CreateResources extends Migration
     {
         foreach (Resources::getItems() as $resource) {
             $resourceObject = new $resource();
-            $this->handler->create(
-                $resourceObject->getTableName(),
-                $resourceObject->getMigrationColumns(),
-            );
+            try {
+                $this->handler->create(
+                    $resourceObject->getTableName(),
+                    $resourceObject->getMigrationColumns(),
+                );
+            } catch (\Exception $exception) {
+                ConsoleOutput::errorDie($exception->getMessage());
+            }
         }
+        ConsoleOutput::output('Resources created');
 
         foreach (Resources::getItems() as $resource) {
             $resourceObject = new $resource();
             foreach ($resourceObject->getRelations() as $relation) {
-                $relation->createRelation();
+                try {
+                    $relation->createRelation();
+                } catch (\Exception $exception) {
+                    ConsoleOutput::errorDie($exception->getMessage());
+                }
             }
         }
+        ConsoleOutput::output('Relations created');
     }
 }
