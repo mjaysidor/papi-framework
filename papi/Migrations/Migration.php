@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace papi\Migrations;
 
+use Medoo\Medoo;
 use papi\CLI\ConsoleOutput;
 use papi\Database\MedooHandler;
-use Medoo\Medoo;
 
 abstract class Migration
 {

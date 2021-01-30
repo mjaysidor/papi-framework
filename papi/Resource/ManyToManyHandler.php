@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace papi\Resource;
 
 use papi\Database\MedooHandler;
-use papi\Database\Paginator\Paginator;
-use papi\Database\Paginator\PaginatorFactory;
+use papi\Database\PDO\PDO\Paginator\Paginator;
+use papi\Database\PDO\PDO\Paginator\PaginatorFactory;
 use papi\Relation\ManyToMany;
 use papi\Relation\ManyToManyValidator;
 use papi\Response\JsonResponse;

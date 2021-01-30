@@ -10,12 +10,18 @@ $host = DatabaseConfig::getServer();
 $user = DatabaseConfig::getUsername();
 $password = DatabaseConfig::getPassword();
 $name = DatabaseConfig::getName();
+$type = DatabaseConfig::getType();
 
 try {
-    $dbh = new PDO("mysql:host=$host", $user, $password);
-    $dbh->exec("DROP DATABASE `$name`;");
+    $db = "$type:host=$host";
+    $statement = "DROP DATABASE `$name`;";
+    if ($type === 'pgsql') {
+         $db .= ';dbname=postgres';
+         $statement = "DROP DATABASE $name;";
+    }
+    $dbh = new PDO($db, $user, $password);
+    $dbh->exec($statement);
 } catch (PDOException $e) {
-    ConsoleOutput::error("DB ERROR: ".$e->getMessage());
-    die();
+    ConsoleOutput::errorDie("DB ERROR: ".$e->getMessage());
 }
-ConsoleOutput::success('Database dropped');
+ConsoleOutput::success("Database dropped ($type)");

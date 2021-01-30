@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace papi\Resource;
 
+use Medoo\Medoo;
 use papi\Database\MedooHandler;
 use papi\Relation\ManyToMany;
-use Medoo\Medoo;
 
 abstract class Resource
 {

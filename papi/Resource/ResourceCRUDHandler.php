@@ -5,8 +5,8 @@ namespace papi\Resource;
 
 use papi\Callbacks\PostExecutionHandler;
 use papi\Callbacks\PreExecutionBodyModifier;
-use papi\Database\Paginator\Paginator;
-use papi\Database\Paginator\PaginatorFactory;
+use papi\Database\PDO\PDO\Paginator\Paginator;
+use papi\Database\PDO\PDO\Paginator\PaginatorFactory;
 use papi\Response\JsonResponse;
 use Workerman\Protocols\Http\Request;
 

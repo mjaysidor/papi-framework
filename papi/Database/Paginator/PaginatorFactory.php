@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace papi\Database\Paginator;
+namespace papi\Database\PDO\PDO\Paginator;
 
 class PaginatorFactory
 {

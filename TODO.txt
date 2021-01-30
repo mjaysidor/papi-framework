@@ -1,4 +1,6 @@
 DOING:
+    - postgres
+    - testy CASCADE
 
 BUGS:
     - konflikt collection endpointów (post/get bez id, put/get by id)
@@ -8,7 +10,6 @@ TESTY:
 BACKLOG:
     - security
     - migracje takie, aby uzupełniały na podstawie obecnego stanu bazy
-    - postgres
 
 REFACTORING + OPTYMALIZACJA:
     - paginacja
