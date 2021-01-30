@@ -3,14 +3,14 @@ declare(strict_types=1);
 
 namespace App\Resources;
 
-use framework\Relation\ManyToMany;
-use framework\Resource\Field\DateTime;
-use framework\Resource\Field\Id;
-use framework\Resource\Field\TinyInt;
-use framework\Resource\Field\Varchar;
-use framework\Resource\Resource;
-use framework\Validator\MinLength;
-use framework\Validator\PositiveInteger;
+use papi\Relation\ManyToMany;
+use papi\Resource\Field\DateTime;
+use papi\Resource\Field\Id;
+use papi\Resource\Field\TinyInt;
+use papi\Resource\Field\Varchar;
+use papi\Resource\Resource;
+use papi\Validator\MinLength;
+use papi\Validator\PositiveInteger;
 
 class Comment extends Resource
 {

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Callbacks;
 
-class Handler implements \framework\Callbacks\PostExecutionHandler
+class Handler implements \papi\Callbacks\PostExecutionHandler
 {
     public function handle(array $data): ?string
     {

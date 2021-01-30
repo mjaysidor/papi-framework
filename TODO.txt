@@ -1,14 +1,11 @@
 DOING:
 
-TODO:
-
 BUGS:
     - konflikt collection endpointów (post/get bez id, put/get by id)
 
 TESTY:
 
 BACKLOG:
-    - relacje CASCADE
     - security
     - migracje takie, aby uzupełniały na podstawie obecnego stanu bazy
     - postgres

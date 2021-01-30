@@ -5,9 +5,9 @@ namespace App\Controller;
 
 use App\Resources\Comment;
 use App\Resources\Post;
-use framework\Controller\ManyToManyController;
-use framework\Relation\ManyToMany;
-use framework\Resource\ManyToManyHandler;
+use papi\Controller\ManyToManyController;
+use papi\Relation\ManyToMany;
+use papi\Resource\ManyToManyHandler;
 
 class CommentPostController extends ManyToManyController
 {

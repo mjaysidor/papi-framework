@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Resources\Comment;
-use framework\Callbacks\AddCurrentDate;
-use framework\Controller\ResourceController;
-use framework\Resource\ResourceCRUDHandler;
+use papi\Callbacks\AddCurrentDate;
+use papi\Controller\ResourceController;
+use papi\Resource\ResourceCRUDHandler;
 
 class CommentController extends ResourceController
 {

@@ -5,7 +5,7 @@ namespace config;
 
 use PDO;
 
-class DatabaseConfig implements \framework\Config\DatabaseConfig
+class DatabaseConfig implements \papi\Config\DatabaseConfig
 {
     public static function getConfig(): array
     {

@@ -1,11 +1,11 @@
 <?php
 
-use framework\Controller\ControllerInitializer;
-use framework\Documentation\DocGenerator;
-use framework\DotEnv;
-use framework\Worker\App;
-
 require_once 'vendor/autoload.php';
+
+use papi\Controller\ControllerInitializer;
+use papi\Documentation\DocGenerator;
+use papi\DotEnv;
+use papi\Worker\App;
 
 $api = new App('http://0.0.0.0:3000');
 

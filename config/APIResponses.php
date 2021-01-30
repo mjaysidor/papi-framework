@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace config;
 
-use framework\Config\APIResponsesConfig;
+use papi\Config\APIResponsesConfig;
 
 class APIResponses implements APIResponsesConfig
 {

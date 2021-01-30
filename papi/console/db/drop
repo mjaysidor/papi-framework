@@ -1,0 +1,21 @@
+<?php
+declare(strict_types=1);
+
+require_once 'vendor/autoload.php';
+
+use config\DatabaseConfig;
+use papi\CLI\ConsoleOutput;
+
+$host = DatabaseConfig::getServer();
+$user = DatabaseConfig::getUsername();
+$password = DatabaseConfig::getPassword();
+$name = DatabaseConfig::getName();
+
+try {
+    $dbh = new PDO("mysql:host=$host", $user, $password);
+    $dbh->exec("DROP DATABASE `$name`;");
+} catch (PDOException $e) {
+    ConsoleOutput::error("DB ERROR: ".$e->getMessage());
+    die();
+}
+ConsoleOutput::success('Database dropped');
