@@ -5,7 +5,7 @@ namespace config;
 
 use PDO;
 
-class DatabaseConfig implements \papi\Config\DatabaseConfig
+class DatabaseConfig extends \papi\Config\DatabaseConfig
 {
     public static function getConfig(): array
     {
@@ -17,11 +17,6 @@ class DatabaseConfig implements \papi\Config\DatabaseConfig
             'password'      => self::getPassword(),
             'option'        => self::getOptions(),
         ];
-    }
-
-    public static function getType(): string
-    {
-        return 'mysql';
     }
 
     public static function getName(): string

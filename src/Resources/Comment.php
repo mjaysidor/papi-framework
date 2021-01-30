@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace App\Resources;
 
 use papi\Relation\ManyToMany;
-use papi\Resource\Field\DateTime;
 use papi\Resource\Field\Id;
-use papi\Resource\Field\TinyInt;
+use papi\Resource\Field\SmallInt;
+use papi\Resource\Field\Timestamp;
 use papi\Resource\Field\Varchar;
 use papi\Resource\Resource;
 use papi\Validator\MinLength;
@@ -24,9 +24,9 @@ class Comment extends Resource
         return [
             'id'         => new Id(),
             'content'    => new Varchar(500),
-            'created_at' => new DateTime(),
-            'up_votes'   => new TinyInt(),
-            'down_votes' => new TinyInt(),
+            'created_at' => new Timestamp(),
+            'up_votes'   => new SmallInt(),
+            'down_votes' => new SmallInt(),
         ];
     }
 

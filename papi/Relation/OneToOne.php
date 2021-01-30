@@ -12,18 +12,22 @@ class OneToOne extends Relation
 
     protected function getColumnDefinition(): string
     {
-        return "ALTER TABLE $this->databaseName"."$this->rootTableName ADD ".$this->getRelationFieldName()." INT";
+        return "ALTER TABLE $this->rootTableName ADD ".$this->getRelationFieldName()." INT";
     }
 
-    protected function getForeignKeyDefinition(): string
+    protected function getForeignKeyDefinition(): array
     {
-        return "ALTER TABLE $this->databaseName"."$this->rootTableName ADD FOREIGN KEY ($this->relatedTableName"
-               ."_id) REFERENCES $this->onDelete $this->onUpdate".$this->databaseName.$this->relatedTableName.'(id)';
+        return [
+            "ALTER TABLE $this->rootTableName ADD FOREIGN KEY ($this->relatedTableName"
+            ."_id) REFERENCES $this->relatedTableName(id) $this->onDelete $this->onUpdate",
+        ];
     }
 
-    protected function getIndexDefinition(): string
+    protected function getIndexDefinition(): array
     {
-        return 'CREATE UNIQUE INDEX FKU_'.$this->rootTableName.'_'."$this->relatedTableName ON $this->databaseName"
-               .$this->rootTableName."($this->relatedTableName".'_id)';
+        return [
+            'CREATE UNIQUE INDEX FKU_'.$this->rootTableName.'_'
+            ."$this->relatedTableName ON $this->rootTableName($this->relatedTableName".'_id)',
+        ];
     }
 }

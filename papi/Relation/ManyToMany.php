@@ -34,36 +34,35 @@ class ManyToMany extends Relation
         return null;
     }
 
-    public function getTableNameWithoutDatabase(): string
-    {
-        return $this->rootTableName.'_'.$this->relatedTableName;
-    }
-
     public function getTableName(): string
     {
-        return $this->databaseName.$this->rootTableName.'_'.$this->relatedTableName;
+        return $this->rootTableName.'_'.$this->relatedTableName;
     }
 
     protected function getColumnDefinition(): string
     {
         return "CREATE TABLE ".$this->getTableName()
-               ."(id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, $this->rootResourceIdField INT NOT NULL, $this->relatedResourceIdField INT NOT NULL)";
+               ."(id INT NOT NULL PRIMARY KEY, $this->rootResourceIdField INT NOT NULL, $this->relatedResourceIdField INT NOT NULL)";
     }
 
-    protected function getForeignKeyDefinition(): string
+    protected function getForeignKeyDefinition(): array
     {
-        return "ALTER TABLE ".$this->getTableName()
-               ." ADD FOREIGN KEY ($this->rootResourceIdField) REFERENCES $this->databaseName$this->rootTableName(id) $this->onDelete $this->onUpdate; ALTER TABLE "
-               .$this->getTableName()
-               ." ADD FOREIGN KEY ($this->relatedResourceIdField) REFERENCES $this->databaseName$this->relatedTableName(id) $this->onDelete $this->onUpdate;";
+        return [
+            "ALTER TABLE ".$this->getTableName()
+            ." ADD FOREIGN KEY ($this->rootResourceIdField) REFERENCES $this->rootTableName(id) $this->onDelete $this->onUpdate;",
+            "ALTER TABLE ".$this->getTableName()
+            ." ADD FOREIGN KEY ($this->relatedResourceIdField) REFERENCES $this->relatedTableName(id) $this->onDelete $this->onUpdate;",
+        ];
     }
 
-    protected function getIndexDefinition(): string
+    protected function getIndexDefinition(): array
     {
-        return "CREATE INDEX FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->rootTableName ON "
-               .$this->getTableName()."($this->rootResourceIdField);"
-               .
-               "CREATE INDEX FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->relatedTableName ON "
-               .$this->getTableName()."($this->relatedResourceIdField);";
+        return [
+            "CREATE INDEX FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->rootTableName ON "
+            .$this->getTableName()."($this->rootResourceIdField);"
+            ,
+            "CREATE INDEX FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->relatedTableName ON "
+            .$this->getTableName()."($this->relatedResourceIdField);",
+        ];
     }
 }

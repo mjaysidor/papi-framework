@@ -16,8 +16,6 @@ abstract class Relation
     public const ON_DELETE_CASCADE  = 'ON DELETE CASCADE';
     public const ON_DELETE_SET_NULL = 'ON DELETE SET NULL';
 
-    protected string $databaseName;
-
     protected string $rootTableName;
 
     protected string $relatedTableName;
@@ -36,7 +34,6 @@ abstract class Relation
     ) {
         $this->onUpdate = $onUpdate;
         $this->onDelete = $onDelete;
-        $this->databaseName = DatabaseConfig::getName().'.';
         $this->rootTableName = (new $rootResource)->getTableName();
         $this->relatedTableName = (new $relatedResource)->getTableName();
         $this->database = MedooHandler::getDbHandler();
@@ -45,15 +42,19 @@ abstract class Relation
     public function createRelation(): void
     {
         $this->database->exec($this->getColumnDefinition());
-        $this->database->exec($this->getForeignKeyDefinition());
-        $this->database->exec($this->getIndexDefinition());
+        foreach ($this->getForeignKeyDefinition() as $definition) {
+            $this->database->exec($definition);
+        }
+        foreach ($this->getIndexDefinition() as $definition) {
+            $this->database->exec($definition);
+        }
     }
 
     abstract public function getRelationFieldName(): ?string;
 
     abstract protected function getColumnDefinition(): string;
 
-    abstract protected function getForeignKeyDefinition(): string;
+    abstract protected function getForeignKeyDefinition(): array;
 
-    abstract protected function getIndexDefinition(): string;
+    abstract protected function getIndexDefinition(): array;
 }

@@ -3,19 +3,17 @@ declare(strict_types=1);
 
 namespace papi\Resource\Field;
 
-class Id extends Field
+class Timestamp extends Field
 {
     public function getDefinition(): array
     {
         return [
-            "INT",
-            "NOT NULL",
-            "PRIMARY KEY",
+            'TIMESTAMP',
         ];
     }
 
     public function getPHPTypeName(): string
     {
-        return 'integer';
+        return 'string';
     }
 }
