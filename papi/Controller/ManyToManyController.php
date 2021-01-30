@@ -16,7 +16,7 @@ abstract class ManyToManyController extends RESTController
     {
         parent::__construct($api);
         $this->relation = $this->getRelation();
-        $this->resourceName = $this->relation->getTableNameWithoutDatabase();
+        $this->resourceName = $this->relation->getTableName();
     }
 
     abstract protected function getRelation(): ManyToMany;

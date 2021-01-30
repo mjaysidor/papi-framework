@@ -35,7 +35,7 @@ class ManyToManyHandler
             $handler = MedooHandler::getDbHandler();
 
             if ($handler->has(
-                $relation->getTableNameWithoutDatabase(),
+                $relation->getTableName(),
                 [
                     $relation->rootResourceIdField    => $body[$relation->rootResourceIdField],
                     $relation->relatedResourceIdField => $body[$relation->relatedResourceIdField],
@@ -45,7 +45,7 @@ class ManyToManyHandler
             }
 
             $result = $handler->insert(
-                $relation->getTableNameWithoutDatabase(),
+                $relation->getTableName(),
                 [
                     $relation->rootResourceIdField    => $body[$relation->rootResourceIdField],
                     $relation->relatedResourceIdField => $body[$relation->relatedResourceIdField],
@@ -79,7 +79,7 @@ class ManyToManyHandler
         try {
             $rowsAffected = MedooHandler::getDbHandler()
                                         ->delete(
-                                            $relation->getTableNameWithoutDatabase(),
+                                            $relation->getTableName(),
                                             [
                                                 $relation->rootResourceIdField    => $rootResourceId,
                                                 $relation->relatedResourceIdField => $relatedResourceId,
@@ -129,7 +129,7 @@ class ManyToManyHandler
         try {
             $result = MedooHandler::getDbHandler()
                                   ->select(
-                                      $relation->getTableNameWithoutDatabase(),
+                                      $relation->getTableName(),
                                       $relation->getFields(),
                                       $filters
                                   )

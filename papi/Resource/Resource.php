@@ -106,7 +106,7 @@ abstract class Resource
         }
     }
 
-    public function create(array $data): bool|string
+    public function create(array $data): bool|int
     {
         $result = $this->handler->insert(
             $this->getTableName(),

@@ -42,7 +42,7 @@ class ManyToMany extends Relation
     protected function getColumnDefinition(): string
     {
         return "CREATE TABLE ".$this->getTableName()
-               ."(id INT NOT NULL PRIMARY KEY, $this->rootResourceIdField INT NOT NULL, $this->relatedResourceIdField INT NOT NULL)";
+               ."(id SERIAL NOT NULL PRIMARY KEY, $this->rootResourceIdField INT NOT NULL, $this->relatedResourceIdField INT NOT NULL)";
     }
 
     protected function getForeignKeyDefinition(): array

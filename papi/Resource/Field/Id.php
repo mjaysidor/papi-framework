@@ -8,7 +8,7 @@ class Id extends Field
     public function getDefinition(): array
     {
         return [
-            "INT",
+            "SERIAL",
             "NOT NULL",
             "PRIMARY KEY",
         ];

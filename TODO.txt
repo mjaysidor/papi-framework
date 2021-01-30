@@ -1,6 +1,4 @@
 DOING:
-    - postgres
-    - testy CASCADE
 
 BUGS:
     - konflikt collection endpointów (post/get bez id, put/get by id)
