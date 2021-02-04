@@ -5,6 +5,9 @@ BUGS:
 
 TESTY:
 
+TODO:
+    - pg_ wrapper zamiast Medoo
+
 BACKLOG:
     - security
     - migracje takie, aby uzupełniały na podstawie obecnego stanu bazy

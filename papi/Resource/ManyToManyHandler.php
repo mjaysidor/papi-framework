@@ -78,14 +78,14 @@ class ManyToManyHandler
 
         try {
             $rowsAffected = MedooHandler::getDbHandler()
-                                        ->delete(
+                                      ->delete(
                                             $relation->getTableName(),
                                             [
                                                 $relation->rootResourceIdField    => $rootResourceId,
                                                 $relation->relatedResourceIdField => $relatedResourceId,
                                             ]
                                         )
-                                        ->rowCount()
+                                      ->rowCount()
             ;
         } catch (PDOException $exception) {
             return new JsonResponse(500, [$exception->getMessage()]);
@@ -128,7 +128,7 @@ class ManyToManyHandler
 
         try {
             $result = MedooHandler::getDbHandler()
-                                  ->select(
+                                ->select(
                                       $relation->getTableName(),
                                       $relation->getFields(),
                                       $filters

@@ -1,6 +1,6 @@
 <?php
 
-require_once 'vendor/autoload.php';
+require 'vendor/autoload.php';
 
 use papi\Controller\ControllerInitializer;
 use papi\Documentation\DocGenerator;

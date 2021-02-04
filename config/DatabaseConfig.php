@@ -3,9 +3,7 @@ declare(strict_types=1);
 
 namespace config;
 
-use PDO;
-
-class DatabaseConfig extends \papi\Config\DatabaseConfig
+class DatabaseConfig implements \papi\Config\DatabaseConfig
 {
     public static function getConfig(): array
     {
@@ -15,8 +13,12 @@ class DatabaseConfig extends \papi\Config\DatabaseConfig
             'server'        => self::getServer(),
             'username'      => self::getUsername(),
             'password'      => self::getPassword(),
-            'option'        => self::getOptions(),
         ];
+    }
+
+    public static function getType(): string
+    {
+        return 'pgsql';
     }
 
     public static function getName(): string
@@ -29,6 +31,11 @@ class DatabaseConfig extends \papi\Config\DatabaseConfig
         return '127.0.0.1';
     }
 
+    public static function isLocal(): bool
+    {
+        return true;
+    }
+
     public static function getUsername(): string
     {
         return 'mjsidor';
@@ -37,12 +44,5 @@ class DatabaseConfig extends \papi\Config\DatabaseConfig
     public static function getPassword(): string
     {
         return '!Xplod3r';
-    }
-
-    public static function getOptions(): array
-    {
-        return [
-            PDO::MYSQL_ATTR_FOUND_ROWS => true,
-        ];
     }
 }

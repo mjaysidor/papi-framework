@@ -8,8 +8,8 @@ class Id extends Field
     public function getDefinition(): array
     {
         return [
-            "SERIAL",
-            "NOT NULL",
+            "INTEGER",
+            "GENERATED ALWAYS AS IDENTITY",
             "PRIMARY KEY",
         ];
     }
