@@ -6,12 +6,12 @@ BUGS:
 TESTY:
 
 TODO:
-    - pg_ wrapper zamiast Medoo
 
 BACKLOG:
     - security
     - migracje takie, aby uzupełniały na podstawie obecnego stanu bazy
 
 REFACTORING + OPTYMALIZACJA:
+    - pg wrapper
     - paginacja
     - całość - resources, kontrolery, relacje, handlery, itp
