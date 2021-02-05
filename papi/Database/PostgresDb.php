@@ -138,7 +138,7 @@ class PostgresDb
             if ($firstKey !== $key) {
                 $query .= ',';
             }
-            $query .= pg_escape_string($key);
+            $query .= pg_escape_string($key).'=';
             $this->addAlias($query, $condition);
         }
         $this->addWhereConditions($query, $where);

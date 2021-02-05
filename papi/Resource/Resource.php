@@ -50,55 +50,41 @@ abstract class Resource
             ;
     }
 
-    public function create(array $data): bool|int
+    public function create(array $data): int|string
     {
-        $result = $this->handler->insert(
-            $this->getTableName(),
-            $data
-        );
-
-        if ($result instanceof \PDOStatement) {
-            return $this->handler->id();
-        }
-
-        return false;
-    }
-
-    public function update(
-        array $where,
-        array $data
-    ): int {
-        return $this->handler->update(
-            $this->getTableName(),
-            $data,
-            $where
-        )
-                             ->rowCount()
+        return $this->getDbHandler()
+                    ->insert(
+                        $this->getTableName(),
+                        $data
+                    )
             ;
     }
 
-    public function updateById(
+    public function update(
         $id,
         array $data
-    ): int {
-        return $this->update(
-            [
-                'id' => $id,
-            ],
-            $data
-        );
+    ): int|string {
+        return $this->getDbHandler()
+                    ->update(
+                        $this->getTableName(),
+                        $data,
+                        [
+                            'id=' => $id,
+                        ]
+                    )
+            ;
     }
 
-    public function deleteById(
+    public function delete(
         $id
     ): int {
-        return $this->handler->delete(
-            $this->getTableName(),
-            [
-                'id' => $id,
-            ]
-        )
-                             ->rowCount()
+        return $this->getDbHandler()
+                    ->delete(
+                        $this->getTableName(),
+                        [
+                            'id=' => $id,
+                        ]
+                    )
             ;
     }
 }

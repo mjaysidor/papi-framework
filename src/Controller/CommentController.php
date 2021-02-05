@@ -45,25 +45,33 @@ class CommentController extends ResourceController
 
         $this->get(
             function ($request) {
-                                           return new JsonResponse(200, $this->resource->get());
+//                $id = random_int(1, 1000);
+
+                /**
+                 * TODO RESOURCE CLASS
+                 */
+                return new JsonResponse(200, $this->resource->get());
+                return new JsonResponse(200, [$this->resource->delete($id)]);
+                return new JsonResponse(200, [$this->resource->update(5, ['content' => 'asd', 'up_votes' => 2])]);
+                return new JsonResponse(200, [$this->resource->create(['content' => 'qweqwe', 'up_votes' => 5])]);
+//
+//
+                /**
+                 * TODO PG_WRAPPER
+                 */
 //                return new JsonResponse(200, (new PostgresDb())->select('comment'));
-//
-//
 //                return new JsonResponse(
 //                    204,
 //                    [(new PostgresDb())->update('comment', ['content=' => 'asd', 'up_votes=' => 4], ['id=' => 4500])]
 //                );
+//                return new JsonResponse(
+//                    204,
+//                    [(new PostgresDb())->insert('comment', ['content' => 'qweqwe', 'up_votes' => 5])]
+//                );
+//                return new JsonResponse(204, [(new PostgresDb())->delete('comment', ['true=' => true])]);
 
 
-
-                return new JsonResponse(
-                    204,
-                    [(new PostgresDb())->insert('comment', ['content' => 'qweqwe', 'up_votes' => 5])]
-                );
-
-                return new JsonResponse(204, [(new PostgresDb())->delete('comment', ['true=' => true])]);
-
-                return ResourceCRUDHandler::getCollection($this->resource, $request);
+//                return ResourceCRUDHandler::getCollection($this->resource, $request);
             }
         );
     }

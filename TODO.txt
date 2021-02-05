@@ -1,6 +1,5 @@
 DOING:
-    - getRelations -> getFields
-    - migracja Resource i CRUDHandler na nowy wrapper BD
+    - migracja wszystkiego na nowy wrapper BD
 
 BUGS:
     - konflikt collection endpointów (post/get bez id, put/get by id)
@@ -8,7 +7,7 @@ BUGS:
 TESTY:
 
 TODO:
-    - migracja paginacji na nowy wrapper
+
 
 BACKLOG:
     - security
