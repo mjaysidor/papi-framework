@@ -78,6 +78,7 @@ class PostgresDb
             }
             $query .= ' order by '.pg_escape_string($orderBy)." $order";
         }
+
         $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
 
         if (! $queryParams) {

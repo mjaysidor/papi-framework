@@ -25,7 +25,7 @@ abstract class Resource
     public function getById(
         $id,
         ?array $fields = null
-    ) {
+    ): array {
         return $this->getDbHandler()
                     ->select(
                         $this->getTableName(),
@@ -40,7 +40,7 @@ abstract class Resource
     public function get(
         ?array $filters = null,
         ?array $fields = null,
-    ): bool|array {
+    ): array {
         return $this->getDbHandler()
                     ->select(
                         $this->getTableName(),
