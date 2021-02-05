@@ -31,7 +31,7 @@ abstract class Resource
                         $this->getTableName(),
                         $fields ?? $this->getDefaultReadFields(),
                         [
-                            'id' => $id,
+                            'id=' => $id,
                         ]
                     )
             ;

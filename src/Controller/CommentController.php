@@ -48,27 +48,40 @@ class CommentController extends ResourceController
 //                $id = random_int(1, 1000);
 
                 /**
-                 * TODO RESOURCE CLASS
+                 * TODO GET BY ID
+                 */
+                return new JsonResponse(200, $this->resource->getById(152));
+                return new JsonResponse(200, (new PostgresDb())->select('comment'), ['id=' => 152]);
+
+                /**
+                 * TODO GET COLLECTION
                  */
                 return new JsonResponse(200, $this->resource->get());
-                return new JsonResponse(200, [$this->resource->delete($id)]);
-                return new JsonResponse(200, [$this->resource->update(5, ['content' => 'asd', 'up_votes' => 2])]);
-                return new JsonResponse(200, [$this->resource->create(['content' => 'qweqwe', 'up_votes' => 5])]);
-//
-//
+                return new JsonResponse(200, (new PostgresDb())->select('comment'));
+
                 /**
-                 * TODO PG_WRAPPER
+                 * TODO DELETE BY ID
                  */
-//                return new JsonResponse(200, (new PostgresDb())->select('comment'));
-//                return new JsonResponse(
-//                    204,
-//                    [(new PostgresDb())->update('comment', ['content=' => 'asd', 'up_votes=' => 4], ['id=' => 4500])]
-//                );
-//                return new JsonResponse(
-//                    204,
-//                    [(new PostgresDb())->insert('comment', ['content' => 'qweqwe', 'up_votes' => 5])]
-//                );
-//                return new JsonResponse(204, [(new PostgresDb())->delete('comment', ['true=' => true])]);
+                return new JsonResponse(200, [$this->resource->delete($id)]);
+                return new JsonResponse(204, [(new PostgresDb())->delete('comment', ['true=' => true])]);
+
+                /**
+                 * TODO UPDATE BY ID
+                 */
+                return new JsonResponse(200, [$this->resource->update(5, ['content' => 'asd', 'up_votes' => 2])]);
+                return new JsonResponse(
+                    204,
+                    [(new PostgresDb())->update('comment', ['content=' => 'asd', 'up_votes=' => 4], ['id=' => 4500])]
+                );
+
+                /**
+                 * TODO CREATE NEW
+                 */
+                return new JsonResponse(200, [$this->resource->create(['content' => 'qweqwe', 'up_votes' => 5])]);
+                return new JsonResponse(
+                    204,
+                    [(new PostgresDb())->insert('comment', ['content' => 'qweqwe', 'up_votes' => 5])]
+                );
 
 
 //                return ResourceCRUDHandler::getCollection($this->resource, $request);
