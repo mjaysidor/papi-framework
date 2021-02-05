@@ -5,11 +5,9 @@ namespace papi\Resource\Field;
 
 class Time extends Field
 {
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            'TIME',
-        ];
+        return 'TIME';
     }
 
     public function getPHPTypeName(): string

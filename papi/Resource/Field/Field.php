@@ -5,30 +5,24 @@ namespace papi\Resource\Field;
 
 abstract class Field
 {
-    private ?array $properties;
+    private ?string $properties;
 
     public function __construct(array $properties = null)
     {
         $this->properties = $properties;
     }
 
-    public function getProperties(): array
+    public function getProperties(): string
     {
-        $properties = $this->getDefinition();
-
+        $definition = $this->getDefaultProperties();
         if ($this->properties) {
-            $properties = array_merge(
-                $this->getDefinition(),
-                [
-                    $this->properties,
-                ]
-            );
+            $definition .= ' '.$this->properties;
         }
 
-        return $properties;
+        return $definition;
     }
 
-    abstract public function getDefinition(): array;
+    abstract public function getDefaultProperties(): string;
 
     abstract public function getPHPTypeName(): string;
 }

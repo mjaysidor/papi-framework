@@ -5,11 +5,9 @@ namespace papi\Resource\Field;
 
 class Year extends Field
 {
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            'YEAR',
-        ];
+        return 'YEAR';
     }
 
     public function getPHPTypeName(): string

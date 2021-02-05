@@ -5,6 +5,7 @@ namespace papi\Relation;
 
 use Medoo\Medoo;
 use papi\Database\MedooHandler;
+use papi\Database\PostgresDb;
 
 abstract class Relation
 {
@@ -23,7 +24,7 @@ abstract class Relation
 
     protected string $onDelete;
 
-    protected Medoo $database;
+    protected $connection;
 
     public function __construct(
         string $rootResource,
@@ -35,18 +36,20 @@ abstract class Relation
         $this->onDelete = $onDelete;
         $this->rootTableName = (new $rootResource)->getTableName();
         $this->relatedTableName = (new $relatedResource)->getTableName();
-        $this->database = MedooHandler::getDbHandler();
+        $this->connection = PostgresDb::getConnection();
     }
 
-    public function createRelation(): void
+    public function createRelation(): bool
     {
-        $this->database->exec($this->getColumnDefinition());
+        pg_query($this->connection, $this->getColumnDefinition());
         foreach ($this->getForeignKeyDefinition() as $definition) {
-            $this->database->exec($definition);
+            pg_query($this->connection, $definition);
         }
         foreach ($this->getIndexDefinition() as $definition) {
-            $this->database->exec($definition);
+            pg_query($this->connection, $definition);
         }
+
+        return true;
     }
 
     abstract public function getRelationFieldName(): ?string;

@@ -1,4 +1,6 @@
 DOING:
+    - getRelations -> getFields
+    - migracja Resource i CRUDHandler na nowy wrapper BD
 
 BUGS:
     - konflikt collection endpointów (post/get bez id, put/get by id)
@@ -6,12 +8,12 @@ BUGS:
 TESTY:
 
 TODO:
+    - migracja paginacji na nowy wrapper
 
 BACKLOG:
     - security
     - migracje takie, aby uzupełniały na podstawie obecnego stanu bazy
 
 REFACTORING + OPTYMALIZACJA:
-    - pg wrapper
-    - paginacja
+    - pg wrapper + paginacja
     - całość - resources, kontrolery, relacje, handlery, itp

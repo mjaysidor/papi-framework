@@ -5,11 +5,9 @@ namespace papi\Resource\Field;
 
 class LongText extends Field
 {
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            'LONGTEXT',
-        ];
+        return 'LONGTEXT';
     }
 
     public function getPHPTypeName(): string

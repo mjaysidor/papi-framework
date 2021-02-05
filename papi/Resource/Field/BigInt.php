@@ -13,13 +13,9 @@ class BigInt extends Field
         $this->length = $length;
     }
 
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        $definition = $this->length ? "BIGINT($this->length)" : 'BIGINT';
-
-        return [
-            $definition,
-        ];
+        return $this->length ? "BIGINT($this->length)" : 'BIGINT';
     }
 
     public function getPHPTypeName(): string

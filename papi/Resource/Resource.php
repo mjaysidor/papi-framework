@@ -3,107 +3,51 @@ declare(strict_types=1);
 
 namespace papi\Resource;
 
-use Medoo\Medoo;
-use papi\Database\MedooHandler;
-use papi\Relation\ManyToMany;
+use papi\Database\PostgresDb;
 
 abstract class Resource
 {
-    protected ?Medoo $handler;
-
-    public function __construct()
+    public function getDbHandler(): PostgresDb
     {
-        $this->handler = MedooHandler::getDbHandler();
+        return new PostgresDb();
     }
 
     abstract public function getTableName(): string;
 
     abstract public function getFields(): array;
 
-    abstract protected function getDefaultReadFieldsArray(): array;
+    abstract public function getDefaultReadFields(): array;
 
-    abstract protected function getEditableFieldsArray(): array;
+    abstract public function getEditableFields(): array;
 
     abstract public function getFieldValidators(): array;
-
-    abstract protected function getRelations(): array;
-
-    public function getDefaultReadFields(): array
-    {
-        return array_merge(
-            $this->getDefaultReadFieldsArray(),
-            $this->getRelationsColumnNames()
-        );
-    }
-
-    public function getEditableFields(): array
-    {
-        return array_merge(
-            $this->getEditableFieldsArray(),
-            $this->getRelationsColumnNames(),
-        );
-    }
-
-    public function getRelationsColumnNames(): array
-    {
-        $columnNames = [];
-
-        foreach ($this->getRelations() as $relation) {
-            if (! $relation instanceof ManyToMany) {
-                $columnNames[] = $relation->getRelationFieldName();
-            }
-        }
-
-        return $columnNames;
-    }
-
-    public function getMigrationColumns(): array
-    {
-        $columns = [];
-        foreach ($this->getFields() as $name => $field) {
-            $columns[$name] = $field->getProperties();
-        }
-
-        return $columns;
-    }
 
     public function getById(
         $id,
         ?array $fields = null
     ) {
-        return $this->handler->get(
-            $this->getTableName(),
-            $this->getSELECTFields($fields),
-            [
-                'id' => $id,
-            ]
-        );
+        return $this->getDbHandler()
+                    ->select(
+                        $this->getTableName(),
+                        $fields ?? $this->getDefaultReadFields(),
+                        [
+                            'id' => $id,
+                        ]
+                    )
+            ;
     }
 
     public function get(
         ?array $filters = null,
         ?array $fields = null,
     ): bool|array {
-        $this->addOrderConditions($filters);
-
-        return $this->handler->select(
-            $this->getTableName(),
-            $this->getSELECTFields($fields),
-            $filters
-        );
-    }
-
-    private function addOrderConditions(array &$filters): void
-    {
-        if (isset($filters['orderBy'])) {
-            $filters['ORDER'] = [
-                $filters['orderBy'] => $filters['order'] ?? 'ASC',
-            ];
-            unset($filters['orderBy']);
-        }
-        if (isset($filters['order'])) {
-            unset($filters['order']);
-        }
+        return $this->getDbHandler()
+                    ->select(
+                        $this->getTableName(),
+                        $fields ?? $this->getDefaultReadFields(),
+                        $filters
+                    )
+            ;
     }
 
     public function create(array $data): bool|int
@@ -156,10 +100,5 @@ abstract class Resource
         )
                              ->rowCount()
             ;
-    }
-
-    private function getSELECTFields(?array $fields): ?array
-    {
-        return $fields ?? $this->getDefaultReadFields();
     }
 }

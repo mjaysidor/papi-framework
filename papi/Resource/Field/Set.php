@@ -13,11 +13,9 @@ class Set extends Field
         $this->values = $values;
     }
 
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            "SET(".implode(",", $this->values).")",
-        ];
+        return "SET(".implode(",", $this->values).")";
     }
 
     public function getPHPTypeName(): string

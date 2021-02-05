@@ -5,11 +5,9 @@ namespace papi\Resource\Field;
 
 class Boolean extends Field
 {
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            "BOOLEAN",
-        ];
+        return "BOOLEAN";
     }
 
     public function getPHPTypeName(): string

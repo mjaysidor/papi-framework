@@ -16,11 +16,9 @@ class Double extends Field
         $this->precision = $precision;
     }
 
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            "DOUBLE($this->length,$this->precision)",
-        ];
+        return "DOUBLE($this->length,$this->precision)";
     }
 
     public function getPHPTypeName(): string

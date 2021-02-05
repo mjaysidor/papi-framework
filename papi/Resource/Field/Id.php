@@ -5,13 +5,9 @@ namespace papi\Resource\Field;
 
 class Id extends Field
 {
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            "INTEGER",
-            "GENERATED ALWAYS AS IDENTITY",
-            "PRIMARY KEY",
-        ];
+        return "INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY";
     }
 
     public function getPHPTypeName(): string

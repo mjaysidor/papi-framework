@@ -13,11 +13,9 @@ class Varchar extends Field
         $this->length = $length;
     }
 
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            "VARCHAR($this->length)",
-        ];
+        return "VARCHAR($this->length)";
     }
 
     public function getPHPTypeName(): string

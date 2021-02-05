@@ -5,11 +5,9 @@ namespace papi\Resource\Field;
 
 class MediumText extends Field
 {
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            'MEDIUMTEXT',
-        ];
+        return 'MEDIUMTEXT';
     }
 
     public function getPHPTypeName(): string

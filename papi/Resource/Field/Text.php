@@ -13,11 +13,9 @@ class Text extends Field
         $this->length = $length;
     }
 
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            "TEXT($this->length)",
-        ];
+        return "TEXT($this->length)";
     }
 
     public function getPHPTypeName(): string

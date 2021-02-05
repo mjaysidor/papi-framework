@@ -76,6 +76,11 @@ paths:
                     in: query
                     schema:
                         type: string
+                -
+                    name: 0
+                    in: query
+                    schema:
+                        type: string
     '/comment/{id}':
         put:
             tags:

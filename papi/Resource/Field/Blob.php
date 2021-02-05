@@ -13,11 +13,9 @@ class Blob extends Field
         $this->length = $length;
     }
 
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            "BLOB($this->length)",
-        ];
+        return "BLOB($this->length)";
     }
 
     public function getPHPTypeName(): string

@@ -27,10 +27,11 @@ class Comment extends Resource
             'created_at' => new Timestamp(),
             'up_votes'   => new SmallInt(),
             'down_votes' => new SmallInt(),
+            new ManyToMany(__CLASS__, Post::class),
         ];
     }
 
-    protected function getDefaultReadFieldsArray(): array
+    public function getDefaultReadFields(): array
     {
         return [
             'id',
@@ -41,7 +42,7 @@ class Comment extends Resource
         ];
     }
 
-    protected function getEditableFieldsArray(): array
+    public function getEditableFields(): array
     {
         return [
             'content',
@@ -62,13 +63,6 @@ class Comment extends Resource
             'down_votes' => [
                 new PositiveInteger(),
             ],
-        ];
-    }
-
-    public function getRelations(): array
-    {
-        return [
-            new ManyToMany(__CLASS__, Post::class),
         ];
     }
 }

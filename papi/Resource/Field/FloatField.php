@@ -16,11 +16,9 @@ class FloatField extends Field
         $this->precision = $precision;
     }
 
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            "FLOAT($this->length,$this->precision)",
-        ];
+        return "FLOAT($this->length,$this->precision)";
     }
 
     public function getPHPTypeName(): string

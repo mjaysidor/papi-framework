@@ -9,11 +9,11 @@ class PostgresDb
 {
     public $connection;
 
-    public int $aliasCount = 0;
+    private int $aliasCount = 0;
 
-    public array $aliasValues = [];
+    private array $aliasValues = [];
 
-    public function __construct()
+    public static function getConnection()
     {
         $isLocal = DatabaseConfig::isLocal();
         $name = DatabaseConfig::getName();
@@ -21,17 +21,45 @@ class PostgresDb
         $password = DatabaseConfig::getPassword();
 
         if ($isLocal) {
-            $this->connection = pg_pconnect("dbname = $name user = $user password = $password");
-        } else {
-            $host = DatabaseConfig::getServer();
-            $this->connection = pg_pconnect("host = $host dbname = $name user = $user password = $password");
+            return pg_connect("dbname = $name user = $user password = $password");
         }
+
+        $host = DatabaseConfig::getServer();
+
+        return pg_connect("host = $host dbname = $name user = $user password = $password");
+    }
+
+    public function __construct()
+    {
+        $this->connection = self::getConnection();
+    }
+
+    public function getError(): string
+    {
+        return pg_last_error($this->connection);
+    }
+
+    public function create(
+        string $table,
+        array $fields
+    ) {
+        $query = "CREATE TABLE $table (";
+        $lastKey = array_key_last($fields);
+        foreach ($fields as $name => $column) {
+            $query .= "$name $column";
+            if ($lastKey !== $name) {
+                $query .= ', ';
+            }
+        }
+        $query .= ');';
+
+        return pg_query($this->connection, $query);
     }
 
     public function select(
         string $table,
-        ?array $where = null,
         ?array $columns = null,
+        ?array $where = null,
         ?string $orderBy = null,
         ?string $order = null
     ): array {
@@ -53,7 +81,7 @@ class PostgresDb
         $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
 
         if (! $queryParams) {
-            return [pg_last_error($this->connection)];
+            return [$this->getError()];
         }
 
         return pg_fetch_all($queryParams);
@@ -68,7 +96,7 @@ class PostgresDb
         $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
 
         if (! $queryParams) {
-            return pg_last_error($this->connection);
+            return $this->getError();
         }
 
         return pg_affected_rows($queryParams);
@@ -92,7 +120,7 @@ class PostgresDb
         $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
 
         if (! $queryParams) {
-            return pg_last_error($this->connection);
+            return $this->getError();
         }
 
         return pg_affected_rows($queryParams);
@@ -117,7 +145,7 @@ class PostgresDb
         $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
 
         if (! $queryParams) {
-            return pg_last_error($this->connection);
+            return $this->getError();
         }
 
         return pg_affected_rows($queryParams);

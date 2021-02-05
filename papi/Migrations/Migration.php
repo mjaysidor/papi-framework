@@ -3,18 +3,17 @@ declare(strict_types=1);
 
 namespace papi\Migrations;
 
-use Medoo\Medoo;
 use papi\CLI\ConsoleOutput;
-use papi\Database\MedooHandler;
+use papi\Database\PostgresDb;
 
 abstract class Migration
 {
-    protected ?Medoo $handler = null;
+    protected $handler;
 
     public function __construct()
     {
         try {
-            $this->handler = MedooHandler::getDbHandler();
+            $this->handler = new PostgresDb();
         } catch (\PDOException $exception) {
             dump($exception->getMessage());
         }

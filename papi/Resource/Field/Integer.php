@@ -13,13 +13,9 @@ class Integer extends Field
         $this->length = $length;
     }
 
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        $definition = $this->length ? "INT($this->length)" : 'INT';
-
-        return [
-            $definition,
-        ];
+        return $this->length ? "INT($this->length)" : 'INT';
     }
 
     public function getPHPTypeName(): string

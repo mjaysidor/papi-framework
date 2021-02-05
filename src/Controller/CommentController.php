@@ -6,7 +6,9 @@ namespace App\Controller;
 use App\Resources\Comment;
 use papi\Callbacks\AddCurrentDate;
 use papi\Controller\ResourceController;
+use papi\Database\PostgresDb;
 use papi\Resource\ResourceCRUDHandler;
+use papi\Response\JsonResponse;
 
 class CommentController extends ResourceController
 {
@@ -43,6 +45,24 @@ class CommentController extends ResourceController
 
         $this->get(
             function ($request) {
+                                           return new JsonResponse(200, $this->resource->get());
+//                return new JsonResponse(200, (new PostgresDb())->select('comment'));
+//
+//
+//                return new JsonResponse(
+//                    204,
+//                    [(new PostgresDb())->update('comment', ['content=' => 'asd', 'up_votes=' => 4], ['id=' => 4500])]
+//                );
+
+
+
+                return new JsonResponse(
+                    204,
+                    [(new PostgresDb())->insert('comment', ['content' => 'qweqwe', 'up_votes' => 5])]
+                );
+
+                return new JsonResponse(204, [(new PostgresDb())->delete('comment', ['true=' => true])]);
+
                 return ResourceCRUDHandler::getCollection($this->resource, $request);
             }
         );

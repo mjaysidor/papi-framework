@@ -13,11 +13,9 @@ class Enum extends Field
         $this->values = $values;
     }
 
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            "ENUM(".implode(",", $this->values).")",
-        ];
+        return "ENUM(".implode(",", $this->values).")";
     }
 
     public function getPHPTypeName(): string

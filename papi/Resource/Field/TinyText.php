@@ -5,11 +5,9 @@ namespace papi\Resource\Field;
 
 class TinyText extends Field
 {
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            'TINYTEXT',
-        ];
+        return 'TINYTEXT';
     }
 
     public function getPHPTypeName(): string

@@ -13,13 +13,9 @@ class MediumInt extends Field
         $this->length = $length;
     }
 
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        $definition = $this->length ? "MEDIUMINT($this->length)" : 'MEDIUMINT';
-
-        return [
-            $definition,
-        ];
+        return $this->length ? "MEDIUMINT($this->length)" : 'MEDIUMINT';
     }
 
     public function getPHPTypeName(): string

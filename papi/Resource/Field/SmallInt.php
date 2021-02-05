@@ -13,13 +13,9 @@ class SmallInt extends Field
         $this->length = $length;
     }
 
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        $definition = $this->length ? "SMALLINT($this->length)" : 'SMALLINT';
-
-        return [
-            $definition,
-        ];
+        return $this->length ? "SMALLINT($this->length)" : 'SMALLINT';
     }
 
     public function getPHPTypeName(): string

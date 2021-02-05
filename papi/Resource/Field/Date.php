@@ -5,11 +5,9 @@ namespace papi\Resource\Field;
 
 class Date extends Field
 {
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            'DATE',
-        ];
+        return 'DATE';
     }
 
     public function getPHPTypeName(): string

@@ -13,11 +13,9 @@ class Char extends Field
         $this->length = $length;
     }
 
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            "CHAR($this->length)",
-        ];
+        return "CHAR($this->length)";
     }
 
     public function getPHPTypeName(): string

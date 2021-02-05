@@ -13,13 +13,9 @@ class TinyInt extends Field
         $this->length = $length;
     }
 
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        $definition = $this->length ? "TINYINT($this->length)" : 'TINYINT';
-
-        return [
-            $definition,
-        ];
+        return $this->length ? "TINYINT($this->length)" : 'TINYINT';
     }
 
     public function getPHPTypeName(): string

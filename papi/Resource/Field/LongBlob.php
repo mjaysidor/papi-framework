@@ -5,11 +5,9 @@ namespace papi\Resource\Field;
 
 class LongBlob extends Field
 {
-    public function getDefinition(): array
+    public function getDefaultProperties(): string
     {
-        return [
-            'LONGBLOB',
-        ];
+        return 'LONGBLOB';
     }
 
     public function getPHPTypeName(): string

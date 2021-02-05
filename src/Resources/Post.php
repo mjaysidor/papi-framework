@@ -31,7 +31,7 @@ class Post extends Resource
         ];
     }
 
-    protected function getDefaultReadFieldsArray(): array
+    public function getDefaultReadFields(): array
     {
         return [
             'id',
@@ -43,7 +43,7 @@ class Post extends Resource
         ];
     }
 
-    protected function getEditableFieldsArray(): array
+    public function getEditableFields(): array
     {
         return [
             'content',
@@ -70,10 +70,5 @@ class Post extends Resource
                 new PositiveInteger(),
             ],
         ];
-    }
-
-    public function getRelations(): array
-    {
-        return [];
     }
 }
