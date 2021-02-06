@@ -5,14 +5,16 @@ namespace papi\Resource;
 
 use papi\Callbacks\PostExecutionHandler;
 use papi\Callbacks\PreExecutionBodyModifier;
-use papi\Database\Paginator\Paginator;
 use papi\Database\Paginator\PaginatorFactory;
+use papi\Response\ErrorResponse;
 use papi\Response\JsonResponse;
+use papi\Response\MethodNotAllowedResponse;
+use papi\Response\ValidationErrorResponse;
 use Workerman\Protocols\Http\Request;
 
 class ResourceCRUDHandler
 {
-    public static function updateById(
+    public static function update(
         Resource $resource,
         $id,
         Request $request,
@@ -20,11 +22,10 @@ class ResourceCRUDHandler
         ?PostExecutionHandler $postExecutionHandler = null
     ): JsonResponse {
         if (! RequestMethodChecker::isPut($request)) {
-            return new JsonResponse(405, ['Method not allowed'], ['Allow' => 'PUT']);
+            return new MethodNotAllowedResponse('PUT');
         }
 
-        $stringBody = $request->rawBody();
-        $body = json_decode($stringBody, true);
+        $body = json_decode($request->rawBody(), true);
 
         if ($preExecutionBodyModifier) {
             $preExecutionBodyModifier->modify($body);
@@ -33,19 +34,19 @@ class ResourceCRUDHandler
         $validationErrors = (new Validator())->getValidationErrors($resource, $body);
 
         if ($validationErrors) {
-            return new JsonResponse(400, [$validationErrors]);
+            return new ValidationErrorResponse($validationErrors);
         }
 
-        try {
-            $rowsAffected = $resource->updateById(
-                $id,
-                $body
-            );
-        } catch (\PDOException $exception) {
-            return new JsonResponse(500, [$exception->getMessage()]);
+        $response = $resource->update(
+            $id,
+            $body
+        );
+
+        if (is_string($response)) {
+            return new ErrorResponse($response);
         }
 
-        if ($rowsAffected) {
+        if ($response) {
             if ($postExecutionHandler) {
                 $handlerResponse = $postExecutionHandler->handle($body);
                 if ($handlerResponse) {
@@ -66,29 +67,28 @@ class ResourceCRUDHandler
         ?PostExecutionHandler $postExecutionHandler = null
     ): JsonResponse {
         if (! RequestMethodChecker::isPost($request)) {
-            return new JsonResponse(405, ['Method not allowed'], ['Allow' => 'POST']);
+            return new MethodNotAllowedResponse('POST');
         }
 
-        $stringBody = $request->rawBody();
-        $body = json_decode($stringBody, true);
+        $body = json_decode($request->rawBody(), true);
 
         $validationErrors = (new Validator())->getValidationErrors($resource, $body);
 
         if ($validationErrors) {
-            return new JsonResponse(400, [$validationErrors]);
+            return new ValidationErrorResponse($validationErrors);
         }
 
         if ($preExecutionBodyModifier) {
             $preExecutionBodyModifier->modify($body);
         }
 
-        try {
-            $id = $resource->create($body);
-        } catch (\PDOException $exception) {
-            return new JsonResponse(500, [$exception->getMessage()]);
+        $response = $resource->create($body);
+
+        if (is_string($response)) {
+            return new ErrorResponse($response);
         }
 
-        if ($id) {
+        if ($response) {
             if ($postExecutionHandler) {
                 $handlerResponse = $postExecutionHandler->handle($body);
                 if ($handlerResponse) {
@@ -98,35 +98,29 @@ class ResourceCRUDHandler
 
             return new JsonResponse(
                 201,
-                array_merge(
-                    [
-                        'id' => $id,
-                    ],
-                    $body
-                ),
-                ['Location' => $request->host().$request->uri()."/$id"]
+                $response,
+                ['Location' => $request->host().$request->uri()."/".$response['id']]
             );
         }
 
-        return new JsonResponse(500, ['Unknown database error']);
+        return new ErrorResponse('Unknown database error');
     }
 
-    public static function deleteById(
+    public static function delete(
         Resource $resource,
         $id,
         Request $request
     ): JsonResponse {
         if (! RequestMethodChecker::isDelete($request)) {
-            return new JsonResponse(405, ['Method not allowed'], ['Allow' => 'DELETE']);
+            return new MethodNotAllowedResponse('DELETE');
         }
 
-        try {
-            $rowsAffected = $resource->deleteById($id);
-        } catch (\PDOException $exception) {
-            return new JsonResponse(500, [$exception->getMessage()]);
+        $response = $resource->delete($id);
+        if (is_string($response)) {
+            return new ErrorResponse($response);
         }
 
-        if ($rowsAffected) {
+        if ($response) {
             return new JsonResponse(204);
         }
 
@@ -139,13 +133,13 @@ class ResourceCRUDHandler
         Request $request
     ): JsonResponse {
         if (! RequestMethodChecker::isGet($request)) {
-            return new JsonResponse(405, ['Method not allowed'], ['Allow' => 'GET']);
+            return new MethodNotAllowedResponse('GET');
         }
 
-        try {
-            $response = $resource->getById($id);
-        } catch (\PDOException $exception) {
-            return new JsonResponse(500, [$exception->getMessage()]);
+        $response = $resource->getById($id);
+
+        if (is_string($response)) {
+            return new ErrorResponse($response);
         }
 
         if ($response) {
@@ -158,10 +152,10 @@ class ResourceCRUDHandler
     public static function getCollection(
         Resource $resource,
         Request $request,
-        ?int $pagination = Paginator::CURSOR_PAGINATION
+        ?int $pagination = null
     ): JsonResponse {
         if (! RequestMethodChecker::isGet($request)) {
-            return new JsonResponse(405, ['Method not allowed'], ['Allow' => 'GET']);
+            return new MethodNotAllowedResponse('GET');
         }
 
         $filters = [];
@@ -169,11 +163,10 @@ class ResourceCRUDHandler
         if ($stringQuery = $request->queryString()) {
             parse_str($stringQuery, $filters);
         }
-
         $validationErrors = (new ResourceQueryValidator())->getValidationErrors($resource, $filters);
 
         if ($validationErrors) {
-            return new JsonResponse(400, [$validationErrors]);
+            return new ValidationErrorResponse($validationErrors);
         }
 
         if ($pagination) {

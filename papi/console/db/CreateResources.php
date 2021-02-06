@@ -22,7 +22,7 @@ class CreateResources extends Migration
                 }
             }
 
-            $result = $this->handler->create(
+            $result = $this->handler->createTable(
                 $resourceObject->getTableName(),
                 $columns
             );

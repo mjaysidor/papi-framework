@@ -25,13 +25,13 @@ abstract class Resource
     public function getById(
         $id,
         ?array $fields = null
-    ): array {
+    ): array|string {
         return $this->getDbHandler()
                     ->select(
                         $this->getTableName(),
                         $fields ?? $this->getDefaultReadFields(),
                         [
-                            'id=' => $id,
+                            'id' => $id,
                         ]
                     )
             ;
@@ -40,7 +40,7 @@ abstract class Resource
     public function get(
         ?array $filters = null,
         ?array $fields = null,
-    ): array {
+    ): array|string {
         return $this->getDbHandler()
                     ->select(
                         $this->getTableName(),
@@ -50,7 +50,7 @@ abstract class Resource
             ;
     }
 
-    public function create(array $data): int|string
+    public function create(array $data): array|string
     {
         return $this->getDbHandler()
                     ->insert(
@@ -77,7 +77,7 @@ abstract class Resource
 
     public function delete(
         $id
-    ): int {
+    ): int|string {
         return $this->getDbHandler()
                     ->delete(
                         $this->getTableName(),

@@ -33,7 +33,7 @@ class DatabaseConfig implements \papi\Config\DatabaseConfig
 
     public static function isLocal(): bool
     {
-        return false;
+        return true;
     }
 
     public static function getUsername(): string

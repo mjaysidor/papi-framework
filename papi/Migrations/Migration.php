@@ -14,7 +14,7 @@ abstract class Migration
     {
         try {
             $this->handler = new PostgresDb();
-        } catch (\PDOException $exception) {
+        } catch (\Exception $exception) {
             dump($exception->getMessage());
         }
     }

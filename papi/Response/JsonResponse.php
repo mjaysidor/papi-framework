@@ -10,7 +10,7 @@ class JsonResponse extends Response
 {
     public function __construct(
         int $status = 200,
-        array $body = [],
+        ?array $body = null,
         array $headers = []
     ) {
         parent::__construct($status, array_merge($headers, ['Content-Type' => 'application/json']), json_encode($body));

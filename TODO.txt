@@ -1,5 +1,7 @@
 DOING:
     - migracja wszystkiego na nowy wrapper BD
+    - paginacja w wrapperze
+    - ManyToManyHandler pdoexception
 
 BUGS:
     - konflikt collection endpointów (post/get bez id, put/get by id)
@@ -16,3 +18,6 @@ BACKLOG:
 REFACTORING + OPTYMALIZACJA:
     - pg wrapper + paginacja
     - całość - resources, kontrolery, relacje, handlery, itp
+
+BUGI:
+    - postgres Cannot set connection to blocking mode
