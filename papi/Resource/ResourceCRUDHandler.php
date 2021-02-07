@@ -176,6 +176,10 @@ class ResourceCRUDHandler
             $result = $resource->get($filters);
         }
 
+        if (is_string($result)) {
+            return new ErrorResponse($result);
+        }
+
         return new JsonResponse(200, $result);
     }
 }

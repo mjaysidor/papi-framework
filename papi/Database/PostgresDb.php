@@ -32,6 +32,13 @@ class PostgresDb
     public function __construct()
     {
         $this->connection = self::getConnection();
+        set_error_handler(
+            function ($number, $text) {
+                if (str_contains($text, 'Query failed')) {
+                    pg_close($this->connection);
+                }
+            }
+        );
     }
 
     public function getError(): string
@@ -122,7 +129,8 @@ class PostgresDb
         if (! $queryParams) {
             return $this->getError();
         }
-        return pg_fetch_assoc ($queryParams);
+
+        return pg_fetch_assoc($queryParams);
     }
 
     public function update(
