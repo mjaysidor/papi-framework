@@ -93,14 +93,14 @@ class PostgresDb
         ?array $columns = null,
         ?array $filters = null,
         ?string $orderBy = null,
-        ?string $order = null
+        ?string $order = null,
+        ?int $limit = null
     ): array|string {
         if ($columns) {
             $query = 'select '.implode(',', $columns)." from $table";
         } else {
             $query = "select * from $table";
         }
-
         if ($filters) {
             $this->addFilters($query, $filters);
         }
@@ -110,7 +110,9 @@ class PostgresDb
             }
             $query .= ' order by '.pg_escape_string($orderBy)." $order";
         }
-
+        if ($limit) {
+            $query .= " limit $limit";
+        }
         $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
 
         if (! $queryParams) {
@@ -209,7 +211,10 @@ class PostgresDb
             if ($firstKey !== $key) {
                 $query .= ' and ';
             }
-            $query .= pg_escape_string($key).'=';
+            $query .= pg_escape_string($key);
+            if (! in_array(substr($key, -1), ['<', '>', '='])) {
+                $query .= '=';
+            }
             $this->addAlias($query, $condition);
         }
     }

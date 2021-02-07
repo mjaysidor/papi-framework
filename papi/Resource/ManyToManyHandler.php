@@ -5,7 +5,6 @@ namespace papi\Resource;
 
 use papi\Database\Paginator\Paginator;
 use papi\Database\Paginator\PaginatorFactory;
-use papi\Database\PostgresDb;
 use papi\Relation\ManyToMany;
 use papi\Relation\ManyToManyValidator;
 use papi\Response\ErrorResponse;
@@ -32,25 +31,17 @@ class ManyToManyHandler
         if ($validationErrors) {
             return new ValidationErrorResponse($validationErrors);
         }
-        $handler = new PostgresDb();
 
-        if ($handler->exists(
-            $relation->getTableName(),
-            [
-                $relation->rootResourceIdField    => $body[$relation->rootResourceIdField],
-                $relation->relatedResourceIdField => $body[$relation->relatedResourceIdField],
-            ]
+        if ($relation->exists(
+            $body[$relation->rootResourceIdField],
+            $body[$relation->relatedResourceIdField],
         )) {
             return new ErrorResponse('Relation already exists');
         }
-        $handler->clearAliases();
 
-        $result = $handler->insert(
-            $relation->getTableName(),
-            [
-                $relation->rootResourceIdField    => $body[$relation->rootResourceIdField],
-                $relation->relatedResourceIdField => $body[$relation->relatedResourceIdField],
-            ]
+        $result = $relation->create(
+            $body[$relation->rootResourceIdField],
+            $body[$relation->relatedResourceIdField],
         );
 
         if (is_string($result)) {
@@ -73,15 +64,11 @@ class ManyToManyHandler
             return new MethodNotAllowedResponse('DELETE');
         }
 
-        $handler = new PostgresDb();
-        $response = $handler
-            ->delete(
-                $relation->getTableName(),
-                [
-                    $relation->rootResourceIdField    => $rootResourceId,
-                    $relation->relatedResourceIdField => $relatedResourceId,
-                ]
-            );
+        $response = $relation->delete(
+            $rootResourceId,
+            $relatedResourceId
+        );
+
         if (is_string($response)) {
             return new ErrorResponse($response);
         }
@@ -95,7 +82,8 @@ class ManyToManyHandler
     public static function getRelation(
         ManyToMany $relation,
         Request $request,
-        ?int $pagination = Paginator::CURSOR_PAGINATION
+        ?int $pagination = Paginator::CURSOR_PAGINATION,
+        int $paginationItems = 10
     ): JsonResponse {
         if (! RequestMethodChecker::isGet($request)) {
             return new MethodNotAllowedResponse('GET');
@@ -113,23 +101,13 @@ class ManyToManyHandler
             return new ValidationErrorResponse($validationErrors);
         }
 
-        $paginator = null;
-
         if ($pagination) {
-            $paginator = PaginatorFactory::getPaginator($pagination, $filters);
-            $filters = $paginator->addPaginationToFilters($filters);
+            $paginator = PaginatorFactory::getPaginator($pagination, $filters, $paginationItems);
+            $result = $paginator->getPaginatedManyToManyResults($relation, $filters);
+        } else {
+            $result = $relation->get($filters);
         }
 
-        $handler = new PostgresDb();
-        $result = $handler
-            ->select(
-                $relation->getTableName(),
-                $relation->getFields(),
-                $filters
-            );
-        if ($pagination) {
-            $result = $paginator->addPaginationLinks($result);
-        }
         if (is_string($result)) {
             return new ErrorResponse($result);
         }

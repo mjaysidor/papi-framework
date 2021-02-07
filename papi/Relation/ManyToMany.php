@@ -3,8 +3,15 @@ declare(strict_types=1);
 
 namespace papi\Relation;
 
+use papi\Database\PostgresDb;
+
 class ManyToMany extends Relation
 {
+    public function getDbHandler(): PostgresDb
+    {
+        return new PostgresDb();
+    }
+
     public string $rootResourceIdField;
 
     public string $relatedResourceIdField;
@@ -64,5 +71,67 @@ class ManyToMany extends Relation
             "CREATE INDEX FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->relatedTableName ON "
             .$this->getTableName()."($this->relatedResourceIdField);",
         ];
+    }
+
+    public function get(
+        ?array $filters = null,
+        ?string $order = null,
+        ?int $limit = null
+    ): array|string {
+        return $this->getDbHandler()
+                    ->select(
+                        $this->getTableName(),
+                        $this->getFields(),
+                        $filters,
+                        'id',
+                        $order,
+                        $limit
+                    )
+            ;
+    }
+
+    public function create(
+        $rootResourceId,
+        $relatedResourceId
+    ): array|string {
+        return $this->getDbHandler()
+                    ->insert(
+                        $this->getTableName(),
+                        [
+                            $this->rootResourceIdField    => $rootResourceId,
+                            $this->relatedResourceIdField => $relatedResourceId,
+                        ]
+                    )
+            ;
+    }
+
+    public function delete(
+        $rootResourceId,
+        $relatedResourceId
+    ): int|string {
+        return $this->getDbHandler()
+                    ->delete(
+                        $this->getTableName(),
+                        [
+                            $this->rootResourceIdField    => $rootResourceId,
+                            $this->relatedResourceIdField => $relatedResourceId,
+                        ]
+                    )
+            ;
+    }
+
+    public function exists(
+        $rootResourceId,
+        $relatedResourceId
+    ): bool|string {
+        return $this->getDbHandler()
+                    ->exists(
+                        $this->getTableName(),
+                        [
+                            $this->rootResourceIdField    => $rootResourceId,
+                            $this->relatedResourceIdField => $relatedResourceId,
+                        ]
+                    )
+            ;
     }
 }

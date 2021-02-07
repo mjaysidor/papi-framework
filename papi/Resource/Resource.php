@@ -40,12 +40,18 @@ abstract class Resource
     public function get(
         ?array $filters = null,
         ?array $fields = null,
+        ?string $orderBy = null,
+        ?string $order = null,
+        ?int $limit = null
     ): array|string {
         return $this->getDbHandler()
                     ->select(
                         $this->getTableName(),
                         $fields ?? $this->getDefaultReadFields(),
-                        $filters
+                        $filters,
+                        $orderBy,
+                        $order,
+                        $limit
                     )
             ;
     }

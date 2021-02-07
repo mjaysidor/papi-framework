@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace papi\Database\Paginator;
 
+use papi\Relation\ManyToMany;
 use papi\Resource\Resource;
 
 class CursorPaginator extends Paginator
@@ -22,7 +23,7 @@ class CursorPaginator extends Paginator
     public function __construct(
         string $cursor = '',
         string $column = 'id',
-        string $order = 'ASC',
+        string $order = 'asc',
         int $limit = 10
     ) {
         $this->cursor = $cursor;
@@ -33,43 +34,39 @@ class CursorPaginator extends Paginator
 
     public function getPaginatedResults(Resource $resource, array $filters): array
     {
-        $filters = $this->addPaginationToFilters($filters);
+        $columnValueOperator = $this->order === 'desc' ? '>' : '<';
 
-        return $this->addPaginationLinks((new $resource())->get($filters));
-    }
-
-    public function addPaginationToFilters(array $filters): array
-    {
-        $columnValueOperator = $this->order === 'ASC' ? '>' : '<';
-
-        $paginationWhereArray = [
-            'LIMIT' => $this->limit + 1,
-            'ORDER' => [
-                $this->column => $this->order,
-            ],
-        ];
-
-        if ($this->cursor !== '') {
-            $paginationWhereArray["$this->column[$columnValueOperator]"] = $this->cursor;
+        if ($this->cursor) {
+            $filters["$this->column$columnValueOperator"] = $this->cursor;
         }
 
-        return array_merge(
-            $filters,
-            $paginationWhereArray
-        );
+        return $this->addPaginationLinks((new $resource())->get($filters, null, $this->column, $this->order, $this->limit+1));
+    }
+
+    public function getPaginatedManyToManyResults(ManyToMany $relation, array $filters): array
+    {
+        $columnValueOperator = $this->order === 'asc' ? '>' : '<';
+
+        if ($this->cursor) {
+            $filters["$this->column$columnValueOperator"] = $this->cursor;
+        }
+
+        return $this->addPaginationLinks($relation->get($filters, $this->order, $this->limit+1));
     }
 
     public function addPaginationLinks(array $response): array
     {
+        if (isset($response[0])) {
+            $this->previousCursor['cursor'] = reset($response)[$this->column];
+            $this->previousCursor['order'] = $this->order === 'asc' ? 'desc' : 'asc';
+        } else {
+            return [];
+        }
+
         if (isset($response[$this->limit])) {
             unset($response[array_key_last($response)]);
             $this->nextCursor['cursor'] = end($response)[$this->column];
             $this->nextCursor['order'] = $this->order;
-        }
-
-        if (isset($response[0])) {
-            $this->previousCursor['cursor'] = reset($response)[$this->column];
-            $this->previousCursor['order'] = $this->order === 'ASC' ? 'DESC' : 'ASC';
         }
 
         return array_merge(

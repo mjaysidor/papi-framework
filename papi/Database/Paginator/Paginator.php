@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace papi\Database\Paginator;
 
+use papi\Relation\ManyToMany;
 use papi\Resource\Resource;
 
 abstract class Paginator
@@ -12,7 +13,7 @@ abstract class Paginator
 
     abstract public function getPaginatedResults(Resource $resource, array $filters): array;
 
-    abstract public function addPaginationToFilters(array $filters): array;
+    abstract public function getPaginatedManyToManyResults(ManyToMany $relation, array $filters): array;
 
     abstract public function addPaginationLinks(array $response): array;
 }

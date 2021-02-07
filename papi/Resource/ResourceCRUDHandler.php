@@ -5,6 +5,7 @@ namespace papi\Resource;
 
 use papi\Callbacks\PostExecutionHandler;
 use papi\Callbacks\PreExecutionBodyModifier;
+use papi\Database\Paginator\Paginator;
 use papi\Database\Paginator\PaginatorFactory;
 use papi\Response\ErrorResponse;
 use papi\Response\JsonResponse;
@@ -152,7 +153,8 @@ class ResourceCRUDHandler
     public static function getCollection(
         Resource $resource,
         Request $request,
-        ?int $pagination = null
+        ?int $pagination = Paginator::CURSOR_PAGINATION,
+        int $paginationItems = 10
     ): JsonResponse {
         if (! RequestMethodChecker::isGet($request)) {
             return new MethodNotAllowedResponse('GET');
@@ -170,7 +172,7 @@ class ResourceCRUDHandler
         }
 
         if ($pagination) {
-            $paginator = PaginatorFactory::getPaginator($pagination, $filters);
+            $paginator = PaginatorFactory::getPaginator($pagination, $filters, $paginationItems);
             $result = $paginator->getPaginatedResults($resource, $filters);
         } else {
             $result = $resource->get($filters);
