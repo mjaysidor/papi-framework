@@ -28,7 +28,7 @@ class CreateResources extends Migration
             );
 
             if (! $result) {
-                ConsoleOutput::errorDie($this->handler->getError());
+                ConsoleOutput::errorDie('Error occurred while creating resources');
             }
         }
         ConsoleOutput::output('Resources created');
@@ -39,7 +39,7 @@ class CreateResources extends Migration
                 if ($field instanceof Relation) {
                     $result = $field->createRelation();
                     if (! $result) {
-                        ConsoleOutput::errorDie($this->handler->getError());
+                        ConsoleOutput::errorDie('Error occurred while creating relations');
                     }
                 }
             }

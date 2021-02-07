@@ -32,13 +32,13 @@ class PostgresDb
     public function __construct()
     {
         $this->connection = self::getConnection();
-        set_error_handler(
-            function ($number, $text) {
-                if (str_contains($text, 'Query failed')) {
-                    pg_close($this->connection);
-                }
-            }
-        );
+        //        set_error_handler(
+        //            function ($number, $text) {
+        //                if (str_contains($text, 'Query failed')) {
+        //                    pg_close($this->connection);
+        //                }
+        //            }
+        //        );
     }
 
     public function getError(): string
@@ -46,11 +46,17 @@ class PostgresDb
         return pg_last_error($this->connection);
     }
 
+    public function clearAliases(): void
+    {
+        $this->aliasValues = [];
+        $this->aliasCount = 0;
+    }
+
     public function createTable(
         string $table,
         array $fields
     ): bool {
-        $query = "CREATE TABLE $table (";
+        $query = "create table $table (";
         $lastKey = array_key_last($fields);
         foreach ($fields as $name => $column) {
             $query .= "$name $column";
@@ -60,7 +66,26 @@ class PostgresDb
         }
         $query .= ');';
 
-        return pg_query($this->connection, $query);
+        return pg_query($this->connection, $query) !== false;
+    }
+
+    public function exists(
+        string $table,
+        ?array $filters = null,
+    ): bool|string {
+        $query = "select exists(select 1 from $table";
+
+        if ($filters) {
+            $this->addFilters($query, $filters);
+        }
+        $query .= ')';
+        $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
+
+        if (! $queryParams) {
+            return $this->getError();
+        }
+
+        return pg_fetch_row($queryParams)[0] === 't';
     }
 
     public function select(
@@ -71,17 +96,17 @@ class PostgresDb
         ?string $order = null
     ): array|string {
         if ($columns) {
-            $query = 'SELECT '.implode(',', $columns)." FROM $table";
+            $query = 'select '.implode(',', $columns)." from $table";
         } else {
-            $query = "SELECT * FROM $table";
+            $query = "select * from $table";
         }
 
         if ($filters) {
             $this->addFilters($query, $filters);
         }
         if ($orderBy) {
-            if ($order && $order !== 'DESC') {
-                $order = 'ASC';
+            if ($order && $order !== 'desc') {
+                $order = 'asc';
             }
             $query .= ' order by '.pg_escape_string($orderBy)." $order";
         }
@@ -99,10 +124,9 @@ class PostgresDb
         string $table,
         array $where = []
     ): int|string {
-        $query = "DELETE FROM $table";
-        $this->addWhereConditions($query, $where);
+        $query = "delete from $table";
+        $this->addFilters($query, $where);
         $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
-
         if (! $queryParams) {
             return $this->getError();
         }
@@ -114,16 +138,16 @@ class PostgresDb
         string $table,
         array $data
     ): array|string {
-        $query = "INSERT INTO $table ";
+        $query = "insert into $table ";
         $query .= '('.implode(', ', array_keys($data)).')';
-        $query .= ' VALUES(';
+        $query .= ' values(';
         foreach ($data as $key => $condition) {
             if (array_key_first($data) !== $key) {
                 $query .= ', ';
             }
             $this->addAlias($query, $condition);
         }
-        $query .= ') RETURNING *';
+        $query .= ') returning *';
         $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
 
         if (! $queryParams) {
@@ -138,7 +162,7 @@ class PostgresDb
         array $data,
         array $where
     ): int|string {
-        $query = "UPDATE $table SET ";
+        $query = "update $table set ";
         $firstKey = array_key_first($data);
 
         foreach ($data as $key => $condition) {
@@ -166,11 +190,11 @@ class PostgresDb
 
     private function addWhereConditions(string &$query, array $where): void
     {
-        $query .= ' WHERE ';
+        $query .= ' where ';
         $firstKey = array_key_first($where);
         foreach ($where as $key => $condition) {
             if ($firstKey !== $key) {
-                $query .= ' AND ';
+                $query .= ' and ';
             }
             $query .= pg_escape_string($key);
             $this->addAlias($query, $condition);
@@ -179,11 +203,11 @@ class PostgresDb
 
     private function addFilters(string &$query, array $filters): void
     {
-        $query .= ' WHERE ';
+        $query .= ' where ';
         $firstKey = array_key_first($filters);
         foreach ($filters as $key => $condition) {
             if ($firstKey !== $key) {
-                $query .= ' AND ';
+                $query .= ' and ';
             }
             $query .= pg_escape_string($key).'=';
             $this->addAlias($query, $condition);

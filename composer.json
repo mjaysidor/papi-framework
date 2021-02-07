@@ -2,8 +2,6 @@
     "require": {
         "mark-php/mark": "^1.1",
         "php": "^8.0",
-        "ext-pdo": "*",
-        "catfan/medoo": "^1.7",
         "symfony/yaml": "^5.2",
         "ext-pgsql": "*"
     },

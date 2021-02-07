@@ -3,13 +3,16 @@ declare(strict_types=1);
 
 namespace papi\Resource;
 
-use papi\Database\MedooHandler;
 use papi\Database\Paginator\Paginator;
 use papi\Database\Paginator\PaginatorFactory;
+use papi\Database\PostgresDb;
 use papi\Relation\ManyToMany;
 use papi\Relation\ManyToManyValidator;
+use papi\Response\ErrorResponse;
 use papi\Response\JsonResponse;
-use PDOException;
+use papi\Response\MethodNotAllowedResponse;
+use papi\Response\NotFoundResponse;
+use papi\Response\ValidationErrorResponse;
 use Workerman\Protocols\Http\Request;
 
 class ManyToManyHandler
@@ -19,51 +22,45 @@ class ManyToManyHandler
         Request $request
     ): JsonResponse {
         if (! RequestMethodChecker::isPost($request)) {
-            return new JsonResponse(405, ['Method not allowed'], ['Allow' => 'POST']);
+            return new MethodNotAllowedResponse('POST');
         }
 
-        $stringBody = $request->rawBody();
-        $body = json_decode($stringBody, true);
+        $body = json_decode($request->rawBody(), true);
 
         $validationErrors = (new ManyToManyValidator())->getValidationErrors($relation, $body);
 
         if ($validationErrors) {
-            return new JsonResponse(400, [$validationErrors]);
+            return new ValidationErrorResponse($validationErrors);
+        }
+        $handler = new PostgresDb();
+
+        if ($handler->exists(
+            $relation->getTableName(),
+            [
+                $relation->rootResourceIdField    => $body[$relation->rootResourceIdField],
+                $relation->relatedResourceIdField => $body[$relation->relatedResourceIdField],
+            ]
+        )) {
+            return new ErrorResponse('Relation already exists');
+        }
+        $handler->clearAliases();
+
+        $result = $handler->insert(
+            $relation->getTableName(),
+            [
+                $relation->rootResourceIdField    => $body[$relation->rootResourceIdField],
+                $relation->relatedResourceIdField => $body[$relation->relatedResourceIdField],
+            ]
+        );
+
+        if (is_string($result)) {
+            return new ErrorResponse($result);
         }
 
-        try {
-            $handler = MedooHandler::getDbHandler();
-
-            if ($handler->has(
-                $relation->getTableName(),
-                [
-                    $relation->rootResourceIdField    => $body[$relation->rootResourceIdField],
-                    $relation->relatedResourceIdField => $body[$relation->relatedResourceIdField],
-                ]
-            )) {
-                return new JsonResponse(400, ['Relation already exists']);
-            }
-
-            $result = $handler->insert(
-                $relation->getTableName(),
-                [
-                    $relation->rootResourceIdField    => $body[$relation->rootResourceIdField],
-                    $relation->relatedResourceIdField => $body[$relation->relatedResourceIdField],
-                ]
-            );
-            $errorCode = $result->errorCode();
-        } catch (PDOException $exception) {
-            return new JsonResponse(500, [$exception->getMessage()]);
-        }
-
-        if ($errorCode === "00000") {
-            return new JsonResponse(
-                201,
-                $body
-            );
-        }
-
-        return new JsonResponse(500, ['Unknown database error']);
+        return new JsonResponse(
+            201,
+            $body
+        );
     }
 
     public static function deleteRelation(
@@ -73,29 +70,26 @@ class ManyToManyHandler
         Request $request
     ): JsonResponse {
         if (! RequestMethodChecker::isDelete($request)) {
-            return new JsonResponse(405, ['Method not allowed'], ['Allow' => 'DELETE']);
+            return new MethodNotAllowedResponse('DELETE');
         }
 
-        try {
-            $rowsAffected = MedooHandler::getDbHandler()
-                                      ->delete(
-                                            $relation->getTableName(),
-                                            [
-                                                $relation->rootResourceIdField    => $rootResourceId,
-                                                $relation->relatedResourceIdField => $relatedResourceId,
-                                            ]
-                                        )
-                                      ->rowCount()
-            ;
-        } catch (PDOException $exception) {
-            return new JsonResponse(500, [$exception->getMessage()]);
+        $handler = new PostgresDb();
+        $response = $handler
+            ->delete(
+                $relation->getTableName(),
+                [
+                    $relation->rootResourceIdField    => $rootResourceId,
+                    $relation->relatedResourceIdField => $relatedResourceId,
+                ]
+            );
+        if (is_string($response)) {
+            return new ErrorResponse($response);
         }
-
-        if ($rowsAffected) {
+        if ($response) {
             return new JsonResponse(204);
         }
 
-        return new JsonResponse(404);
+        return new NotFoundResponse();
     }
 
     public static function getRelation(
@@ -104,7 +98,7 @@ class ManyToManyHandler
         ?int $pagination = Paginator::CURSOR_PAGINATION
     ): JsonResponse {
         if (! RequestMethodChecker::isGet($request)) {
-            return new JsonResponse(405, ['Method not allowed'], ['Allow' => 'GET']);
+            return new MethodNotAllowedResponse('GET');
         }
 
         $filters = [];
@@ -116,7 +110,7 @@ class ManyToManyHandler
         $validationErrors = (new ManyToManyQueryValidator())->getValidationErrors($relation, $filters);
 
         if ($validationErrors) {
-            return new JsonResponse(400, [$validationErrors]);
+            return new ValidationErrorResponse($validationErrors);
         }
 
         $paginator = null;
@@ -126,19 +120,18 @@ class ManyToManyHandler
             $filters = $paginator->addPaginationToFilters($filters);
         }
 
-        try {
-            $result = MedooHandler::getDbHandler()
-                                ->select(
-                                      $relation->getTableName(),
-                                      $relation->getFields(),
-                                      $filters
-                                  )
-            ;
-            if ($pagination) {
-                $result = $paginator->addPaginationLinks($result);
-            }
-        } catch (PDOException $exception) {
-            return new JsonResponse(500, [$exception->getMessage()]);
+        $handler = new PostgresDb();
+        $result = $handler
+            ->select(
+                $relation->getTableName(),
+                $relation->getFields(),
+                $filters
+            );
+        if ($pagination) {
+            $result = $paginator->addPaginationLinks($result);
+        }
+        if (is_string($result)) {
+            return new ErrorResponse($result);
         }
 
         return new JsonResponse(200, $result);

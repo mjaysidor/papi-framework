@@ -1,7 +1,6 @@
 DOING:
     - paginacja w wrapperze
     - migracja wszystkiego na nowy wrapper BD
-    - ManyToManyHandler pdoexception
 
 BUGS:
     - konflikt collection endpointów (post/get bez id, put/get by id)

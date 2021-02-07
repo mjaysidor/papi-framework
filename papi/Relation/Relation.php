@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace papi\Relation;
 
-use Medoo\Medoo;
-use papi\Database\MedooHandler;
 use papi\Database\PostgresDb;
 
 abstract class Relation
