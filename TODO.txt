@@ -1,18 +1,14 @@
 DOING:
-    - paginacja w manytomanyhandler
 
 BUGS:
-    - konflikt collection endpointów (post/get bez id, put/get by id)
 
 TESTY:
 
 TODO:
-
+    - security
+    - konflikt collection endpointów (post/get bez id, put/get by id)
 
 BACKLOG:
-    - security
     - migracje takie, aby uzupełniały na podstawie obecnego stanu bazy
 
 REFACTORING + OPTYMALIZACJA:
-
-BUGI:
