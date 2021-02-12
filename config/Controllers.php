@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace config;
 
+use App\Controller\AuthController;
 use App\Controller\CommentController;
 use App\Controller\CommentPostController;
 use App\Controller\PostController;
@@ -17,6 +18,7 @@ class Controllers implements BootstrapConfig
             CommentController::class,
             PostController::class,
             CommentPostController::class,
+            AuthController::class,
         ];
     }
 }
