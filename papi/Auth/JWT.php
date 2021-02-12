@@ -17,15 +17,24 @@ class JWT
             );
     }
 
-    public static function getPayloadIfValid(string $secret, string $token): array|bool
+    public static function isValid(string $secret, ?string $token): bool
     {
-        [$header, $payload, $signature] = explode('.', $token);
-        if ($header !== self::getEncodedHeader() || $signature !== self::getSignature($header, $payload, $secret)
-        ) {
+        if (is_null($token)) {
             return false;
         }
+        [$header, $payload, $signature] = explode('.', $token);
 
-        return json_decode(base64_decode($payload), true, 512, JSON_THROW_ON_ERROR);
+        return ! ($header !== self::getEncodedHeader()
+                  || $signature !== self::getSignature(
+                $header,
+                $payload,
+                $secret
+            ));
+    }
+
+    public static function getPayload(string $token): array|bool
+    {
+        return json_decode(base64_decode(explode('.', $token)[1]), true, 512, JSON_THROW_ON_ERROR);
     }
 
     private static function getSignature(string $base64UrlHeader, string $base64UrlPayload, string $secret): string
