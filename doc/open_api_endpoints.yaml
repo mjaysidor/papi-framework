@@ -10,7 +10,34 @@ tags:
         name: post
     -
         name: comment_post
+    -
+        name: auth
 paths:
+    /auth:
+        post:
+            tags:
+                - auth
+            responses:
+                200:
+                    description: 'Retrieves resource data'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    token: { type: string }
+                403:
+                    description: 'Invalid credentials'
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                username:
+                                    type: string
+                                password:
+                                    type: string
     /comment:
         post:
             tags:
@@ -73,11 +100,6 @@ paths:
                         type: string
                 -
                     name: down_votes
-                    in: query
-                    schema:
-                        type: string
-                -
-                    name: 0
                     in: query
                     schema:
                         type: string

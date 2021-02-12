@@ -4,6 +4,8 @@ declare(strict_types=1);
 namespace papi\Controller;
 
 use papi\Documentation\OpenApiParamConverter;
+use papi\Relation\ManyToMany;
+use papi\Relation\Relation;
 use papi\Resource\Field\Id;
 use papi\Worker\App;
 
@@ -70,6 +72,20 @@ abstract class ResourceController extends RESTController
 
     public function getQueryFilters(): array
     {
-        return OpenApiParamConverter::convertArrayToDoc(array_keys($this->resource->getFields()), OpenApiParamConverter::QUERY);
+        $filters = [];
+        foreach ($this->resource->getFields() as $key => $field) {
+            if ($field instanceof ManyToMany) {
+                continue;
+            }
+
+            if ($field instanceof Relation) {
+                $filters[] = $field->getRelationFieldName();
+                continue;
+            }
+
+            $filters[] = $key;
+        }
+
+        return OpenApiParamConverter::convertArrayToDoc($filters, OpenApiParamConverter::QUERY);
     }
 }
