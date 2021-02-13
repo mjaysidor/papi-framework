@@ -1,15 +1,13 @@
 DOING:
-    - security
 
 BUGS:
 
 TESTY:
 
 TODO:
-    - konflikt collection endpointów (post/get bez id, put/get by id)
+    - migracje takie, aby uzupełniały na podstawie obecnego stanu bazy
 
 BACKLOG:
-    - migracje takie, aby uzupełniały na podstawie obecnego stanu bazy
     - doc
 
 REFACTORING + OPTYMALIZACJA:

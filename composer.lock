@@ -4,43 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dafe1201973ce3c12f710421f4abbdf5",
+    "content-hash": "472069da59ad61a12ef9ac83013a5040",
     "packages": [
-        {
-            "name": "mark-php/mark",
-            "version": "v1.1.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/passwalls/mark.git",
-                "reference": "1f0ed9327809976e8e012d51d5fa72b309910681"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/passwalls/mark/zipball/1f0ed9327809976e8e012d51d5fa72b309910681",
-                "reference": "1f0ed9327809976e8e012d51d5fa72b309910681",
-                "shasum": ""
-            },
-            "require": {
-                "nikic/fast-route": "^1.3",
-                "php": ">=7.1",
-                "workerman/workerman": "^4.0.4"
-            },
-            "suggest": {
-                "ext-event": "For better performance. "
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Mark\\": "./src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "a PHP micro framework based on workerman",
-            "time": "2020-12-14T02:42:11+00:00"
-        },
         {
             "name": "nikic/fast-route",
             "version": "v1.3.0",
