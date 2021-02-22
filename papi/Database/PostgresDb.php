@@ -41,32 +41,23 @@ class PostgresDb
         //        );
     }
 
-    public function getError(): string
+    public function query(
+        string $sql
+    ): bool {
+        return pg_query($this->connection, $sql) !== false;
+    }
+
+    public function getError(): ?string
     {
-        return pg_last_error($this->connection);
+        $error = pg_last_error($this->connection);
+
+        return $error ? : null;
     }
 
     public function clearAliases(): void
     {
         $this->aliasValues = [];
         $this->aliasCount = 0;
-    }
-
-    public function createTable(
-        string $table,
-        array $fields
-    ): bool {
-        $query = "create table $table (";
-        $lastKey = array_key_last($fields);
-        foreach ($fields as $name => $column) {
-            $query .= "$name $column";
-            if ($lastKey !== $name) {
-                $query .= ', ';
-            }
-        }
-        $query .= ');';
-
-        return pg_query($this->connection, $query) !== false;
     }
 
     public function exists(
@@ -89,7 +80,7 @@ class PostgresDb
     }
 
     public function select(
-        string $table,
+        string $from,
         ?array $columns = null,
         ?array $filters = null,
         ?string $orderBy = null,
@@ -97,9 +88,9 @@ class PostgresDb
         ?int $limit = null
     ): array|string {
         if ($columns) {
-            $query = 'select '.implode(',', $columns)." from $table";
+            $query = 'select '.implode(',', $columns)." from $from";
         } else {
-            $query = "select * from $table";
+            $query = "select * from $from";
         }
         if ($filters) {
             $this->addFilters($query, $filters);

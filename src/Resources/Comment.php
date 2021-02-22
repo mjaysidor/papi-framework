@@ -24,8 +24,8 @@ class Comment extends Resource
         return [
             'id'         => new Id(),
             'content'    => new Varchar(500),
-            'created_at' => new Timestamp(),
-            'up_votes'   => new SmallInt(),
+//            'created_at' => new Timestamp(),
+//            'up_votes'   => new SmallInt(),
             'down_votes' => new SmallInt(),
             new ManyToMany(__CLASS__, Post::class),
         ];

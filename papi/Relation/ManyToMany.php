@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace papi\Relation;
 
 use papi\Database\PostgresDb;
+use papi\Resource\Field\Id;
 
 class ManyToMany extends Relation
 {
@@ -46,30 +47,33 @@ class ManyToMany extends Relation
         return $this->rootTableName.'_'.$this->relatedTableName;
     }
 
-    protected function getColumnDefinition(): string
-    {
-        return "CREATE TABLE ".$this->getTableName()
-               ."(id SERIAL NOT NULL PRIMARY KEY, $this->rootResourceIdField INT NOT NULL, $this->relatedResourceIdField INT NOT NULL)";
-    }
-
-    protected function getForeignKeyDefinition(): array
+    public function getMappingSchema(): array
     {
         return [
-            "ALTER TABLE ".$this->getTableName()
-            ." ADD FOREIGN KEY ($this->rootResourceIdField) REFERENCES $this->rootTableName(id) $this->onDelete $this->onUpdate;",
-            "ALTER TABLE ".$this->getTableName()
-            ." ADD FOREIGN KEY ($this->relatedResourceIdField) REFERENCES $this->relatedTableName(id) $this->onDelete $this->onUpdate;",
+            'id'                          => (new Id())->getDefaultProperties(),
+            $this->rootResourceIdField    => 'INT NOT NULL',
+            $this->relatedResourceIdField => 'INT NOT NULL',
         ];
     }
 
-    protected function getIndexDefinition(): array
+    public function getForeignKeyDefinition(): array
     {
         return [
-            "CREATE INDEX FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->rootTableName ON "
-            .$this->getTableName()."($this->rootResourceIdField);"
+            $this->getTableName() => [
+                $this->rootResourceIdField    => "REFERENCES $this->rootTableName(id) $this->onDelete $this->onUpdate",
+                $this->relatedResourceIdField => "REFERENCES $this->relatedTableName(id) $this->onDelete $this->onUpdate",
+            ],
+        ];
+    }
+
+    public function getIndexDefinition(): array
+    {
+        return [
+            "INDEX FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->rootTableName ON "
+            .$this->getTableName()."($this->rootResourceIdField)"
             ,
-            "CREATE INDEX FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->relatedTableName ON "
-            .$this->getTableName()."($this->relatedResourceIdField);",
+            "INDEX FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->relatedTableName ON "
+            .$this->getTableName()."($this->relatedResourceIdField)",
         ];
     }
 

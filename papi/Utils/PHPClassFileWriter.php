@@ -15,6 +15,8 @@ class PHPClassFileWriter
 
     private ?string $extends;
 
+    private ?string $implements;
+
     private array $variables = [];
 
     private array $functions = [];
@@ -25,13 +27,17 @@ class PHPClassFileWriter
         string $name,
         string $namespace,
         string $dir,
-        ?string $extends = null
+        ?string $extends = null,
+        ?string $implements = null
     ) {
         $this->name = $name;
         $this->namespace = $namespace;
         $this->dir = $dir;
         if ($extends) {
             $this->extends = "extends $extends";
+        }
+        if ($implements) {
+            $this->extends = "implements $implements";
         }
     }
 
@@ -55,13 +61,15 @@ $imports
 
 class $this->name $this->extends
 {
-$vars 
-$functions
+$vars$functions
 }";
     }
 
     #[Pure] private function getVars(): string
     {
+        if (! $this->variables) {
+            return '';
+        }
         $template = '';
         foreach ($this->variables as $key => $variable) {
             $template .= "    $variable;\n";
@@ -70,7 +78,7 @@ $functions
             }
         }
 
-        return $template;
+        return "$template\n";
     }
 
     #[Pure] private function getFunctions(): string

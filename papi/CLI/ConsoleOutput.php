@@ -70,7 +70,7 @@ class ConsoleOutput
 
     public static function output(string $string, ?string $color = null, ?string $background = null): void
     {
-        $output = "";
+        $output = "\n";
 
         if (isset(self::COLORS[$color])) {
             $output .= "\e[".self::COLORS[$color]."m";

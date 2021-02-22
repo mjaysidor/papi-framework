@@ -1,11 +1,11 @@
 DOING:
+    - migracje - usuwanie niepotrzebnych już elementów z bazy
 
 BUGS:
 
 TESTY:
 
 TODO:
-    - migracje takie, aby uzupełniały na podstawie obecnego stanu bazy
 
 BACKLOG:
     - doc

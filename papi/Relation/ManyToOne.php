@@ -10,24 +10,31 @@ class ManyToOne extends Relation
         return $this->relatedTableName."_id";
     }
 
-    protected function getColumnDefinition(): string
+    public function getMappingSchema(): array
     {
-        return "ALTER TABLE $this->rootTableName ADD ".$this->getRelationFieldName()." INT";
+        return [$this->getRelationFieldName() => "INT"];
     }
 
-    protected function getForeignKeyDefinition(): array
+    public function getForeignKeyDefinition(): array
     {
         return [
-            "ALTER TABLE $this->rootTableName ADD FOREIGN KEY ($this->relatedTableName"
-            ."_id) REFERENCES $this->relatedTableName(id) $this->onDelete $this->onUpdate",
+            $this->rootTableName =>
+                [
+                    $this->relatedTableName.'_id)' => "REFERENCES $this->relatedTableName(id) $this->onDelete $this->onUpdate",
+                ],
         ];
     }
 
-    protected function getIndexDefinition(): array
+    public function getIndexDefinition(): array
     {
         return [
-            'CREATE INDEX FK_'.$this->rootTableName.'_'
+            'INDEX FK_'.$this->rootTableName.'_'
             ."$this->relatedTableName ON $this->rootTableName($this->relatedTableName".'_id)',
         ];
+    }
+
+    public function getTableName(): string
+    {
+        return $this->rootTableName;
     }
 }

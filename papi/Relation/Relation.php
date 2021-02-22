@@ -37,24 +37,13 @@ abstract class Relation
         $this->connection = PostgresDb::getConnection();
     }
 
-    public function createRelation(): bool
-    {
-        pg_query($this->connection, $this->getColumnDefinition());
-        foreach ($this->getForeignKeyDefinition() as $definition) {
-            pg_query($this->connection, $definition);
-        }
-        foreach ($this->getIndexDefinition() as $definition) {
-            pg_query($this->connection, $definition);
-        }
-
-        return true;
-    }
-
     abstract public function getRelationFieldName(): ?string;
 
-    abstract protected function getColumnDefinition(): string;
+    abstract public function getMappingSchema(): array;
 
-    abstract protected function getForeignKeyDefinition(): array;
+    abstract public function getForeignKeyDefinition(): array;
 
-    abstract protected function getIndexDefinition(): array;
+    abstract public function getIndexDefinition(): array;
+
+    abstract public function getTableName(): string;
 }
