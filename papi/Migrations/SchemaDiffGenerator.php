@@ -10,19 +10,22 @@ use papi\Relation\Relation;
 use papi\Resource\Field\Field;
 use papi\Utils\ArrayDiff;
 
+/**
+ * TODO refactor + test
+ */
 class SchemaDiffGenerator
 {
-    public array $currentMappingTables;
+    public array $currentMappingTables = [];
 
-    public array $dbTables;
+    public array $dbTables = [];
 
-    public array $currentMappingFKs;
+    public array $currentMappingFKs = [];
 
-    public array $dbFKs;
+    public array $dbFKs = [];
 
-    public array $currentMappingIndexes;
+    public array $currentMappingIndexes = [];
 
-    public array $dbIndexes;
+    public array $dbIndexes = [];
 
     public array $tablesToCreate = [];
 
@@ -91,7 +94,6 @@ class SchemaDiffGenerator
     {
         $currentFKs = $this->currentMappingFKs;
         $dbFKs = $this->dbFKs;
-
         ArrayDiff::removeArrayCommonElements($currentFKs, $dbFKs);
         $this->foreignKeysToCreate = $currentFKs;
         $this->foreignKeysToRemove = $dbFKs;
@@ -134,22 +136,27 @@ class SchemaDiffGenerator
 
     private function initDbMapping(): void
     {
-        $mapping = json_decode(
-            (new PostgresDb())->select(
+        $lastMigration = (new PostgresDb())->select(
                 SchemaManager::MIGRATION_COLUMN_NAME,
                 ['current_state'],
                 null,
                 'id',
                 'desc',
                 1
-            )[0]['current_state'],
-            true,
-            512,
-            JSON_THROW_ON_ERROR
-        );
-        $this->dbTables = $mapping['tables'] ?? [];
-        $this->dbFKs = $mapping['foreign_keys'] ?? [];
-        $this->dbIndexes = $mapping['indexes'] ?? [];
+            )[0]['current_state'] ?? [];
+
+        if ($lastMigration) {
+            $lastMigration = json_decode(
+                $lastMigration,
+                true,
+                512,
+                JSON_THROW_ON_ERROR
+            );
+        }
+
+        $this->dbTables = $lastMigration['tables'] ?? [];
+        $this->dbFKs = $lastMigration['foreign_keys'] ?? [];
+        $this->dbIndexes = $lastMigration['indexes'] ?? [];
     }
 
     #[Pure] public function getCurrentSchema(): array

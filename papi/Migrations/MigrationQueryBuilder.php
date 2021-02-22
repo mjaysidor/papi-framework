@@ -5,6 +5,9 @@ namespace papi\Migrations;
 
 use JetBrains\PhpStorm\Pure;
 
+/**
+ * TODO refactor + test
+ */
 class MigrationQueryBuilder
 {
     private SchemaDiffGenerator $diffGenerator;
@@ -18,17 +21,12 @@ class MigrationQueryBuilder
     {
         $statements = [];
 
-        foreach ($this->diffGenerator->tablesToCreate as $table => $fields) {
-            $statements[] = $this->createTable($table, $fields);
+        foreach ($this->diffGenerator->indexesToRemove as $key) {
+            $statements[] = $this->dropIndex($key);
         }
-
-        foreach ($this->diffGenerator->tablesToRemove as $table) {
-            $statements[] = $this->dropTable($table);
-        }
-
-        foreach ($this->diffGenerator->columnsToCreate as $table => $columns) {
-            foreach ($columns as $column => $options) {
-                $statements[] = $this->createColumn($table, $column, $options);
+        foreach ($this->diffGenerator->foreignKeysToRemove as $table => $keyNames) {
+            foreach ($keyNames as $name => $options) {
+                $statements[] = $this->dropFK($table, $name);
             }
         }
 
@@ -38,15 +36,23 @@ class MigrationQueryBuilder
             }
         }
 
-        foreach ($this->diffGenerator->columnsToChange as $table => $columns) {
+        foreach ($this->diffGenerator->tablesToRemove as $table) {
+            $statements[] = $this->dropTable($table);
+        }
+
+        foreach ($this->diffGenerator->tablesToCreate as $table => $fields) {
+            $statements[] = $this->createTable($table, $fields);
+        }
+
+        foreach ($this->diffGenerator->columnsToCreate as $table => $columns) {
             foreach ($columns as $column => $options) {
-                $statements[] = $this->changeColumn($table, $column, $options);
+                $statements[] = $this->createColumn($table, $column, $options);
             }
         }
 
-        foreach ($this->diffGenerator->foreignKeysToRemove as $table => $keyNames) {
-            foreach ($keyNames as $name) {
-                $statements[] = $this->dropFK($table, $name);
+        foreach ($this->diffGenerator->columnsToChange as $table => $columns) {
+            foreach ($columns as $column => $options) {
+                $statements[] = $this->changeColumn($table, $column, $options);
             }
         }
 
@@ -54,10 +60,6 @@ class MigrationQueryBuilder
             foreach ($keys as $name => $options) {
                 $statements[] = $this->createFK($table, $name, $options);
             }
-        }
-
-        foreach ($this->diffGenerator->indexesToRemove as $key) {
-            $statements[] = $this->dropIndex($key);
         }
 
         foreach ($this->diffGenerator->indexesToCreate as $key) {
@@ -117,14 +119,14 @@ class MigrationQueryBuilder
         string $name,
         string $options
     ): string {
-        return "alter table $table add foreign key ($name) $options";
+        return "alter table $table add constraint $table".'_'.$name."_fkey foreign key ($name) $options";
     }
 
     private function dropFK(
         string $table,
         string $name
     ): string {
-        return "alter table $table drop foreign key $name";
+        return "alter table $table drop constraint $table".'_'.$name."_fkey";
     }
 
     private function createIndex(
