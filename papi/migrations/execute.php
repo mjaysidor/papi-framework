@@ -6,7 +6,6 @@ require 'vendor/autoload.php';
 use papi\CLI\ConsoleOutput;
 use papi\Database\PostgresDb;
 use papi\Migrations\MigrationGetter;
-use papi\Migrations\Schema\SchemaDiffGenerator;
 
 $executionCount = 0;
 $db = new PostgresDb();
