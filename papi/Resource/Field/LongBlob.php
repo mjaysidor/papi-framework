@@ -7,7 +7,7 @@ class LongBlob extends Field
 {
     public function getDefaultProperties(): string
     {
-        return 'LONGBLOB';
+        return 'longblob';
     }
 
     public function getPHPTypeName(): string

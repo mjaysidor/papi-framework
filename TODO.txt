@@ -1,11 +1,12 @@
 DOING:
-    - migracje - usuwanie niepotrzebnych już elementów z bazy
 
 BUGS:
 
 TESTY:
 
 TODO:
+    - generate controllers for endpoints command
+
 
 BACKLOG:
     - doc

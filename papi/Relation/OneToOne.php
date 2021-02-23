@@ -20,7 +20,7 @@ class OneToOne extends Relation
         return [
             $this->rootTableName =>
                 [
-                    $this->relatedTableName."_id)" =>
+                    $this->relatedTableName."_id" =>
                         "REFERENCES $this->relatedTableName(id) $this->onDelete $this->onUpdate",
                 ],
         ];
@@ -29,8 +29,8 @@ class OneToOne extends Relation
     public function getIndexDefinition(): array
     {
         return [
-            'UNIQUE INDEX FKU_'.$this->rootTableName.'_'.$this->relatedTableName
-            ."ON $this->rootTableName($this->relatedTableName".'_id)',
+            'unique index FKU_'.$this->rootTableName.'_'.$this->relatedTableName
+            ." on $this->rootTableName($this->relatedTableName".'_id)',
         ];
     }
 

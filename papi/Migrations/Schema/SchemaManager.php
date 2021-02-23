@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace papi\Migrations;
+namespace papi\Migrations\Schema;
 
 use config\DatabaseConfig;
 use config\MigrationConfig;

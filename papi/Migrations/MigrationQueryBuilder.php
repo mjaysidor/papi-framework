@@ -4,17 +4,20 @@ declare(strict_types=1);
 namespace papi\Migrations;
 
 use JetBrains\PhpStorm\Pure;
+use papi\Migrations\Schema\SchemaDiffGenerator;
 
-/**
- * TODO refactor + test
- */
 class MigrationQueryBuilder
 {
     private SchemaDiffGenerator $diffGenerator;
 
-    public function __construct(SchemaDiffGenerator $diffGenerator)
+    public function __construct()
     {
-        $this->diffGenerator = $diffGenerator;
+        $this->diffGenerator = new SchemaDiffGenerator();
+    }
+
+    public function getCurrentMappingArray(): ?array
+    {
+        return $this->diffGenerator?->getCurrentMapping()?->toArray();
     }
 
     public function getSqlStatements(): array
@@ -52,7 +55,7 @@ class MigrationQueryBuilder
 
         foreach ($this->diffGenerator->columnsToChange as $table => $columns) {
             foreach ($columns as $column => $options) {
-                $statements[] = $this->changeColumn($table, $column, $options);
+                $statements[] = $this->alterColumn($table, $column, $options);
             }
         }
 
@@ -75,6 +78,7 @@ class MigrationQueryBuilder
     ): string {
         $fieldsString = '';
         $lastField = array_key_last($fields);
+
         foreach ($fields as $field => $options) {
             $fieldsString .= "$field $options";
             if ($field !== $lastField) {
@@ -96,7 +100,7 @@ class MigrationQueryBuilder
         string $name,
         string $options
     ): string {
-        return "alter table $table add $name $options";
+        return "alter table $table add column $name $options";
     }
 
     private function dropColumn(
@@ -106,12 +110,12 @@ class MigrationQueryBuilder
         return "alter table $table drop column $name";
     }
 
-    private function changeColumn(
+    private function alterColumn(
         string $table,
         string $name,
         string $options
     ): string {
-        return "alter table $table alter column $name $options";
+        return "alter table $table alter column $name type $options";
     }
 
     private function createFK(

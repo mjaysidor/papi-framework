@@ -7,12 +7,12 @@ use papi\Database\PostgresDb;
 
 abstract class Relation
 {
-    public const ON_UPDATE_RESTRICT = 'ON UPDATE RESTRICT';
-    public const ON_UPDATE_CASCADE  = 'ON UPDATE CASCADE';
-    public const ON_UPDATE_SET_NULL = 'ON UPDATE SET NULL';
-    public const ON_DELETE_RESTRICT = 'ON DELETE RESTRICT';
-    public const ON_DELETE_CASCADE  = 'ON DELETE CASCADE';
-    public const ON_DELETE_SET_NULL = 'ON DELETE SET NULL';
+    public const ON_UPDATE_RESTRICT = 'on update restrict';
+    public const ON_UPDATE_CASCADE  = 'on update cascade';
+    public const ON_UPDATE_SET_NULL = 'on update set null';
+    public const ON_DELETE_RESTRICT = 'on delete restrict';
+    public const ON_DELETE_CASCADE  = 'on delete cascade';
+    public const ON_DELETE_SET_NULL = 'on delete set null';
 
     protected string $rootTableName;
 

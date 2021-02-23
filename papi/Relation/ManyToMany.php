@@ -69,10 +69,10 @@ class ManyToMany extends Relation
     public function getIndexDefinition(): array
     {
         return [
-            "INDEX FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->rootTableName ON "
+            "index FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->rootTableName ON "
             .$this->getTableName()."($this->rootResourceIdField)"
             ,
-            "INDEX FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->relatedTableName ON "
+            "index FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->relatedTableName ON "
             .$this->getTableName()."($this->relatedResourceIdField)",
         ];
     }

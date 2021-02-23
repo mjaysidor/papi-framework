@@ -5,33 +5,40 @@ namespace papi\Migrations;
 
 use config\MigrationConfig;
 use papi\Database\PostgresDb;
+use papi\Utils\ProjectRootDirGetter;
 
 class MigrationGetter
 {
     public static function getAll(): array
     {
-        $migrations = [];
-        foreach (glob(MigrationConfig::getAbsolutePath().'/*.php') as $file) {
-            $class = '\\migrations\\'.basename($file, '.php');
-            $migrations[] = new $class();
-        }
+        $root = ProjectRootDirGetter::getDir();
 
-        return $migrations;
+        return array_map(
+            static function ($filePath) use ($root) {
+                return str_replace([$root, '/', '.php'], ['', '\\', ''], $filePath);
+            },
+            glob(MigrationConfig::getAbsolutePath().'/*.php')
+        );
     }
 
     public static function getUnexecuted(): array
     {
-        $unexecutedMigrations = [];
-        $db = new PostgresDb();
-        foreach (self::getAll() as $migration) {
-            foreach ($db->select('migrations_executed') as $executedMigration) {
-                if (str_contains($executedMigration['migration'], get_class($migration))) {
-                    continue 2;
-                }
-            }
-            $unexecutedMigrations[] = $migration;
-        }
+        $migrations = self::getAll();
+        $executedMigrations = (new PostgresDb())->select('migrations_executed', ['migration']);
 
-        return $unexecutedMigrations;
+        $executedMigrations = array_map(
+            static function ($element) {
+                return $element['migration'];
+            },
+            $executedMigrations
+        );
+        $unexecutedMigrations = array_diff($migrations, $executedMigrations);
+
+        return array_map(
+            static function ($element) {
+                return new $element;
+            },
+            $unexecutedMigrations
+        );
     }
 }

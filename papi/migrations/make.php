@@ -7,7 +7,6 @@ use config\MigrationConfig;
 use papi\CLI\ConsoleOutput;
 use papi\Migrations\MigrationGetter;
 use papi\Migrations\MigrationQueryBuilder;
-use papi\Migrations\SchemaDiffGenerator;
 use papi\Utils\PHPClassFileWriter;
 
 if (! empty(MigrationGetter::getUnexecuted())) {
@@ -17,8 +16,8 @@ if (! empty(MigrationGetter::getUnexecuted())) {
     die();
 }
 
-$diffGenerator = new SchemaDiffGenerator();
-$sql = (new MigrationQueryBuilder($diffGenerator))->getSqlStatements();
+$queryBuilder = (new MigrationQueryBuilder());
+$sql = $queryBuilder->getSqlStatements();
 
 if (empty($sql)) {
     ConsoleOutput::info('Schema is up to date');
@@ -44,7 +43,7 @@ $writer->addFunction(
     'public',
     'array',
     'getMapping',
-    'return '.var_export($diffGenerator->getCurrentSchema(), true).';'
+    'return '.var_export($queryBuilder->getCurrentMappingArray(), true).';'
 );
 $writer->write();
 

@@ -7,7 +7,7 @@ class LongText extends Field
 {
     public function getDefaultProperties(): string
     {
-        return 'LONGTEXT';
+        return 'longtext';
     }
 
     public function getPHPTypeName(): string

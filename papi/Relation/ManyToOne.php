@@ -20,7 +20,7 @@ class ManyToOne extends Relation
         return [
             $this->rootTableName =>
                 [
-                    $this->relatedTableName.'_id)' => "REFERENCES $this->relatedTableName(id) $this->onDelete $this->onUpdate",
+                    $this->relatedTableName.'_id' => "REFERENCES $this->relatedTableName(id) $this->onDelete $this->onUpdate",
                 ],
         ];
     }
@@ -28,7 +28,7 @@ class ManyToOne extends Relation
     public function getIndexDefinition(): array
     {
         return [
-            'INDEX FK_'.$this->rootTableName.'_'
+            'index FK_'.$this->rootTableName.'_'
             ."$this->relatedTableName ON $this->rootTableName($this->relatedTableName".'_id)',
         ];
     }
