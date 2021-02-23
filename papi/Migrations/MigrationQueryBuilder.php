@@ -27,6 +27,7 @@ class MigrationQueryBuilder
         foreach ($this->diffGenerator->indexesToRemove as $key) {
             $statements[] = $this->dropIndex($key);
         }
+
         foreach ($this->diffGenerator->foreignKeysToRemove as $table => $keyNames) {
             foreach ($keyNames as $name => $options) {
                 $statements[] = $this->dropFK($table, $name);
