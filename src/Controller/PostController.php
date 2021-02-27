@@ -4,13 +4,12 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Resources\Post;
-use papi\Callbacks\AddCurrentDate;
 use papi\Controller\ResourceController;
 use papi\Resource\ResourceCRUDHandler;
 
 class PostController extends ResourceController
 {
-    protected function getResource()
+    protected function getResource(): Post
     {
         return new Post();
     }

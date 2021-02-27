@@ -7,6 +7,7 @@ use papi\Documentation\OpenApiParamConverter;
 use papi\Relation\ManyToMany;
 use papi\Relation\Relation;
 use papi\Resource\Field\Id;
+use papi\Resource\ResourceCRUDHandler;
 use papi\Worker\App;
 
 abstract class ResourceController extends RESTController
@@ -87,5 +88,38 @@ abstract class ResourceController extends RESTController
         }
 
         return OpenApiParamConverter::convertArrayToDoc($filters, OpenApiParamConverter::QUERY);
+    }
+
+    protected function standardCRUD(): void
+    {
+        $this->post(
+            function ($request) {
+                return ResourceCRUDHandler::create($this->resource, $request);
+            }
+        );
+
+        $this->put(
+            function ($request, $id) {
+                return ResourceCRUDHandler::update($this->resource, $id, $request);
+            }
+        );
+
+        $this->delete(
+            function ($request, $id) {
+                return ResourceCRUDHandler::delete($this->resource, $id, $request);
+            }
+        );
+
+        $this->getById(
+            function ($request, $id) {
+                return ResourceCRUDHandler::getById($this->resource, $id, $request);
+            }
+        );
+
+        $this->get(
+            function ($request) {
+                return ResourceCRUDHandler::getCollection($this->resource, $request);
+            }
+        );
     }
 }

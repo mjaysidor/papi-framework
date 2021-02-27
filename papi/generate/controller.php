@@ -7,13 +7,12 @@ use papi\CLI\ConsoleInput;
 use papi\CLI\ConsoleOutput;
 use papi\Generator\FileGenerator;
 
-$directory = ConsoleInput::getInput('Class directory: ');
-$name = ConsoleInput::getInput('Class name: ');
-
+$directory = ConsoleInput::getInput('Directory (inside src/Resource):');
+$name = ConsoleInput::getInput('Class name:');
 try {
-    FileGenerator::generateResource($directory, $name);
+    FileGenerator::generateController($directory, $name);
 } catch (Exception $exception) {
     ConsoleOutput::errorDie($exception->getMessage());
 }
 
-ConsoleOutput::success('Resource created!');
+ConsoleOutput::success('Controller created!');

@@ -13,7 +13,7 @@ class ConsoleInput extends Console
         $output .= "\e[".self::BACKGROUNDS[self::BACKGROUND_BLUE]."m";
 
         $output .= "   $prompt   \033[0m  ";
-        echo $output;
+        echo "$output\n";
         return readline();
     }
 }
