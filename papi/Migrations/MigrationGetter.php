@@ -3,22 +3,14 @@ declare(strict_types=1);
 
 namespace papi\Migrations;
 
-use config\MigrationConfig;
 use papi\Database\PostgresDb;
-use papi\Utils\ProjectRootDirGetter;
+use papi\Utils\ClassGetter;
 
 class MigrationGetter
 {
     public static function getAll(): array
     {
-        $root = ProjectRootDirGetter::getDir();
-
-        return array_map(
-            static function ($filePath) use ($root) {
-                return str_replace([$root, '/', '.php'], ['', '\\', ''], $filePath);
-            },
-            glob(MigrationConfig::getAbsolutePath().'/*.php')
-        );
+        return ClassGetter::getClasses('migrations');
     }
 
     public static function getUnexecuted(): array

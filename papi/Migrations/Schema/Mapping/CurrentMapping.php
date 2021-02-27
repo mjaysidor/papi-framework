@@ -3,15 +3,15 @@ declare(strict_types=1);
 
 namespace papi\Migrations\Schema\Mapping;
 
-use config\Resources;
 use papi\Relation\Relation;
 use papi\Resource\Field\Field;
+use papi\Utils\ClassGetter;
 
 class CurrentMapping extends Mapping
 {
     protected function init(): void
     {
-        foreach (Resources::getItems() as $resource) {
+        foreach (ClassGetter::getClasses('src/Resources') as $resource) {
             $resourceObject = new $resource();
             $this->tables[$resourceObject->getTableName()] = [];
             foreach ($resourceObject->getFields() as $name => $field) {

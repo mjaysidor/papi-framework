@@ -1,11 +1,11 @@
 DOING:
-
+    - change hardcoded paths
+    - composer create project command
 BUGS:
 
 TESTY:
 
 TODO:
-    - generate controllers for endpoints command
 
 BACKLOG:
     - doc
