@@ -4,8 +4,6 @@ declare(strict_types=1);
 namespace App\Resources;
 
 use papi\Relation\ManyToMany;
-use papi\Relation\ManyToOne;
-use papi\Relation\OneToOne;
 use papi\Resource\Field\Id;
 use papi\Resource\Field\SmallInt;
 use papi\Resource\Field\Timestamp;

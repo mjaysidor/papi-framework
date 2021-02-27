@@ -6,7 +6,6 @@ TESTY:
 
 TODO:
     - generate controllers for endpoints command
-    - generate resource command
 
 BACKLOG:
     - doc

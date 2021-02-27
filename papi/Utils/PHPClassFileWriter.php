@@ -13,9 +13,9 @@ class PHPClassFileWriter
 
     private string $namespace;
 
-    private ?string $extends;
+    private string $extends = '';
 
-    private ?string $implements;
+    private string $implements = '';
 
     private array $variables = [];
 
@@ -37,12 +37,21 @@ class PHPClassFileWriter
             $this->extends = "extends $extends";
         }
         if ($implements) {
-            $this->extends = "implements $implements";
+            $this->implements = "implements $implements";
         }
     }
 
     public function write(): void
     {
+        $path = $this->dir."/$this->name.php";
+        if (file_exists($path)) {
+            throw new \RuntimeException(sprintf("File $path already exists"));
+        }
+        if (! is_dir($this->dir)) {
+            if (! mkdir($concurrentDirectory = $this->dir, 0777, true) && ! is_dir($concurrentDirectory)) {
+                throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+            }
+        }
         file_put_contents($this->dir."/$this->name.php", $this->getTemplate());
     }
 
@@ -59,7 +68,7 @@ namespace $this->namespace;
 
 $imports
 
-class $this->name $this->extends
+class $this->name $this->extends $this->implements
 {
 $vars$functions
 }";
