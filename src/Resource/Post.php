@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Resources;
+namespace App\Resource;
 
 use papi\Resource\Field\Id;
 use papi\Resource\Field\Integer;

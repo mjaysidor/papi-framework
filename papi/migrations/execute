@@ -22,7 +22,7 @@ foreach (MigrationGetter::getUnexecuted() as $migration) {
         $db->insert(
             'migrations_executed',
             [
-                'migration'     =>  '\\'.get_class($migration),
+                'migration'     =>  get_class($migration),
                 'current_state' => json_encode($migration->getMapping(), JSON_THROW_ON_ERROR),
             ]
         );

@@ -5,17 +5,6 @@ namespace config;
 
 class DatabaseConfig implements \papi\Config\DatabaseConfig
 {
-    public static function getConfig(): array
-    {
-        return [
-            'database_type' => self::getType(),
-            'database_name' => self::getName(),
-            'server'        => self::getServer(),
-            'username'      => self::getUsername(),
-            'password'      => self::getPassword(),
-        ];
-    }
-
     public static function getType(): string
     {
         return 'pgsql';

@@ -3,8 +3,9 @@ declare(strict_types=1);
 
 require 'vendor/autoload.php';
 
-use config\MigrationConfig;
 use papi\CLI\ConsoleOutput;
+use papi\Config\ProjectStructure;
+use papi\Migrations\Migration;
 use papi\Migrations\MigrationGetter;
 use papi\Migrations\MigrationQueryBuilder;
 use papi\Utils\PHPClassFileWriter;
@@ -23,16 +24,15 @@ if (empty($sql)) {
     ConsoleOutput::info('Schema is up to date');
     die();
 }
-
 $className = "Migration_".(new \DateTime())->format('Y_m_d_h_i_s');
 $writer = new PHPClassFileWriter(
     $className,
-    'migrations',
-    MigrationConfig::getAbsolutePath(),
+    ProjectStructure::getMigrationsNamespace(),
+    ProjectStructure::getMigrationsPath(),
     null,
     'Migration'
 );
-$writer->addImport('papi\Migrations\Migration');
+$writer->addImport(Migration::class);
 $writer->addFunction(
     'public',
     'array',

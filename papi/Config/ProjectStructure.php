@@ -7,7 +7,7 @@ class ProjectStructure
 {
     public static function getControllersPath(): string
     {
-        return 'src/Controller/';
+        return 'src/Controller';
     }
     public static function getControllersNamespace(): string
     {
@@ -16,11 +16,21 @@ class ProjectStructure
 
     public static function getResourcesPath(): string
     {
-        return 'src/Resource/';
+        return 'src/Resource';
     }
 
     public static function getResourcesNamespace(): string
     {
         return 'App\Resource';
+    }
+
+    public static function getMigrationsPath(): string
+    {
+        return 'migrations';
+    }
+
+    public static function getMigrationsNamespace(): string
+    {
+        return 'migrations';
     }
 }

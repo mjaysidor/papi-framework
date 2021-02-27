@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Resources\Comment;
-use App\Resources\Post;
+use App\Resource\Comment;
+use App\Resource\Post;
 use papi\Controller\ManyToManyController;
 use papi\Relation\ManyToMany;
 use papi\Resource\ManyToManyHandler;

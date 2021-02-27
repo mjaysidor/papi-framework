@@ -8,5 +8,6 @@ TODO:
 
 BACKLOG:
     - doc
+    - phpcs, phpcbf, phpstan, etc.
 
 REFACTORING + OPTYMALIZACJA:

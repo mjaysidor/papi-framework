@@ -9,8 +9,6 @@ tags:
     -
         name: comment_post
     -
-        name: test_res
-    -
         name: comment
     -
         name: auth
@@ -388,89 +386,6 @@ paths:
                                     up_votes: { type: integer }
                                     down_votes: { type: integer }
                                     views: { type: integer }
-                404:
-                    description: 'Resource not found'
-            parameters:
-                -
-                    name: id
-                    in: path
-                    required: true
-                    schema:
-                        type: integer
-    /test_res:
-        post:
-            tags:
-                - test_res
-            responses:
-                201:
-                    description: 'Resource created'
-                400:
-                    description: 'Invalid body'
-        get:
-            tags:
-                - test_res
-            responses:
-                200:
-                    description: 'Retrieves resource data'
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    id: { type: integer }
-                404:
-                    description: 'Resource not found'
-            parameters:
-                -
-                    name: id
-                    in: query
-                    schema:
-                        type: string
-    '/test_res/{id}':
-        put:
-            tags:
-                - test_res
-            responses:
-                200:
-                    description: 'Resource updated'
-                400:
-                    description: 'Invalid body'
-                404:
-                    description: 'Resource not found'
-            parameters:
-                -
-                    name: id
-                    in: path
-                    required: true
-                    schema:
-                        type: integer
-        delete:
-            tags:
-                - test_res
-            responses:
-                204:
-                    description: 'Resource deleted'
-                404:
-                    description: 'Resource not found'
-            parameters:
-                -
-                    name: id
-                    in: path
-                    required: true
-                    schema:
-                        type: integer
-        get:
-            tags:
-                - test_res
-            responses:
-                200:
-                    description: 'Retrieves resource data'
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    id: { type: integer }
                 404:
                     description: 'Resource not found'
             parameters:

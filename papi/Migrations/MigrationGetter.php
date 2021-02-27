@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace papi\Migrations;
 
+use papi\Config\ProjectStructure;
 use papi\Database\PostgresDb;
 use papi\Utils\ClassGetter;
 
@@ -10,7 +11,7 @@ class MigrationGetter
 {
     public static function getAll(): array
     {
-        return ClassGetter::getClasses('migrations');
+        return ClassGetter::getClasses(ProjectStructure::getMigrationsPath());
     }
 
     public static function getUnexecuted(): array

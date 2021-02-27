@@ -25,7 +25,7 @@ class FileGenerator
         $writer = new PHPClassFileWriter(
             $name,
             $dir ? ProjectStructure::getResourcesNamespace().'\\'.$dir : ProjectStructure::getResourcesNamespace(),
-            ProjectStructure::getResourcesPath().$dir,
+            $dir ? ProjectStructure::getResourcesPath().'\\'.$dir : ProjectStructure::getResourcesPath(),
             'Resource',
             null
         );
@@ -75,7 +75,7 @@ class FileGenerator
         $writer = new PHPClassFileWriter(
             $name.'Controller',
             $dir ? ProjectStructure::getControllersNamespace().'\\'.$dir : ProjectStructure::getControllersNamespace(),
-            ProjectStructure::getControllersPath().$dir,
+            $dir ? ProjectStructure::getControllersPath().'\\'.$dir : ProjectStructure::getControllersPath(),
             'ResourceController',
             null
         );
@@ -118,7 +118,7 @@ class FileGenerator
         $writer = new PHPClassFileWriter(
             $name,
             $dir ? ProjectStructure::getControllersNamespace().'\\'.$dir : ProjectStructure::getControllersNamespace(),
-            ProjectStructure::getControllersPath().$dir,
+            $dir ? ProjectStructure::getControllersPath().'\\'.$dir : ProjectStructure::getControllersPath(),
             'Controller',
             null
         );

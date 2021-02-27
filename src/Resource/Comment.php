@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace App\Resources;
+namespace App\Resource;
 
 use papi\Relation\ManyToMany;
 use papi\Resource\Field\Id;

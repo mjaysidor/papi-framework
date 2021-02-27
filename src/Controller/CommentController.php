@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Resources\Comment;
+use App\Resource\Comment;
 use papi\Callbacks\AddCurrentDate;
 use papi\Controller\ResourceController;
 use papi\Resource\ResourceCRUDHandler;

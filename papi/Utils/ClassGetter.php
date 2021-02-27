@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace papi\Utils;
 
+use Exception;
+use papi\CLI\ConsoleOutput;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
@@ -11,7 +13,11 @@ class ClassGetter
     public static function getClasses(string $path): array
     {
         $files = [];
-        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
+        try {
+            $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
+        } catch (Exception $e) {
+            ConsoleOutput::errorDie($e->getMessage());
+        }
 
         foreach ($iterator as $file) {
             if (! $file->isDir()) {

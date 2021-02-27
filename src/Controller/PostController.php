@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Resources\Post;
+use App\Resource\Post;
 use papi\Controller\ResourceController;
 use papi\Resource\ResourceCRUDHandler;
 

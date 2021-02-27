@@ -4,8 +4,8 @@ declare(strict_types=1);
 namespace papi\Migrations\Schema;
 
 use config\DatabaseConfig;
-use config\MigrationConfig;
 use papi\CLI\ConsoleOutput;
+use papi\Config\ProjectStructure;
 
 class SchemaManager
 {
@@ -32,7 +32,7 @@ class SchemaManager
 
         $connection = pg_connect("host = $host dbname = $name user = $user password = $password");
 
-        $migrationPathLength = strlen(MigrationConfig::getAbsolutePath()) + 35;
+        $migrationPathLength = strlen(ProjectStructure::getMigrationsPath()) + 35;
         pg_query(
             $connection,
             "create table ".self::MIGRATION_COLUMN_NAME
