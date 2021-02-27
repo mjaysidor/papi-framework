@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace papi\Migrations\Schema\Mapping;
 
+use papi\Config\ProjectStructure;
 use papi\Relation\Relation;
 use papi\Resource\Field\Field;
 use papi\Utils\ClassGetter;
@@ -11,7 +12,7 @@ class CurrentMapping extends Mapping
 {
     protected function init(): void
     {
-        foreach (ClassGetter::getClasses('src/Resources') as $resource) {
+        foreach (ClassGetter::getClasses(ProjectStructure::getResourcesPath()) as $resource) {
             $resourceObject = new $resource();
             $this->tables[$resourceObject->getTableName()] = [];
             foreach ($resourceObject->getFields() as $name => $field) {

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace papi\Generator;
 
+use papi\Config\ProjectStructure;
 use papi\Controller\Controller;
 use papi\Controller\ResourceController;
 use papi\Resource\Field\Id;
@@ -23,8 +24,8 @@ class FileGenerator
     ): void {
         $writer = new PHPClassFileWriter(
             $name,
-            $dir ? 'App\Resources\\'.$dir : 'App\Resources',
-            'src/Resources/'.$dir,
+            $dir ? ProjectStructure::getResourcesNamespace().'\\'.$dir : ProjectStructure::getResourcesNamespace(),
+            ProjectStructure::getResourcesPath().$dir,
             'Resource',
             null
         );
@@ -73,15 +74,18 @@ class FileGenerator
     ): void {
         $writer = new PHPClassFileWriter(
             $name.'Controller',
-            $dir ? 'App\Controller\\'.$dir : 'App\Controller',
-            'src/Controller/'.$dir,
+            $dir ? ProjectStructure::getControllersNamespace().'\\'.$dir : ProjectStructure::getControllersNamespace(),
+            ProjectStructure::getControllersPath().$dir,
             'ResourceController',
             null
         );
         $writer->addImport(ResourceController::class);
         $writer->addImport(ResourceCRUDHandler::class);
         $writer->addImport(Request::class);
-        $writer->addImport($dir ? 'App\Resources\\'.$dir.'\\'.$name : 'App\Resources\\'.$name);
+        $writer->addImport(
+            $dir ? ProjectStructure::getResourcesNamespace().'\\'.$dir.'\\'.$name
+                : ProjectStructure::getResourcesNamespace().$name
+        );
         $writer->addFunction(
             'public',
             $name,
@@ -113,8 +117,8 @@ class FileGenerator
     ): void {
         $writer = new PHPClassFileWriter(
             $name,
-            $dir ? 'App\Controller\\'.$dir : 'App\Controller',
-            'src/Controller/'.$dir,
+            $dir ? ProjectStructure::getControllersNamespace().'\\'.$dir : ProjectStructure::getControllersNamespace(),
+            ProjectStructure::getControllersPath().$dir,
             'Controller',
             null
         );

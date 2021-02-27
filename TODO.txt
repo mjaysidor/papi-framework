@@ -1,5 +1,4 @@
 DOING:
-    - change hardcoded paths
     - composer create project command
 BUGS:
 
