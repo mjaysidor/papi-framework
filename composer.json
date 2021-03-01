@@ -1,4 +1,9 @@
 {
+    "name": "mjsidor/papi-skeleton",
+    "type": "project",
+    "license": "MIT",
+    "description": "Skeleton to create new papi API",
+    "minimum-stability": "dev",
     "require": {
         "php": "^8.0",
         "ext-pgsql": "*",
