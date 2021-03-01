@@ -7,7 +7,7 @@ abstract class Field
 {
     private ?string $properties;
 
-    public function __construct(array $properties = null)
+    public function __construct(?string $properties = null)
     {
         $this->properties = $properties;
     }

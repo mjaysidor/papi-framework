@@ -7,7 +7,7 @@ class Url extends AbstractValidator
 {
     public const URL_REGEX = '/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i';
 
-    public function getValidationErrors(string $field, $data): ?string
+    public function getValidationErrors(string $field, mixed $data): ?string
     {
         if (is_null($data)) {
             return null;

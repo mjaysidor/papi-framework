@@ -60,7 +60,9 @@ class DocGenerator
             }
         }
 
-        ksort($doc['paths']);
+        if (isset($doc['paths'])) {
+            ksort($doc['paths']);
+        }
 
         $documentationArray = array_merge(
             (new DocumentationConfig())->getOpenAPIHeaders(),

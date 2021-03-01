@@ -13,6 +13,7 @@ class ClassGetter
     public static function getClasses(string $path): array
     {
         $files = [];
+        $iterator = [];
         try {
             $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path));
         } catch (Exception $e) {
@@ -35,11 +36,11 @@ class ClassGetter
         return $files;
     }
 
-    private static function getNamespace(string $file): string
+    private static function getNamespace(string $file): ?string
     {
         $namespace = null;
         $handle = fopen($file, 'rb');
-        if ($handle) {
+        if ($handle !== false) {
             while (($line = fgets($handle)) !== false) {
                 if (str_starts_with($line, 'namespace')) {
                     $parts = explode(' ', $line);

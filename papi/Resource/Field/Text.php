@@ -7,7 +7,7 @@ class Text extends Field
 {
     private int $length;
 
-    public function __construct(int $length, ?array $properties = null)
+    public function __construct(int $length, ?string $properties = null)
     {
         parent::__construct($properties);
         $this->length = $length;

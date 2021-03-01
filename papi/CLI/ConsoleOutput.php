@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace papi\CLI;
 
-use JetBrains\PhpStorm\NoReturn;
-
 class ConsoleOutput extends Console
 {
     public static function success(string $string): void
@@ -17,7 +15,7 @@ class ConsoleOutput extends Console
         self::output($string, self::COLOR_WHITE, self::BACKGROUND_RED);
     }
 
-    #[NoReturn] public static function errorDie(string $string): void
+    public static function errorDie(string $string): void
     {
         self::error($string);
         die();

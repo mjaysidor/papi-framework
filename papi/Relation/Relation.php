@@ -22,11 +22,11 @@ abstract class Relation
 
     protected string $onDelete;
 
-    protected $connection;
+    protected mixed $connection;
 
     public function __construct(
         string $rootResource,
-        $relatedResource,
+        string $relatedResource,
         string $onUpdate = self::ON_UPDATE_CASCADE,
         string $onDelete = self::ON_DELETE_CASCADE
     ) {

@@ -7,7 +7,7 @@ class Set extends Field
 {
     private array $values;
 
-    public function __construct(array $values, ?array $properties = null)
+    public function __construct(array $values, ?string $properties = null)
     {
         parent::__construct($properties);
         $this->values = $values;

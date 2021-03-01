@@ -32,7 +32,7 @@ class JWT
             ));
     }
 
-    public static function getPayload(string $token): array|bool
+    public static function getPayload(string $token): array
     {
         return json_decode(base64_decode(explode('.', $token)[1]), true, 512, JSON_THROW_ON_ERROR);
     }

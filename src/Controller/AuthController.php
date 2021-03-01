@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Controller;
@@ -7,7 +8,7 @@ class AuthController extends \papi\Auth\AuthController
 {
     protected function checkCredentials(?array $body): bool
     {
-        return $body['username'] === 'user' && $body['password'] === 'pass';
+        return true;
     }
 
     protected function getPayload(?array $body): array

@@ -7,7 +7,7 @@ class SmallInt extends Field
 {
     private ?int $length;
 
-    public function __construct(?int $length = null, ?array $properties = null)
+    public function __construct(?int $length = null, ?string $properties = null)
     {
         parent::__construct($properties);
         $this->length = $length;

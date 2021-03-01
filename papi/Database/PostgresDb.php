@@ -4,16 +4,17 @@ declare(strict_types=1);
 namespace papi\Database;
 
 use config\DatabaseConfig;
+use http\Exception\RuntimeException;
 
 class PostgresDb
 {
-    public $connection;
+    public mixed $connection;
 
     private int $aliasCount = 0;
 
     private array $aliasValues = [];
 
-    public static function getConnection()
+    public static function getConnection(): mixed
     {
         $isLocal = DatabaseConfig::isLocal();
         $name = DatabaseConfig::getName();
@@ -47,11 +48,10 @@ class PostgresDb
         return pg_query($this->connection, $sql) !== false;
     }
 
-    public function getError(): ?string
+    public function throwError(): \RuntimeException
     {
         $error = pg_last_error($this->connection);
-
-        return $error ? : null;
+        return new \RuntimeException('DB ERROR: '.$error);
     }
 
     public function clearAliases(): void
@@ -63,7 +63,7 @@ class PostgresDb
     public function exists(
         string $table,
         ?array $filters = null,
-    ): bool|string {
+    ): bool {
         $query = "select exists(select 1 from $table";
 
         if ($filters) {
@@ -72,11 +72,14 @@ class PostgresDb
         $query .= ')';
         $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
 
-        if (! $queryParams) {
-            return $this->getError();
+        if ($queryParams === false) {
+            throw $this->throwError();
+        }
+        if (($result = pg_fetch_row($queryParams)) === false) {
+            throw $this->throwError();
         }
 
-        return pg_fetch_row($queryParams)[0] === 't';
+        return $result[0] === 't';
     }
 
     public function select(
@@ -86,7 +89,7 @@ class PostgresDb
         ?string $orderBy = null,
         ?string $order = null,
         ?int $limit = null
-    ): array|string {
+    ): array {
         if ($columns) {
             $query = 'select '.implode(',', $columns)." from $from";
         } else {
@@ -106,8 +109,8 @@ class PostgresDb
         }
         $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
 
-        if (! $queryParams) {
-            return $this->getError();
+        if ($queryParams === false) {
+            throw $this->throwError();
         }
 
         return pg_fetch_all($queryParams);
@@ -116,12 +119,12 @@ class PostgresDb
     public function delete(
         string $table,
         array $where = []
-    ): int|string {
+    ): int {
         $query = "delete from $table";
         $this->addFilters($query, $where);
         $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
-        if (! $queryParams) {
-            return $this->getError();
+        if ($queryParams === false) {
+            throw $this->throwError();
         }
 
         return pg_affected_rows($queryParams);
@@ -130,7 +133,7 @@ class PostgresDb
     public function insert(
         string $table,
         array $data
-    ): array|string {
+    ): array {
         $query = "insert into $table ";
         $query .= '('.implode(', ', array_keys($data)).')';
         $query .= ' values(';
@@ -143,22 +146,31 @@ class PostgresDb
         $query .= ') returning *';
         $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
 
-        if (! $queryParams) {
-            return $this->getError();
+        if ($queryParams === false) {
+            throw $this->throwError();
         }
 
-        return pg_fetch_assoc($queryParams);
+        $result = pg_fetch_assoc($queryParams);
+
+        if ($result === false) {
+            throw $this->throwError();
+        }
+
+        return $result;
     }
 
     public function update(
         string $table,
         array $data,
         array $where
-    ): int|string {
+    ): int {
         $query = "update $table set ";
         $firstKey = array_key_first($data);
 
         foreach ($data as $key => $condition) {
+            if (! is_string($key)) {
+                throw new \RuntimeException('Array keys must be of type string');
+            }
             if ($firstKey !== $key) {
                 $query .= ',';
             }
@@ -168,14 +180,14 @@ class PostgresDb
         $this->addWhereConditions($query, $where);
         $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
 
-        if (! $queryParams) {
-            return $this->getError();
+        if ($queryParams === false) {
+            throw $this->throwError();
         }
 
         return pg_affected_rows($queryParams);
     }
 
-    private function addAlias(string &$query, $value): void
+    private function addAlias(string &$query, mixed $value): void
     {
         $query .= ' $'.++$this->aliasCount;
         $this->aliasValues[] = $value;
@@ -186,6 +198,9 @@ class PostgresDb
         $query .= ' where ';
         $firstKey = array_key_first($where);
         foreach ($where as $key => $condition) {
+            if (! is_string($key)) {
+                throw new \RuntimeException('Array keys must be of type string');
+            }
             if ($firstKey !== $key) {
                 $query .= ' and ';
             }
@@ -199,6 +214,9 @@ class PostgresDb
         $query .= ' where ';
         $firstKey = array_key_first($filters);
         foreach ($filters as $key => $condition) {
+            if (! is_string($key)) {
+                throw new \RuntimeException('Array keys must be of type string');
+            }
             if ($firstKey !== $key) {
                 $query .= ' and ';
             }

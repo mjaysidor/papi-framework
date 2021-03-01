@@ -1,6 +1,8 @@
 DOING:
-    - composer create project command
+    - phpcs, phpcbf, phpstan, etc.
+
 BUGS:
+
 
 TESTY:
 
@@ -8,6 +10,7 @@ TODO:
 
 BACKLOG:
     - doc
-    - phpcs, phpcbf, phpstan, etc.
+    - export papi to separate repo & composer package
 
-REFACTORING + OPTYMALIZACJA:
+REFACTORING + OPTIMIZATION:
+- all of it

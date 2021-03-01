@@ -13,10 +13,14 @@ class AuthVoter
         return JWT::isValid($secret, $request->header('Authorization'));
     }
 
-    public static function hasAttributesInPayload(string $secret, Request $request, array $attributes): bool
-    {
+    public static function hasAttributesInPayload(
+        string $secret,
+        Request $request,
+        array $attributes
+    ): bool {
         $token = $request->header('Authorization');
-        if (! JWT::isValid($secret, $token)) {
+
+        if (empty($token) || ! JWT::isValid($secret, $token)) {
             return false;
         }
 

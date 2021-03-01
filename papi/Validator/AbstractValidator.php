@@ -5,5 +5,5 @@ namespace papi\Validator;
 
 abstract class AbstractValidator
 {
-    abstract public function getValidationErrors(string $field, $data): ?string;
+    abstract public function getValidationErrors(string $field, mixed $data): ?string;
 }

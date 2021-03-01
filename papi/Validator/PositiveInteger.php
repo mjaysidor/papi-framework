@@ -7,7 +7,7 @@ use JetBrains\PhpStorm\Pure;
 
 class PositiveInteger extends AbstractValidator
 {
-    #[Pure] public function getValidationErrors(string $field, $data): ?string
+    public function getValidationErrors(string $field, mixed $data): ?string
     {
         if (is_null($data)) {
             return null;

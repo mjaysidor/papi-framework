@@ -18,8 +18,8 @@ class ManyToMany extends Relation
     public string $relatedResourceIdField;
 
     public function __construct(
-        $rootResource,
-        $relatedResource,
+        string $rootResource,
+        string $relatedResource,
         string $onUpdate = self::ON_UPDATE_CASCADE,
         string $onDelete = self::ON_DELETE_CASCADE
     ) {
@@ -81,7 +81,7 @@ class ManyToMany extends Relation
         ?array $filters = null,
         ?string $order = null,
         ?int $limit = null
-    ): array|string {
+    ): array {
         return $this->getDbHandler()
                     ->select(
                         $this->getTableName(),
@@ -95,9 +95,9 @@ class ManyToMany extends Relation
     }
 
     public function create(
-        $rootResourceId,
-        $relatedResourceId
-    ): array|string {
+        string $rootResourceId,
+        string $relatedResourceId
+    ): array {
         return $this->getDbHandler()
                     ->insert(
                         $this->getTableName(),
@@ -110,9 +110,9 @@ class ManyToMany extends Relation
     }
 
     public function delete(
-        $rootResourceId,
-        $relatedResourceId
-    ): int|string {
+        string $rootResourceId,
+        string $relatedResourceId
+    ): int {
         return $this->getDbHandler()
                     ->delete(
                         $this->getTableName(),
@@ -125,9 +125,9 @@ class ManyToMany extends Relation
     }
 
     public function exists(
-        $rootResourceId,
-        $relatedResourceId
-    ): bool|string {
+        string $rootResourceId,
+        string $relatedResourceId
+    ): bool {
         return $this->getDbHandler()
                     ->exists(
                         $this->getTableName(),

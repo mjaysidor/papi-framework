@@ -74,7 +74,7 @@ $vars$functions
 }";
     }
 
-    #[Pure] private function getVars(): string
+    private function getVars(): string
     {
         if (! $this->variables) {
             return '';
@@ -90,7 +90,7 @@ $vars$functions
         return "$template\n";
     }
 
-    #[Pure] private function getFunctions(): string
+    private function getFunctions(): string
     {
         $template = '';
         foreach ($this->functions as $key => $function) {
@@ -103,7 +103,7 @@ $vars$functions
         return $template;
     }
 
-    #[Pure] private function getImports(): string
+    private function getImports(): string
     {
         $template = "";
         foreach ($this->imports as $key => $import) {
@@ -137,7 +137,7 @@ $vars$functions
         $this->functions[] = $text;
     }
 
-    public function addVariable(string $access, string $type, string $name, $defaultValue = null): void
+    public function addVariable(string $access, string $type, string $name, mixed $defaultValue = null): void
     {
         $var = "$access $type $$name";
         if ($defaultValue) {

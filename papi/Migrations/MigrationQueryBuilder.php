@@ -17,7 +17,7 @@ class MigrationQueryBuilder
 
     public function getCurrentMappingArray(): ?array
     {
-        return $this->diffGenerator?->getCurrentMapping()?->toArray();
+        return $this->diffGenerator->getCurrentMapping()->toArray();
     }
 
     public function getSqlStatements(): array
@@ -73,7 +73,7 @@ class MigrationQueryBuilder
         return $statements;
     }
 
-    #[Pure] private function createTable(
+    private function createTable(
         string $name,
         array $fields
     ): string {

@@ -14,6 +14,7 @@ class ConsoleInput extends Console
 
         $output .= "   $prompt   \033[0m  ";
         echo "$output\n";
-        return readline();
+
+        return (string)readline();
     }
 }

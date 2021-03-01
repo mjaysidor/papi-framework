@@ -17,7 +17,7 @@ class ResourceCRUDHandler
 {
     public static function update(
         Resource $resource,
-        $id,
+        int $id,
         Request $request,
         ?PreExecutionBodyModifier $preExecutionBodyModifier = null,
         ?PostExecutionHandler $postExecutionHandler = null
@@ -28,7 +28,7 @@ class ResourceCRUDHandler
 
         $body = json_decode($request->rawBody(), true);
 
-        if ($preExecutionBodyModifier) {
+        if ($preExecutionBodyModifier !== null) {
             $preExecutionBodyModifier->modify($body);
         }
 
@@ -43,12 +43,8 @@ class ResourceCRUDHandler
             $body
         );
 
-        if (is_string($response)) {
-            return new ErrorResponse($response);
-        }
-
         if ($response) {
-            if ($postExecutionHandler) {
+            if ($postExecutionHandler !== null) {
                 $handlerResponse = $postExecutionHandler->handle($body);
                 if ($handlerResponse) {
                     $body = array_merge($body, ['handler' => $handlerResponse]);
@@ -79,18 +75,14 @@ class ResourceCRUDHandler
             return new ValidationErrorResponse($validationErrors);
         }
 
-        if ($preExecutionBodyModifier) {
+        if ($preExecutionBodyModifier !== null) {
             $preExecutionBodyModifier->modify($body);
         }
 
         $response = $resource->create($body);
 
-        if (is_string($response)) {
-            return new ErrorResponse($response);
-        }
-
         if ($response) {
-            if ($postExecutionHandler) {
+            if ($postExecutionHandler !== null) {
                 $handlerResponse = $postExecutionHandler->handle($body);
                 if ($handlerResponse) {
                     $body = array_merge($body, ['handler' => $handlerResponse]);
@@ -109,7 +101,7 @@ class ResourceCRUDHandler
 
     public static function delete(
         Resource $resource,
-        $id,
+        int $id,
         Request $request
     ): JsonResponse {
         if (! RequestMethodChecker::isDelete($request)) {
@@ -117,9 +109,6 @@ class ResourceCRUDHandler
         }
 
         $response = $resource->delete($id);
-        if (is_string($response)) {
-            return new ErrorResponse($response);
-        }
 
         if ($response) {
             return new JsonResponse(204);
@@ -130,7 +119,7 @@ class ResourceCRUDHandler
 
     public static function getById(
         Resource $resource,
-        $id,
+        int $id,
         Request $request
     ): JsonResponse {
         if (! RequestMethodChecker::isGet($request)) {
@@ -138,10 +127,6 @@ class ResourceCRUDHandler
         }
 
         $response = $resource->getById($id);
-
-        if (is_string($response)) {
-            return new ErrorResponse($response);
-        }
 
         if ($response) {
             return new JsonResponse(200, $response);
@@ -176,10 +161,6 @@ class ResourceCRUDHandler
             $result = $paginator->getPaginatedResults($resource, $filters);
         } else {
             $result = $resource->get($filters);
-        }
-
-        if (is_string($result)) {
-            return new ErrorResponse($result);
         }
 
         return new JsonResponse(200, $result);

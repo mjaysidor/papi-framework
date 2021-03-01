@@ -44,10 +44,6 @@ class ManyToManyHandler
             $body[$relation->relatedResourceIdField],
         );
 
-        if (is_string($result)) {
-            return new ErrorResponse($result);
-        }
-
         return new JsonResponse(
             201,
             $body
@@ -69,9 +65,6 @@ class ManyToManyHandler
             $relatedResourceId
         );
 
-        if (is_string($response)) {
-            return new ErrorResponse($response);
-        }
         if ($response) {
             return new JsonResponse(204);
         }
@@ -106,10 +99,6 @@ class ManyToManyHandler
             $result = $paginator->getPaginatedManyToManyResults($relation, $filters);
         } else {
             $result = $relation->get($filters);
-        }
-
-        if (is_string($result)) {
-            return new ErrorResponse($result);
         }
 
         return new JsonResponse(200, $result);

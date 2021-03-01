@@ -23,9 +23,9 @@ abstract class Resource
     abstract public function getFieldValidators(): array;
 
     public function getById(
-        $id,
+        int $id,
         ?array $fields = null
-    ): array|string {
+    ): array {
         return $this->getDbHandler()
                     ->select(
                         $this->getTableName(),
@@ -43,7 +43,7 @@ abstract class Resource
         ?string $orderBy = null,
         ?string $order = null,
         ?int $limit = null
-    ): array|string {
+    ): array {
         return $this->getDbHandler()
                     ->select(
                         $this->getTableName(),
@@ -56,7 +56,7 @@ abstract class Resource
             ;
     }
 
-    public function create(array $data): array|string
+    public function create(array $data): array
     {
         return $this->getDbHandler()
                     ->insert(
@@ -67,9 +67,9 @@ abstract class Resource
     }
 
     public function update(
-        $id,
+        int $id,
         array $data
-    ): int|string {
+    ): int {
         return $this->getDbHandler()
                     ->update(
                         $this->getTableName(),
@@ -82,8 +82,8 @@ abstract class Resource
     }
 
     public function delete(
-        $id
-    ): int|string {
+        int $id
+    ): int {
         return $this->getDbHandler()
                     ->delete(
                         $this->getTableName(),

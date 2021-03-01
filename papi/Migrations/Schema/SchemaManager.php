@@ -24,13 +24,20 @@ class SchemaManager
         $host = DatabaseConfig::getServer();
         $connection = pg_connect("host = $host dbname = postgres user = $user password = $password");
 
+        if (empty($connection)) {
+            throw new \RuntimeException('database connection error: '.pg_last_error());
+        }
+
         $result = pg_query($connection, "create database $name owner $user;");
 
-        if (! $result) {
+        if ($result === false) {
             ConsoleOutput::errorDie(pg_last_error($connection));
         }
 
         $connection = pg_connect("host = $host dbname = $name user = $user password = $password");
+        if (empty($connection)) {
+            throw new \RuntimeException('database connection error: '.pg_last_error());
+        }
 
         $migrationPathLength = strlen(ProjectStructure::getMigrationsPath()) + 35;
         pg_query(

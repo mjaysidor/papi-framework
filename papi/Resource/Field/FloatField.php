@@ -9,7 +9,7 @@ class FloatField extends Field
 
     private int $precision;
 
-    public function __construct(int $length, int $precision, ?array $properties = null)
+    public function __construct(int $length, int $precision, ?string $properties = null)
     {
         parent::__construct($properties);
         $this->length = $length;

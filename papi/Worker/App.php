@@ -18,7 +18,7 @@ class App extends Worker
 
     private array $callbacksCache = [];
 
-    protected ?Dispatcher $dispatcher = null;
+    protected Dispatcher $dispatcher;
 
     public function __construct($socket_name = '', array $context_option = [])
     {
@@ -32,9 +32,9 @@ class App extends Worker
     }
 
     public function addDocumentedRoute(
-        $method,
-        $path,
-        $callback,
+        string $method,
+        string $path,
+        callable $callback,
         array $requestBody = [],
         array $urlParameters = [],
         array $responses = [],
@@ -43,15 +43,18 @@ class App extends Worker
         $this->routeInfo[$method][] = [
             $path,
             $callback,
-            'resourceName'  => $resourceName,
-            'responses'  => $responses,
-            'body'       => $requestBody,
-            'parameters' => $urlParameters,
+            'resourceName' => $resourceName,
+            'responses'    => $responses,
+            'body'         => $requestBody,
+            'parameters'   => $urlParameters,
         ];
     }
 
-    public function addRoute($method, $path, $callback): void
-    {
+    public function addRoute(
+        string $method,
+        string $path,
+        callable $callback
+    ): void {
         $methods = (array)$method;
         foreach ($methods as $m) {
             $this->routeInfo[$m][] = [$path, $callback];

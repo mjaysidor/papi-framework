@@ -5,7 +5,7 @@ namespace papi\Validator;
 
 class NotBlank extends AbstractValidator
 {
-    public function getValidationErrors(string $field, $data): ?string
+    public function getValidationErrors(string $field, mixed $data): ?string
     {
         if ($data == null) {
             return "$field: cannot be blank";

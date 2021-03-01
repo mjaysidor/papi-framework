@@ -14,7 +14,7 @@ class MaxLength extends AbstractValidator
         $this->maxLength = $maxLength;
     }
 
-    #[Pure] public function getValidationErrors(string $field, $data): ?string
+    public function getValidationErrors(string $field, mixed $data): ?string
     {
         if (is_null($data)) {
             return null;

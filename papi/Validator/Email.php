@@ -5,7 +5,7 @@ namespace papi\Validator;
 
 class Email extends AbstractValidator
 {
-    public function getValidationErrors(string $field, $data): ?string
+    public function getValidationErrors(string $field, mixed $data): ?string
     {
         if (is_null($data)) {
             return null;

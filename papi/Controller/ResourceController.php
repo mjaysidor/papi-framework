@@ -7,12 +7,13 @@ use papi\Documentation\OpenApiParamConverter;
 use papi\Relation\ManyToMany;
 use papi\Relation\Relation;
 use papi\Resource\Field\Id;
+use papi\Resource\Resource;
 use papi\Resource\ResourceCRUDHandler;
 use papi\Worker\App;
 
 abstract class ResourceController extends RESTController
 {
-    public $resource;
+    public mixed $resource;
 
     public function __construct(App $api)
     {
@@ -21,7 +22,7 @@ abstract class ResourceController extends RESTController
         $this->resourceName = $this->resource->getTableName();
     }
 
-    abstract protected function getResource();
+    abstract protected function getResource(): mixed;
 
     public function getEndpoint(): string
     {
