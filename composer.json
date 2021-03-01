@@ -4,6 +4,12 @@
     "license": "MIT",
     "description": "Skeleton to create new papi API",
     "minimum-stability": "dev",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/mjaysidor/papi-skeleton"
+        }
+    ],
     "require": {
         "php": "^8.0",
         "ext-pgsql": "*",
