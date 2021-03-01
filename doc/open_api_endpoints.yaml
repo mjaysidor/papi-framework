@@ -1,22 +1,46 @@
 openapi: 3.0.0
 info:
-    description: 'Blog blog blog'
-    title: I.H.M.J.
-    version: '0.1'
+    description: 'The description of the application'
+    title: 'App title'
+    version: '1.0'
 tags:
     -
-        name: post
+        name: custom
     -
-        name: comment_post
-    -
-        name: comment
-    -
-        name: auth
+        name: Authentication
 paths:
+    /:
+        get:
+            tags:
+                - custom
+            responses:
+                200:
+                    description: 'Retrieves resource data'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties: {  }
+                404:
+                    description: 'Resource not found'
+    /asd:
+        get:
+            tags:
+                - custom
+            responses:
+                200:
+                    description: 'Retrieves resource data'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties: {  }
+                404:
+                    description: 'Resource not found'
     /auth:
         post:
             tags:
-                - auth
+                - Authentication
             responses:
                 200:
                     description: 'Retrieves resource data'
@@ -38,360 +62,3 @@ paths:
                                     type: string
                                 password:
                                     type: string
-    /comment:
-        post:
-            tags:
-                - comment
-            responses:
-                201:
-                    description: 'Resource created'
-                400:
-                    description: 'Invalid body'
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                content:
-                                    type: string
-                                up_votes:
-                                    type: integer
-                                down_votes:
-                                    type: integer
-        get:
-            tags:
-                - comment
-            responses:
-                200:
-                    description: 'Retrieves resource data'
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    id: { type: integer }
-                                    content: { type: string }
-                                    created_at: { type: string }
-                                    up_votes: { type: integer }
-                                    down_votes: { type: integer }
-                404:
-                    description: 'Resource not found'
-            parameters:
-                -
-                    name: id
-                    in: query
-                    schema:
-                        type: string
-                -
-                    name: content
-                    in: query
-                    schema:
-                        type: string
-                -
-                    name: created_at
-                    in: query
-                    schema:
-                        type: string
-                -
-                    name: up_votes
-                    in: query
-                    schema:
-                        type: string
-                -
-                    name: down_votes
-                    in: query
-                    schema:
-                        type: string
-    '/comment/{id}':
-        put:
-            tags:
-                - comment
-            responses:
-                200:
-                    description: 'Resource updated'
-                400:
-                    description: 'Invalid body'
-                404:
-                    description: 'Resource not found'
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                content:
-                                    type: string
-                                up_votes:
-                                    type: integer
-                                down_votes:
-                                    type: integer
-            parameters:
-                -
-                    name: id
-                    in: path
-                    required: true
-                    schema:
-                        type: integer
-        delete:
-            tags:
-                - comment
-            responses:
-                204:
-                    description: 'Resource deleted'
-                404:
-                    description: 'Resource not found'
-            parameters:
-                -
-                    name: id
-                    in: path
-                    required: true
-                    schema:
-                        type: integer
-        get:
-            tags:
-                - comment
-            responses:
-                200:
-                    description: 'Retrieves resource data'
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    id: { type: integer }
-                                    content: { type: string }
-                                    created_at: { type: string }
-                                    up_votes: { type: integer }
-                                    down_votes: { type: integer }
-                404:
-                    description: 'Resource not found'
-            parameters:
-                -
-                    name: id
-                    in: path
-                    required: true
-                    schema:
-                        type: integer
-    /comment_post:
-        post:
-            tags:
-                - comment_post
-            responses:
-                201:
-                    description: 'Resource created'
-                400:
-                    description: 'Invalid body'
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                comment_id:
-                                    type: integer
-                                post_id:
-                                    type: integer
-        get:
-            tags:
-                - comment_post
-            responses:
-                200:
-                    description: 'Retrieves resource data'
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    comment_id: { type: integer }
-                                    post_id: { type: integer }
-                404:
-                    description: 'Resource not found'
-            parameters:
-                -
-                    name: id
-                    in: query
-                    schema:
-                        type: string
-                -
-                    name: comment_id
-                    in: query
-                    schema:
-                        type: string
-                -
-                    name: post_id
-                    in: query
-                    schema:
-                        type: string
-    '/comment_post/{comment_id}/{post_id}':
-        delete:
-            tags:
-                - comment_post
-            responses:
-                204:
-                    description: 'Resource deleted'
-                404:
-                    description: 'Resource not found'
-            parameters:
-                -
-                    name: comment_id
-                    in: path
-                    required: true
-                    schema:
-                        type: integer
-                -
-                    name: post_id
-                    in: path
-                    required: true
-                    schema:
-                        type: integer
-    /post:
-        post:
-            tags:
-                - post
-            responses:
-                201:
-                    description: 'Resource created'
-                400:
-                    description: 'Invalid body'
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                content:
-                                    type: string
-                                created_at:
-                                    type: string
-                                up_votes:
-                                    type: integer
-                                down_votes:
-                                    type: integer
-                                views:
-                                    type: integer
-        get:
-            tags:
-                - post
-            responses:
-                200:
-                    description: 'Retrieves resource data'
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    id: { type: integer }
-                                    content: { type: string }
-                                    created_at: { type: string }
-                                    up_votes: { type: integer }
-                                    down_votes: { type: integer }
-                                    views: { type: integer }
-                404:
-                    description: 'Resource not found'
-            parameters:
-                -
-                    name: id
-                    in: query
-                    schema:
-                        type: string
-                -
-                    name: content
-                    in: query
-                    schema:
-                        type: string
-                -
-                    name: created_at
-                    in: query
-                    schema:
-                        type: string
-                -
-                    name: up_votes
-                    in: query
-                    schema:
-                        type: string
-                -
-                    name: down_votes
-                    in: query
-                    schema:
-                        type: string
-                -
-                    name: views
-                    in: query
-                    schema:
-                        type: string
-    '/post/{id}':
-        put:
-            tags:
-                - post
-            responses:
-                200:
-                    description: 'Resource updated'
-                400:
-                    description: 'Invalid body'
-                404:
-                    description: 'Resource not found'
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                content:
-                                    type: string
-                                created_at:
-                                    type: string
-                                up_votes:
-                                    type: integer
-                                down_votes:
-                                    type: integer
-                                views:
-                                    type: integer
-            parameters:
-                -
-                    name: id
-                    in: path
-                    required: true
-                    schema:
-                        type: integer
-        delete:
-            tags:
-                - post
-            responses:
-                204:
-                    description: 'Resource deleted'
-                404:
-                    description: 'Resource not found'
-            parameters:
-                -
-                    name: id
-                    in: path
-                    required: true
-                    schema:
-                        type: integer
-        get:
-            tags:
-                - post
-            responses:
-                200:
-                    description: 'Retrieves resource data'
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    id: { type: integer }
-                                    content: { type: string }
-                                    created_at: { type: string }
-                                    up_votes: { type: integer }
-                                    down_votes: { type: integer }
-                                    views: { type: integer }
-                404:
-                    description: 'Resource not found'
-            parameters:
-                -
-                    name: id
-                    in: path
-                    required: true
-                    schema:
-                        type: integer
