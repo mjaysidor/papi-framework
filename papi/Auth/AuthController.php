@@ -23,7 +23,7 @@ abstract class AuthController
             'POST',
             '/auth',
             function ($request) {
-                return $this->getToken(json_decode($request->rawBody(), true));
+                return $this->getToken(json_decode($request->rawBody(), true, 512, JSON_THROW_ON_ERROR));
             },
             $this->getOpenApiDocRequestBody(),
             [],
@@ -46,7 +46,8 @@ abstract class AuthController
                 403 => [
                     'description' => 'Invalid credentials',
                 ],
-            ]
+            ],
+            'Authentication'
         );
     }
 

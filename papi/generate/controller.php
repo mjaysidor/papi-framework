@@ -8,7 +8,7 @@ use papi\CLI\ConsoleOutput;
 use papi\Config\ProjectStructure;
 use papi\Generator\FileGenerator;
 
-$directory = ConsoleInput::getInput('Directory (inside '.ProjectStructure::getResourcesPath().'):');
+$directory = ConsoleInput::getInput('Directory (inside '.ProjectStructure::getControllersPath().'):');
 $name = ConsoleInput::getInput('Class name:');
 try {
     FileGenerator::generateController($directory, $name);

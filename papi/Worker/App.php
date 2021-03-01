@@ -37,11 +37,13 @@ class App extends Worker
         $callback,
         array $requestBody = [],
         array $urlParameters = [],
-        array $responses = []
+        array $responses = [],
+        ?string $resourceName = null
     ): void {
         $this->routeInfo[$method][] = [
             $path,
             $callback,
+            'resourceName'  => $resourceName,
             'responses'  => $responses,
             'body'       => $requestBody,
             'parameters' => $urlParameters,

@@ -3,12 +3,13 @@ declare(strict_types=1);
 
 namespace papi\Config;
 
-class ProjectStructure
+class ProjectStructure implements ProjectStructureConfig
 {
     public static function getControllersPath(): string
     {
         return 'src/Controller';
     }
+
     public static function getControllersNamespace(): string
     {
         return 'App\Controller';
@@ -27,6 +28,11 @@ class ProjectStructure
     public static function getMigrationsPath(): string
     {
         return 'migrations';
+    }
+
+    public static function getOpenApiDocPath(): string
+    {
+        return 'doc/open_api_endpoints.yaml';
     }
 
     public static function getMigrationsNamespace(): string

@@ -12,7 +12,7 @@ class DatabaseConfig implements \papi\Config\DatabaseConfig
 
     public static function getName(): string
     {
-        return 'ihmj';
+        return 'database_name';
     }
 
     public static function getServer(): string
@@ -27,11 +27,11 @@ class DatabaseConfig implements \papi\Config\DatabaseConfig
 
     public static function getUsername(): string
     {
-        return 'mjsidor';
+        return 'db_username';
     }
 
     public static function getPassword(): string
     {
-        return '!Xplod3r';
+        return 'db_password';
     }
 }

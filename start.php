@@ -2,6 +2,7 @@
 
 require 'vendor/autoload.php';
 
+use papi\Config\ProjectStructure;
 use papi\Controller\ControllerInitializer;
 use papi\Documentation\DocGenerator;
 use papi\DotEnv;
@@ -14,7 +15,7 @@ $api->count = 4; // process count
 (new DotEnv(__DIR__.'/.env.local'))->load();
 (new DotEnv(__DIR__.'/.env'))->load();
 (new ControllerInitializer)->init($api);
-DocGenerator::generateOpenAPIDocs(getcwd().'/doc/open_api_endpoints.yaml',$api->getRouteInfo());
+DocGenerator::generateOpenAPIDocs(ProjectStructure::getOpenApiDocPath(),$api->getRouteInfo());
 
 $api->start();
 

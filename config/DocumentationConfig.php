@@ -14,16 +14,16 @@ class DocumentationConfig extends DocumentationConfigGenerator
 
     public function getDescription(): string
     {
-        return 'Blog blog blog';
+        return 'The description of the application';
     }
 
     public function getTitle(): string
     {
-        return 'I.H.M.J.';
+        return 'App title';
     }
 
     public function getVersion(): string
     {
-        return '0.1';
+        return '1.0';
     }
 }

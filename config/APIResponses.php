@@ -7,6 +7,20 @@ use papi\Config\APIResponsesConfig;
 
 class APIResponses implements APIResponsesConfig
 {
+    public static function getResponses(string $method = 'GET'): array
+    {
+        switch ($method) {
+            case 'POST':
+                return self::getPOSTResponses();
+            case 'DELETE':
+                return self::getDELETEResponses();
+            case 'PUT':
+                return self::getPUTResponses();
+        }
+
+        return self::getGETResponses();
+    }
+
     public static function getGETResponses(array $body = []): array
     {
         return [

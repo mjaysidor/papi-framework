@@ -49,7 +49,8 @@ abstract class RESTController
             $callback,
             $this->getPOSTPUTBody(),
             [],
-            APIResponses::getPOSTResponses()
+            APIResponses::getPOSTResponses(),
+            $this->resourceName
         );
     }
 
@@ -61,7 +62,8 @@ abstract class RESTController
             $callback,
             [],
             OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds()),
-            APIResponses::getGETResponses($this->getGETResponseBody())
+            APIResponses::getGETResponses($this->getGETResponseBody()),
+            $this->resourceName
         );
     }
 
@@ -73,7 +75,8 @@ abstract class RESTController
             $callback,
             [],
             $this->getQueryFilters(),
-            APIResponses::getGETResponses($this->getGETResponseBody())
+            APIResponses::getGETResponses($this->getGETResponseBody()),
+            $this->resourceName
         );
     }
 
@@ -85,7 +88,8 @@ abstract class RESTController
             $callback,
             [],
             OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds()),
-            APIResponses::getDELETEResponses()
+            APIResponses::getDELETEResponses(),
+            $this->resourceName
         );
     }
 
@@ -97,7 +101,8 @@ abstract class RESTController
             $callback,
             $this->getPOSTPUTBody(),
             OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds()),
-            APIResponses::getPUTResponses()
+            APIResponses::getPUTResponses(),
+            $this->resourceName
         );
     }
 }
