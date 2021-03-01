@@ -1,5 +1,4 @@
 DOING:
-    - phpcs, phpcbf, phpstan, etc.
 
 BUGS:
 
