@@ -26,7 +26,7 @@ class ResourceCRUDHandler
             return new MethodNotAllowedResponse('PUT');
         }
 
-        $body = json_decode($request->rawBody(), true);
+        $body = json_decode($request->rawBody(), true, 512, JSON_THROW_ON_ERROR);
 
         if ($preExecutionBodyModifier !== null) {
             $preExecutionBodyModifier->modify($body);
@@ -67,7 +67,7 @@ class ResourceCRUDHandler
             return new MethodNotAllowedResponse('POST');
         }
 
-        $body = json_decode($request->rawBody(), true);
+        $body = json_decode($request->rawBody(), true, 512, JSON_THROW_ON_ERROR);
 
         $validationErrors = (new Validator())->getValidationErrors($resource, $body);
 

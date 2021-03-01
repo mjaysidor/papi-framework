@@ -7,7 +7,6 @@ use papi\Documentation\OpenApiParamConverter;
 use papi\Relation\ManyToMany;
 use papi\Relation\Relation;
 use papi\Resource\Field\Id;
-use papi\Resource\Resource;
 use papi\Resource\ResourceCRUDHandler;
 use papi\Worker\App;
 

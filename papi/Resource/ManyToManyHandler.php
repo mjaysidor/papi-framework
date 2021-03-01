@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 declare(strict_types=1);
 
 namespace papi\Resource;
@@ -24,7 +24,7 @@ class ManyToManyHandler
             return new MethodNotAllowedResponse('POST');
         }
 
-        $body = json_decode($request->rawBody(), true);
+        $body = json_decode($request->rawBody(), true, 512, JSON_THROW_ON_ERROR);
 
         $validationErrors = (new ManyToManyValidator())->getValidationErrors($relation, $body);
 
@@ -39,7 +39,7 @@ class ManyToManyHandler
             return new ErrorResponse('Relation already exists');
         }
 
-        $result = $relation->create(
+        $relation->create(
             $body[$relation->rootResourceIdField],
             $body[$relation->relatedResourceIdField],
         );

@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace papi\Exception;
 
-use JetBrains\PhpStorm\Pure;
+use Exception;
 
-class NotImplementedException extends \Exception
+class NotImplementedException extends Exception
 {
     public function __construct()
     {

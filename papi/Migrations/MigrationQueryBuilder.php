@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace papi\Migrations;
 
-use JetBrains\PhpStorm\Pure;
 use papi\Migrations\Schema\SchemaDiffGenerator;
 
 class MigrationQueryBuilder

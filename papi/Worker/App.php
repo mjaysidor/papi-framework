@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ClassMethodNameMatchesFieldNameInspection */
 declare(strict_types=1);
 
 namespace papi\Worker;
@@ -7,6 +7,7 @@ use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use papi\Response\ErrorResponse;
 use papi\Response\NotFoundResponse;
+use Throwable;
 use Workerman\Connection\TcpConnection;
 use Workerman\Protocols\Http\Request;
 use Workerman\Worker;
@@ -102,7 +103,7 @@ class App extends Worker
 
                 return;
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             $connection->send(new ErrorResponse($e->getMessage()));
         }
 

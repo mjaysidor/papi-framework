@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace papi\Validator;
 
-use JetBrains\PhpStorm\Pure;
-
 class PositiveInteger extends AbstractValidator
 {
     public function getValidationErrors(string $field, mixed $data): ?string

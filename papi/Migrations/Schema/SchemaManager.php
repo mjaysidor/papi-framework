@@ -6,6 +6,7 @@ namespace papi\Migrations\Schema;
 use config\DatabaseConfig;
 use papi\CLI\ConsoleOutput;
 use papi\Config\ProjectStructure;
+use RuntimeException;
 
 class SchemaManager
 {
@@ -25,7 +26,7 @@ class SchemaManager
         $connection = pg_connect("host = $host dbname = postgres user = $user password = $password");
 
         if (empty($connection)) {
-            throw new \RuntimeException('database connection error: '.pg_last_error());
+            throw new RuntimeException('database connection error: '.pg_last_error());
         }
 
         $result = pg_query($connection, "create database $name owner $user;");
@@ -36,7 +37,7 @@ class SchemaManager
 
         $connection = pg_connect("host = $host dbname = $name user = $user password = $password");
         if (empty($connection)) {
-            throw new \RuntimeException('database connection error: '.pg_last_error());
+            throw new RuntimeException('database connection error: '.pg_last_error());
         }
 
         $migrationPathLength = strlen(ProjectStructure::getMigrationsPath()) + 35;

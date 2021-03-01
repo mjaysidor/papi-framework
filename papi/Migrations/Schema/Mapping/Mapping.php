@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection ALL */
 declare(strict_types=1);
 
 namespace papi\Migrations\Schema\Mapping;

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace papi\Utils;
 
-use JetBrains\PhpStorm\Pure;
+use RuntimeException;
 
 class PHPClassFileWriter
 {
@@ -41,15 +41,16 @@ class PHPClassFileWriter
         }
     }
 
+    /** @noinspection NestedPositiveIfStatementsInspection */
     public function write(): void
     {
         $path = $this->dir."/$this->name.php";
         if (file_exists($path)) {
-            throw new \RuntimeException(sprintf("File $path already exists"));
+            throw new RuntimeException(sprintf("File $path already exists"));
         }
         if (! is_dir($this->dir)) {
             if (! mkdir($concurrentDirectory = $this->dir, 0777, true) && ! is_dir($concurrentDirectory)) {
-                throw new \RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+                throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
             }
         }
         file_put_contents($this->dir."/$this->name.php", $this->getTemplate());

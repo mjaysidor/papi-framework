@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace papi\Callbacks;
 
+use DateTime;
+
 class AddCurrentDate implements PreExecutionBodyModifier
 {
     private string $fieldName;
@@ -19,6 +21,6 @@ class AddCurrentDate implements PreExecutionBodyModifier
 
     public function modify(array &$data): void
     {
-        $data[$this->fieldName] = (new \DateTime())->format($this->dateFormat);
+        $data[$this->fieldName] = (new DateTime())->format($this->dateFormat);
     }
 }

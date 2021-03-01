@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace papi\Validator;
 
-use JetBrains\PhpStorm\Pure;
-
 class MinLength extends AbstractValidator
 {
     private int $minLength;

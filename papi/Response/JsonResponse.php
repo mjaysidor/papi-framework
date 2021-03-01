@@ -13,6 +13,8 @@ class JsonResponse extends Response
         ?array $body = null,
         array $headers = []
     ) {
-        parent::__construct($status, array_merge($headers, ['Content-Type' => 'application/json']), json_encode($body));
+        parent::__construct($status, array_merge($headers, ['Content-Type' => 'application/json']),
+            json_encode($body, JSON_THROW_ON_ERROR)
+        );
     }
 }

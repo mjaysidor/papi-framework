@@ -1,4 +1,4 @@
-<?php
+<?php /** @noinspection TypeUnsafeComparisonInspection */
 declare(strict_types=1);
 
 namespace papi\Validator;
