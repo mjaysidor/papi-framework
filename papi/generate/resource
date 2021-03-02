@@ -9,13 +9,12 @@ use papi\Config\ProjectStructure;
 use papi\Generator\FileGenerator;
 
 $directory = ConsoleInput::getInput('Directory (inside '.ProjectStructure::getResourcesPath().'):');
-$name = ConsoleInput::getInput('Class name:');
-$customCrud = ConsoleInput::getInput('Do you want a full, predefined CRUD or customizable endpoints? (type "crud" or hit ENTER for customizable):');
-if ($customCrud === 'crud') {
-    $customCrud = false;
-} else {
-    $customCrud = true;
+if (($name = ConsoleInput::getInput('Class name:')) === '') {
+    ConsoleOutput::errorDie('Name cannot be empty');
 }
+$customCrud = ConsoleInput::getInput('Do you want a full, predefined CRUD or customizable endpoints? (type "crud" or hit ENTER for customizable):');
+$customCrud = $customCrud !== 'crud';
+
 try {
     FileGenerator::generateResource($directory, $name, $customCrud);
 } catch (Exception $exception) {

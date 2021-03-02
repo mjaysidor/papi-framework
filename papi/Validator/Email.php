@@ -5,16 +5,21 @@ namespace papi\Validator;
 
 class Email extends AbstractValidator
 {
-    public function getValidationErrors(string $field, mixed $data): ?string
+    protected function isValid(mixed $data): bool
     {
         if (is_null($data)) {
-            return null;
+            return true;
         }
 
         if (filter_var($data, FILTER_VALIDATE_EMAIL) === false) {
-            return "$field: is not a valid email address";
+            return false;
         }
 
-        return null;
+        return true;
+    }
+
+    protected function getErrorMessage(): string
+    {
+        return 'Not a valid email address';
     }
 }

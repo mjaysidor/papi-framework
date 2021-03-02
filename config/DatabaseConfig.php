@@ -5,14 +5,9 @@ namespace config;
 
 class DatabaseConfig implements \papi\Config\DatabaseConfig
 {
-    public static function getType(): string
-    {
-        return 'pgsql';
-    }
-
     public static function getName(): string
     {
-        return 'database_name';
+        return 'ihmj';
     }
 
     public static function getServer(): string
@@ -27,11 +22,11 @@ class DatabaseConfig implements \papi\Config\DatabaseConfig
 
     public static function getUsername(): string
     {
-        return 'db_username';
+        return 'mjsidor';
     }
 
     public static function getPassword(): string
     {
-        return 'db_password';
+        return '!Xplod3r';
     }
 }

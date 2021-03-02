@@ -3,13 +3,27 @@ declare(strict_types=1);
 
 namespace papi\Config;
 
-interface APIResponsesConfig
+abstract class APIResponsesConfig
 {
-    public static function getGETResponses(): array;
+    public function getResponses(string $method = 'GET'): array
+    {
+        switch ($method) {
+            case 'POST':
+                return $this->getPOSTResponses();
+            case 'DELETE':
+                return $this->getDELETEResponses();
+            case 'PUT':
+                return $this->getPUTResponses();
+        }
 
-    public static function getPOSTResponses(): array;
+        return $this->getGETResponses();
+    }
 
-    public static function getPUTResponses(): array;
+    abstract public function getGETResponses(): array;
 
-    public static function getDELETEResponses(): array;
+    abstract public function getPOSTResponses(): array;
+
+    abstract public function getPUTResponses(): array;
+
+    abstract public function getDELETEResponses(): array;
 }

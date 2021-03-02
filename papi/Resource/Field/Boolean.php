@@ -5,7 +5,7 @@ namespace papi\Resource\Field;
 
 class Boolean extends Field
 {
-    public function getDefaultProperties(): string
+    protected function getDefaultProperties(): string
     {
         return "BOOLEAN";
     }

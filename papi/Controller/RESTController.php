@@ -12,11 +12,14 @@ abstract class RESTController
 {
     protected App $api;
 
+    protected APIResponses $apiResponses;
+
     public string $resourceName;
 
     public function __construct(App $api)
     {
         $this->api = $api;
+        $this->apiResponses = new APIResponses();
     }
 
     abstract public function init(): void;
@@ -49,7 +52,7 @@ abstract class RESTController
             $callback,
             $this->getPOSTPUTBody(),
             [],
-            APIResponses::getPOSTResponses(),
+            $this->apiResponses->getPOSTResponses(),
             $this->resourceName
         );
     }
@@ -62,7 +65,7 @@ abstract class RESTController
             $callback,
             [],
             OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds()),
-            APIResponses::getGETResponses($this->getGETResponseBody()),
+            $this->apiResponses->getGETResponses($this->getGETResponseBody()),
             $this->resourceName
         );
     }
@@ -75,7 +78,7 @@ abstract class RESTController
             $callback,
             [],
             $this->getQueryFilters(),
-            APIResponses::getGETResponses($this->getGETResponseBody()),
+            $this->apiResponses->getGETResponses($this->getGETResponseBody()),
             $this->resourceName
         );
     }
@@ -88,7 +91,7 @@ abstract class RESTController
             $callback,
             [],
             OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds()),
-            APIResponses::getDELETEResponses(),
+            $this->apiResponses->getDELETEResponses(),
             $this->resourceName
         );
     }
@@ -101,7 +104,7 @@ abstract class RESTController
             $callback,
             $this->getPOSTPUTBody(),
             OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds()),
-            APIResponses::getPUTResponses(),
+            $this->apiResponses->getPUTResponses(),
             $this->resourceName
         );
     }

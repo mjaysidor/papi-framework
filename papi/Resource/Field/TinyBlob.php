@@ -5,7 +5,7 @@ namespace papi\Resource\Field;
 
 class TinyBlob extends Field
 {
-    public function getDefaultProperties(): string
+    protected function getDefaultProperties(): string
     {
         return 'TINYBLOB';
     }

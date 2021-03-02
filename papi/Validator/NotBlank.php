@@ -1,16 +1,17 @@
-<?php /** @noinspection TypeUnsafeComparisonInspection */
+<?php
 declare(strict_types=1);
 
 namespace papi\Validator;
 
 class NotBlank extends AbstractValidator
 {
-    public function getValidationErrors(string $field, mixed $data): ?string
+    protected function isValid(mixed $data): bool
     {
-        if ($data == null) {
-            return "$field: cannot be blank";
-        }
+        return $data !== null && $data !== '';
+    }
 
-        return null;
+    protected function getErrorMessage(): string
+    {
+        return 'Cannot be blank';
     }
 }

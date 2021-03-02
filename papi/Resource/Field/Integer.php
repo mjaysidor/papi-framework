@@ -13,7 +13,7 @@ class Integer extends Field
         $this->length = $length;
     }
 
-    public function getDefaultProperties(): string
+    protected function getDefaultProperties(): string
     {
         return $this->length ? "INT($this->length)" : 'INT';
     }

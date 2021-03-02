@@ -13,7 +13,7 @@ class Text extends Field
         $this->length = $length;
     }
 
-    public function getDefaultProperties(): string
+    protected function getDefaultProperties(): string
     {
         return "TEXT($this->length)";
     }

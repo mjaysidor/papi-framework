@@ -7,16 +7,21 @@ class Url extends AbstractValidator
 {
     public const URL_REGEX = '/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i';
 
-    public function getValidationErrors(string $field, mixed $data): ?string
+    protected function isValid(mixed $data): bool
     {
         if (is_null($data)) {
-            return null;
+            return true;
         }
 
         if (! is_string($data) || preg_match(self::URL_REGEX, $data) !== 1) {
-            return "$field: please provide a valid URL";
+            return false;
         }
 
-        return null;
+        return true;
+    }
+
+    protected function getErrorMessage(): string
+    {
+        return "Not a valid URL";
     }
 }

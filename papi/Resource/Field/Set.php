@@ -13,7 +13,7 @@ class Set extends Field
         $this->values = $values;
     }
 
-    public function getDefaultProperties(): string
+    protected function getDefaultProperties(): string
     {
         return "SET(".implode(",", $this->values).")";
     }

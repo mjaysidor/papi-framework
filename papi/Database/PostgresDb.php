@@ -1,9 +1,9 @@
-<?php /** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
-/** @noinspection ALL */
+<?php
+
+
+
+
+
 declare(strict_types=1);
 
 namespace papi\Database;
@@ -124,9 +124,7 @@ class PostgresDb
         string $table,
         array $where = []
     ): int {
-        $query = "-- noinspection SqlWithoutWhereForFile
-
-delete from $table";
+        $query = "delete from $table";
         $this->addFilters($query, $where);
         $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
         if ($queryParams === false) {
@@ -170,9 +168,7 @@ delete from $table";
         array $data,
         array $where
     ): int {
-        $query = "-- noinspection SqlWithoutWhere
-
-update $table set ";
+        $query = "update $table set ";
         $firstKey = array_key_first($data);
 
         foreach ($data as $key => $condition) {

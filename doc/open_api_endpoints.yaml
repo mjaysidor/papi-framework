@@ -23,20 +23,14 @@ paths:
                                 properties: {  }
                 404:
                     description: 'Resource not found'
-    /asd:
-        get:
+        post:
             tags:
                 - custom
             responses:
-                200:
-                    description: 'Retrieves resource data'
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties: {  }
-                404:
-                    description: 'Resource not found'
+                201:
+                    description: 'Resource created'
+                400:
+                    description: 'Invalid body'
     /auth:
         post:
             tags:

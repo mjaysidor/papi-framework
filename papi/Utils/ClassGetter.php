@@ -23,13 +23,9 @@ class ClassGetter
         foreach ($iterator as $file) {
             if (! $file->isDir()) {
                 $name = $file->getBasename();
-                if (str_contains($name, '.php')) {
-                    $namespace = self::getNamespace($file->getPathname());
-                    if ($namespace) {
-                        $files[] = $namespace .'\\'. str_replace('.php', '', $name);
-                    }
+                if (str_contains($name, '.php') && $namespace = self::getNamespace($file->getPathname())) {
+                    $files[] = $namespace.'\\'.str_replace('.php', '', $name);
                 }
-
             }
         }
 
@@ -43,8 +39,7 @@ class ClassGetter
         if ($handle !== false) {
             while (($line = fgets($handle)) !== false) {
                 if (str_starts_with($line, 'namespace')) {
-                    $parts = explode(' ', $line);
-                    $namespace = rtrim(trim($parts[1]), ';');
+                    $namespace = str_replace([';', PHP_EOL], '', explode(' ', $line)[1]);
                     break;
                 }
             }

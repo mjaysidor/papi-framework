@@ -5,16 +5,21 @@ namespace papi\Validator;
 
 class PositiveInteger extends AbstractValidator
 {
-    public function getValidationErrors(string $field, mixed $data): ?string
+    protected function isValid(mixed $data): bool
     {
         if (is_null($data)) {
-            return null;
+            return true;
         }
 
         if (! is_int($data) || $data < 0) {
-            return "$field: must be a positive integer";
+            return false;
         }
 
-        return null;
+        return true;
+    }
+
+    protected function getErrorMessage(): string
+    {
+        return 'Must be a positive integer';
     }
 }

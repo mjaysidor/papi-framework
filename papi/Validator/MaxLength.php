@@ -12,16 +12,21 @@ class MaxLength extends AbstractValidator
         $this->maxLength = $maxLength;
     }
 
-    public function getValidationErrors(string $field, mixed $data): ?string
+    protected function isValid(mixed $data): bool
     {
         if (is_null($data)) {
-            return null;
+            return true;
         }
 
         if (! is_string($data) || strlen($data) > $this->maxLength) {
-            return "$field: must be a string no longer than $this->maxLength chars";
+            return false;
         }
 
-        return null;
+        return true;
+    }
+
+    protected function getErrorMessage(): string
+    {
+        return "Must be a string no longer than $this->maxLength chars";
     }
 }

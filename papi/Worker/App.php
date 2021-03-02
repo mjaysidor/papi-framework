@@ -1,4 +1,4 @@
-<?php /** @noinspection ClassMethodNameMatchesFieldNameInspection */
+<?php
 declare(strict_types=1);
 
 namespace papi\Worker;

@@ -13,7 +13,7 @@ class Varchar extends Field
         $this->length = $length;
     }
 
-    public function getDefaultProperties(): string
+    protected function getDefaultProperties(): string
     {
         return "VARCHAR($this->length)";
     }

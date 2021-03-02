@@ -5,7 +5,7 @@ namespace papi\Resource\Field;
 
 class Timestamp extends Field
 {
-    public function getDefaultProperties(): string
+    protected function getDefaultProperties(): string
     {
         return 'TIMESTAMP';
     }

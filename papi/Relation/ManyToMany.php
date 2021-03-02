@@ -50,7 +50,7 @@ class ManyToMany extends Relation
     public function getMappingSchema(): array
     {
         return [
-            'id'                          => (new Id())->getDefaultProperties(),
+            'id'                          => (new Id())->getProperties(),
             $this->rootResourceIdField    => 'INT NOT NULL',
             $this->relatedResourceIdField => 'INT NOT NULL',
         ];

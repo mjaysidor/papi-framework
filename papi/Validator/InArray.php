@@ -12,16 +12,21 @@ class InArray extends AbstractValidator
         $this->array = $array;
     }
 
-    public function getValidationErrors(string $field, mixed $data): ?string
+    protected function isValid(mixed $data): bool
     {
         if (is_null($data)) {
-            return null;
+            return true;
         }
 
         if (! in_array($data, $this->array, true)) {
-            return "$field: is not in specified array of values";
+            return false;
         }
 
-        return null;
+        return true;
+    }
+
+    protected function getErrorMessage(): string
+    {
+        return 'Not in specified array of values: ['.implode(',', $this->array).']';
     }
 }

@@ -16,7 +16,7 @@ class Double extends Field
         $this->precision = $precision;
     }
 
-    public function getDefaultProperties(): string
+    protected function getDefaultProperties(): string
     {
         return "DOUBLE($this->length,$this->precision)";
     }

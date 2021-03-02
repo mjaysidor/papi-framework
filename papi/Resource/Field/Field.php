@@ -22,7 +22,7 @@ abstract class Field
         return $definition;
     }
 
-    abstract public function getDefaultProperties(): string;
+    abstract protected function getDefaultProperties(): string;
 
     abstract public function getPHPTypeName(): string;
 }

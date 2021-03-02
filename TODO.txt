@@ -11,5 +11,30 @@ BACKLOG:
     - doc
     - export papi to separate repo & composer package
 
-REFACTORING + OPTIMIZATION:
-- all of it
+REFACTORING:
+    - papi
+        - Auth
+        - Callbacks
+        + CLI
+        + Config
+        - Controller
+        - Database
+        + db
+        - Documentation
+        + Exception
+        + generate
+        - Generator
+        - Migrations
+        - migrations
+        - Relation
+        - Resource
+        + Response
+        - Utils
+            + ArrayDiff
+            + CaseConverter
+            + ClassGetter
+            - PHPClassFileWriter
+        + Validator
+        - Voter
+        - Worker
+        - DotEnv.php

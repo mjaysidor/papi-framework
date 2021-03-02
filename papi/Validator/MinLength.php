@@ -12,16 +12,21 @@ class MinLength extends AbstractValidator
         $this->minLength = $minLength;
     }
 
-    public function getValidationErrors(string $field, mixed $data): ?string
+    protected function isValid(mixed $data): bool
     {
         if (is_null($data)) {
-            return null;
+            return true;
         }
 
         if (! is_string($data) || strlen($data) < $this->minLength) {
-            return "$field: must be a string equal or longer than $this->minLength chars";
+            return false;
         }
 
-        return null;
+        return true;
+    }
+
+    protected function getErrorMessage(): string
+    {
+        return "Must be a string equal or longer than $this->minLength chars";
     }
 }

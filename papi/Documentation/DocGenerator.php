@@ -50,7 +50,7 @@ class DocGenerator
                 $doc['paths'][$path][strtolower($method)] = array_merge(
                     [
                         'tags'      => [$resourceName],
-                        'responses' => $data['responses'] ?? APIResponses::getResponses($method),
+                        'responses' => $data['responses'] ?? (new APIResponses())->getResponses($method),
                     ],
                     $requestBody,
                     isset($data['parameters']) && $data['parameters'] ? [

@@ -6,14 +6,15 @@ namespace papi\Response;
 use Workerman\Protocols\Http\Response;
 
 class JsonResponse extends Response
-
 {
     public function __construct(
         int $status = 200,
         ?array $body = null,
         array $headers = []
     ) {
-        parent::__construct($status, array_merge($headers, ['Content-Type' => 'application/json']),
+        parent::__construct(
+            $status,
+            array_merge($headers, ['Content-Type' => 'application/json']),
             json_encode($body, JSON_THROW_ON_ERROR)
         );
     }

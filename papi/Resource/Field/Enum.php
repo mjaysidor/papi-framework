@@ -13,7 +13,7 @@ class Enum extends Field
         $this->values = $values;
     }
 
-    public function getDefaultProperties(): string
+    protected function getDefaultProperties(): string
     {
         return "ENUM(".implode(",", $this->values).")";
     }

@@ -13,7 +13,7 @@ class MediumInt extends Field
         $this->length = $length;
     }
 
-    public function getDefaultProperties(): string
+    protected function getDefaultProperties(): string
     {
         return $this->length ? "MEDIUMINT($this->length)" : 'MEDIUMINT';
     }

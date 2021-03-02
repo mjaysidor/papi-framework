@@ -5,7 +5,7 @@ namespace papi\Resource\Field;
 
 class Date extends Field
 {
-    public function getDefaultProperties(): string
+    protected function getDefaultProperties(): string
     {
         return 'DATE';
     }

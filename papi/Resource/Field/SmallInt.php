@@ -13,7 +13,7 @@ class SmallInt extends Field
         $this->length = $length;
     }
 
-    public function getDefaultProperties(): string
+    protected function getDefaultProperties(): string
     {
         return $this->length ? "SMALLINT($this->length)" : 'SMALLINT';
     }

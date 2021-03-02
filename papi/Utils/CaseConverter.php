@@ -7,6 +7,6 @@ class CaseConverter
 {
     public static function camelToSnake(string $camelCaseText): string
     {
-        return strtolower((string)preg_replace('/[A-Z]([A-Z](?![a-z]))*/', '_$0', $camelCaseText));
+        return strtolower(ltrim((string)preg_replace('/[A-Z]([A-Z](?![a-z]))*/', '_$0', $camelCaseText), '_'));
     }
 }

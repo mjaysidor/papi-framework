@@ -16,7 +16,7 @@ class FloatField extends Field
         $this->precision = $precision;
     }
 
-    public function getDefaultProperties(): string
+    protected function getDefaultProperties(): string
     {
         return "FLOAT($this->length,$this->precision)";
     }

@@ -41,7 +41,6 @@ class PHPClassFileWriter
         }
     }
 
-    /** @noinspection NestedPositiveIfStatementsInspection */
     public function write(): void
     {
         $path = $this->dir."/$this->name.php";

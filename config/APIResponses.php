@@ -5,23 +5,9 @@ namespace config;
 
 use papi\Config\APIResponsesConfig;
 
-class APIResponses implements APIResponsesConfig
+class APIResponses extends APIResponsesConfig
 {
-    public static function getResponses(string $method = 'GET'): array
-    {
-        switch ($method) {
-            case 'POST':
-                return self::getPOSTResponses();
-            case 'DELETE':
-                return self::getDELETEResponses();
-            case 'PUT':
-                return self::getPUTResponses();
-        }
-
-        return self::getGETResponses();
-    }
-
-    public static function getGETResponses(array $body = []): array
+    public function getGETResponses(array $body = []): array
     {
         return [
             200 => [
@@ -41,7 +27,7 @@ class APIResponses implements APIResponsesConfig
         ];
     }
 
-    public static function getPOSTResponses(): array
+    public function getPOSTResponses(): array
     {
         return [
             201 => [
@@ -53,7 +39,7 @@ class APIResponses implements APIResponsesConfig
         ];
     }
 
-    public static function getPUTResponses(): array
+    public function getPUTResponses(): array
     {
         return [
             200 => [
@@ -68,7 +54,7 @@ class APIResponses implements APIResponsesConfig
         ];
     }
 
-    public static function getDELETEResponses(): array
+    public function getDELETEResponses(): array
     {
         return [
             204 => [

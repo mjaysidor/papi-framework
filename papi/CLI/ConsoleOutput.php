@@ -31,8 +31,11 @@ class ConsoleOutput extends Console
         self::output($string, self::COLOR_BLACK, self::BACKGROUND_BLUE);
     }
 
-    public static function output(string $string, ?string $color = null, ?string $background = null): void
-    {
+    public static function output(
+        string $string,
+        ?string $color = null,
+        ?string $background = null
+    ): void {
         $output = "\n";
 
         if (isset(self::COLORS[$color])) {

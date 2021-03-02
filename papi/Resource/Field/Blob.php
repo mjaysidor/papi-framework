@@ -13,7 +13,7 @@ class Blob extends Field
         $this->length = $length;
     }
 
-    public function getDefaultProperties(): string
+    protected function getDefaultProperties(): string
     {
         return "BLOB($this->length)";
     }

@@ -5,5 +5,16 @@ namespace papi\Validator;
 
 abstract class AbstractValidator
 {
-    abstract public function getValidationErrors(string $field, mixed $data): ?string;
+    public function getErrors(string $fieldName, mixed $data): ?string
+    {
+        if ($this->isValid($data) === false) {
+            return "$fieldName: ".$this->getErrorMessage();
+        }
+
+        return null;
+    }
+
+    abstract protected function isValid(mixed $data): bool;
+
+    abstract protected function getErrorMessage(): string;
 }

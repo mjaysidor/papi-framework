@@ -5,8 +5,6 @@ namespace papi\Config;
 
 interface DatabaseConfig
 {
-    public static function getType(): string;
-
     public static function getName(): string;
 
     public static function getServer(): string;

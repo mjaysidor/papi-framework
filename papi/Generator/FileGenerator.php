@@ -25,7 +25,7 @@ class FileGenerator
         $writer = new PHPClassFileWriter(
             $name,
             $dir ? ProjectStructure::getResourcesNamespace().'\\'.$dir : ProjectStructure::getResourcesNamespace(),
-            $dir ? ProjectStructure::getResourcesPath().'\\'.$dir : ProjectStructure::getResourcesPath(),
+            $dir ? ProjectStructure::getResourcesPath().'/'.$dir : ProjectStructure::getResourcesPath(),
             'Resource',
             null
         );
@@ -75,7 +75,7 @@ class FileGenerator
         $writer = new PHPClassFileWriter(
             $name.'Controller',
             $dir ? ProjectStructure::getControllersNamespace().'\\'.$dir : ProjectStructure::getControllersNamespace(),
-            $dir ? ProjectStructure::getControllersPath().'\\'.$dir : ProjectStructure::getControllersPath(),
+            $dir ? ProjectStructure::getControllersPath().'/'.$dir : ProjectStructure::getControllersPath(),
             'ResourceController',
             null
         );
@@ -84,7 +84,7 @@ class FileGenerator
         $writer->addImport(Request::class);
         $writer->addImport(
             $dir ? ProjectStructure::getResourcesNamespace().'\\'.$dir.'\\'.$name
-                : ProjectStructure::getResourcesNamespace().$name
+                : ProjectStructure::getResourcesNamespace().'\\'.$name
         );
         $writer->addFunction(
             'public',
@@ -118,7 +118,7 @@ class FileGenerator
         $writer = new PHPClassFileWriter(
             $name,
             $dir ? ProjectStructure::getControllersNamespace().'\\'.$dir : ProjectStructure::getControllersNamespace(),
-            $dir ? ProjectStructure::getControllersPath().'\\'.$dir : ProjectStructure::getControllersPath(),
+            $dir ? ProjectStructure::getControllersPath().'/'.$dir : ProjectStructure::getControllersPath(),
             'Controller',
             null
         );

@@ -9,7 +9,9 @@ use papi\Config\ProjectStructure;
 use papi\Generator\FileGenerator;
 
 $directory = ConsoleInput::getInput('Directory (inside '.ProjectStructure::getControllersPath().'):');
-$name = ConsoleInput::getInput('Class name:');
+if (($name = ConsoleInput::getInput('Class name:')) === '') {
+    ConsoleOutput::errorDie('Name cannot be empty');
+}
 try {
     FileGenerator::generateController($directory, $name);
 } catch (Exception $exception) {

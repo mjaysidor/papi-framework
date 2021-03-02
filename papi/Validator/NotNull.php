@@ -5,12 +5,13 @@ namespace papi\Validator;
 
 class NotNull extends AbstractValidator
 {
-    public function getValidationErrors(string $field, mixed $data): ?string
+    protected function isValid(mixed $data): bool
     {
-        if (is_null($data)) {
-            return "$field: cannot be null";
-        }
+        return ! is_null($data);
+    }
 
-        return null;
+    protected function getErrorMessage(): string
+    {
+        return 'Cannot be null';
     }
 }

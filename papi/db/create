@@ -6,5 +6,5 @@ use papi\Migrations\Schema\SchemaManager;
 
 require 'vendor/autoload.php';
 
-SchemaManager::createDb();
-ConsoleOutput::success("Database created (pgsql)");
+(new SchemaManager())->createDb();
+ConsoleOutput::success("Database created!");

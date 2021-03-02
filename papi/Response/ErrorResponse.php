@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace papi\Response;
 
 class ErrorResponse extends JsonResponse
-
 {
     public function __construct(
         string $errorMessage

@@ -13,7 +13,7 @@ class TinyInt extends Field
         $this->length = $length;
     }
 
-    public function getDefaultProperties(): string
+    protected function getDefaultProperties(): string
     {
         return $this->length ? "TINYINT($this->length)" : 'TINYINT';
     }

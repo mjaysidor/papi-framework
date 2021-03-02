@@ -17,16 +17,21 @@ class Regex extends AbstractValidator
         $this->errorLabel = $errorLabel;
     }
 
-    public function getValidationErrors(string $field, mixed $data): ?string
+    protected function isValid(mixed $data): bool
     {
         if (is_null($data)) {
-            return null;
+            return true;
         }
 
         if (! is_string($data) || preg_match($this->regex, $data) !== 1) {
-            return "$field: please provide a valid input - $this->errorLabel";
+            return false;
         }
 
-        return null;
+        return true;
+    }
+
+    protected function getErrorMessage(): string
+    {
+        return "Not a valid input - $this->errorLabel";
     }
 }
