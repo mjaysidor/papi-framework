@@ -7,7 +7,6 @@ use config\DatabaseConfig;
 use papi\CLI\ConsoleOutput;
 use papi\Config\ProjectStructure;
 use papi\Resource\Field\Id;
-use RuntimeException;
 
 class SchemaManager
 {
@@ -29,7 +28,7 @@ class SchemaManager
         $this->user = DatabaseConfig::getUsername();
         $this->password = DatabaseConfig::getPassword();
         $this->host = DatabaseConfig::getServer();
-        $this->getPostgresConnection();
+        $this->initConnection("host = $this->host dbname = postgres user = $this->user password = $this->password");
     }
 
     public function dropDb(): void
@@ -40,7 +39,7 @@ class SchemaManager
     public function createDb(): void
     {
         $this->query("create database $this->name owner $this->user;");
-        $this->getDbConnection();
+        $this->initConnection("host = $this->host dbname = $this->name user = $this->user password = $this->password");
         $this->createMigrationsTable();
     }
 
@@ -54,23 +53,10 @@ class SchemaManager
         );
     }
 
-    private function getPostgresConnection(): void
+    private function initConnection(string $params): void
     {
-        $this->connection = pg_connect(
-            "host = $this->host dbname = postgres user = $this->user password = $this->password"
-        );
-        if (empty($this->connection)) {
-            throw new RuntimeException('database connection error: '.pg_last_error());
-        }
-    }
-
-    private function getDbConnection(): void
-    {
-        $this->connection = pg_connect(
-            "host = $this->host dbname = $this->name user = $this->user password = $this->password"
-        );
-        if (empty($this->connection)) {
-            throw new RuntimeException('database connection error: '.pg_last_error());
+        if (empty($this->connection = pg_connect($params))) {
+            ConsoleOutput::errorDie('database connection error: '.pg_last_error());
         }
     }
 

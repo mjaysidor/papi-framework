@@ -19,7 +19,7 @@ class DbMapping extends Mapping
                 1
             )[0]['current_state'] ?? [];
 
-        if ($lastMigration) {
+        if (! empty($lastMigration)) {
             $lastMigration = json_decode(
                 $lastMigration,
                 true,

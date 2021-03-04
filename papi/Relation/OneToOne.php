@@ -10,7 +10,7 @@ class OneToOne extends Relation
         return $this->relatedTableName."_id";
     }
 
-    public function getMappingSchema(): array
+    public function getColumnDefinitions(): array
     {
         return [$this->getRelationFieldName() => "INT"];
     }

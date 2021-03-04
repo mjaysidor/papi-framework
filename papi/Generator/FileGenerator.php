@@ -67,7 +67,7 @@ class FileGenerator
         self::generateResourceController($dir, $name, $customEndpoints);
     }
 
-    public static function generateResourceController(
+    private static function generateResourceController(
         string $dir,
         string $name,
         bool $customEndpoints = true

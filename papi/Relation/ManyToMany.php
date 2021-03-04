@@ -47,7 +47,7 @@ class ManyToMany extends Relation
         return $this->rootTableName.'_'.$this->relatedTableName;
     }
 
-    public function getMappingSchema(): array
+    public function getColumnDefinitions(): array
     {
         return [
             'id'                          => (new Id())->getProperties(),

@@ -1,9 +1,5 @@
 <?php
 
-
-
-
-
 declare(strict_types=1);
 
 namespace papi\Database;
@@ -49,12 +45,18 @@ class PostgresDb
     public function query(
         string $sql
     ): bool {
-        return pg_query($this->connection, $sql) !== false;
+        $result = pg_query($this->connection, $sql);
+        if ($result === false) {
+            throw $this->throwError();
+        }
+
+        return true;
     }
 
     public function throwError(): \RuntimeException
     {
         $error = pg_last_error($this->connection);
+
         return new \RuntimeException('DB ERROR: '.$error);
     }
 

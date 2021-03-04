@@ -3,13 +3,13 @@ declare(strict_types=1);
 
 namespace papi\Migrations\Schema;
 
-use papi\Migrations\Schema\Mapping\CurrentMapping;
+use papi\Migrations\Schema\Mapping\CodeMapping;
 use papi\Migrations\Schema\Mapping\DbMapping;
 use papi\Utils\ArrayDiff;
 
 class SchemaDiffGenerator
 {
-    private CurrentMapping $currentMapping;
+    private CodeMapping $codeMapping;
 
     private DbMapping $dbMapping;
 
@@ -33,7 +33,7 @@ class SchemaDiffGenerator
 
     public function __construct()
     {
-        $this->currentMapping = new CurrentMapping();
+        $this->codeMapping = new CodeMapping();
         $this->dbMapping = new DbMapping();
         $this->initTablesDiff();
         $this->initFKsDiff();
@@ -42,27 +42,26 @@ class SchemaDiffGenerator
 
     private function initTablesDiff(): void
     {
-        $currentTables = $this->currentMapping->getTables();
+        $codeMappingTables = $this->codeMapping->getTables();
         $dbTables = $this->dbMapping->getTables();
 
-        // remove unchanged tables
-        ArrayDiff::removeArrayCommonElements($currentTables, $dbTables);
+        ArrayDiff::removeArrayCommonElements($codeMappingTables, $dbTables);
 
         // get tables & columns to remove
         foreach ($dbTables as $table => $fields) {
-            if (! isset($currentTables[$table])) {
+            if (! isset($codeMappingTables[$table])) {
                 $this->tablesToRemove[] = $table;
                 continue;
             }
             foreach ($fields as $field => $options) {
-                if (! isset($currentTables[$table][$field])) {
+                if (! isset($codeMappingTables[$table][$field])) {
                     $this->columnsToRemove[$table][] = $field;
                 }
             }
         }
 
         // get tables & columns to create
-        foreach ($currentTables as $table => $fields) {
+        foreach ($codeMappingTables as $table => $fields) {
             if (! isset($dbTables[$table])) {
                 $this->tablesToCreate[$table] = $fields;
                 continue;
@@ -79,21 +78,21 @@ class SchemaDiffGenerator
 
     private function initFKsDiff(): void
     {
-        $currentFKs = $this->currentMapping->getFKs();
+        $codeFKs = $this->codeMapping->getFKs();
         $dbFKs = $this->dbMapping->getFKs();
-        ArrayDiff::removeArrayCommonElements($currentFKs, $dbFKs);
-        $this->foreignKeysToCreate = $currentFKs;
+        ArrayDiff::removeArrayCommonElements($codeFKs, $dbFKs);
+        $this->foreignKeysToCreate = $codeFKs;
         $this->foreignKeysToRemove = $dbFKs;
     }
 
     private function initIndexesDiff(): void
     {
-        $this->indexesToRemove = array_diff($this->dbMapping->getIndexes(), $this->currentMapping->getIndexes());
-        $this->indexesToCreate = array_diff($this->currentMapping->getIndexes(), $this->dbMapping->getIndexes());
+        $this->indexesToRemove = array_diff($this->dbMapping->getIndexes(), $this->codeMapping->getIndexes());
+        $this->indexesToCreate = array_diff($this->codeMapping->getIndexes(), $this->dbMapping->getIndexes());
     }
 
-    public function getCurrentMapping(): CurrentMapping
+    public function getCodeMapping(): CodeMapping
     {
-        return $this->currentMapping;
+        return $this->codeMapping;
     }
 }

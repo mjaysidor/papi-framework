@@ -39,7 +39,7 @@ abstract class Relation
 
     abstract public function getRelationFieldName(): ?string;
 
-    abstract public function getMappingSchema(): array;
+    abstract public function getColumnDefinitions(): array;
 
     abstract public function getForeignKeyDefinition(): array;
 

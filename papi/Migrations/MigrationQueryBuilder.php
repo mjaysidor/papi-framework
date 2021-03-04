@@ -14,9 +14,9 @@ class MigrationQueryBuilder
         $this->diffGenerator = new SchemaDiffGenerator();
     }
 
-    public function getCurrentMappingArray(): ?array
+    public function getCodeMappingArray(): ?array
     {
-        return $this->diffGenerator->getCurrentMapping()->toArray();
+        return $this->diffGenerator->getCodeMapping()->toArray();
     }
 
     public function getSqlStatements(): array
@@ -143,8 +143,8 @@ class MigrationQueryBuilder
         string $definition
     ): string {
         $definition = str_ireplace('UNIQUE ', '', $definition);
-        $definitionArray = explode(' ', $definition);
+        $name = explode(' ', $definition)[1];
 
-        return "drop index $definitionArray[1]";
+        return "drop index $name";
     }
 }
