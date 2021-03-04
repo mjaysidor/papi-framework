@@ -33,10 +33,10 @@ class PHPClassFileWriter
         $this->name = $name;
         $this->namespace = $namespace;
         $this->dir = $dir;
-        if ($extends) {
+        if ($extends !== null) {
             $this->extends = "extends $extends";
         }
-        if ($implements) {
+        if ($implements !== null) {
             $this->implements = "implements $implements";
         }
     }
@@ -45,11 +45,11 @@ class PHPClassFileWriter
     {
         $path = $this->dir."/$this->name.php";
         if (file_exists($path)) {
-            throw new RuntimeException(sprintf("File $path already exists"));
+            throw new RuntimeException("File $path already exists");
         }
         if (! is_dir($this->dir)) {
             if (! mkdir($concurrentDirectory = $this->dir, 0777, true) && ! is_dir($concurrentDirectory)) {
-                throw new RuntimeException(sprintf('Directory "%s" was not created', $concurrentDirectory));
+                throw new RuntimeException("Directory $concurrentDirectory was not created");
             }
         }
         file_put_contents($this->dir."/$this->name.php", $this->getTemplate());
