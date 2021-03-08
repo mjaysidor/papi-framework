@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace config;
 
-use papi\Config\DocumentationConfigGenerator;
+use papi\Documentation\DocumentationConfigGenerator;
 
 class DocumentationConfig extends DocumentationConfigGenerator
 {

@@ -19,7 +19,7 @@ abstract class AuthController
 
     public function init(): void
     {
-        $this->api->addDocumentedRoute(
+        $this->api->addRoute(
             'POST',
             '/auth',
             function ($request) {

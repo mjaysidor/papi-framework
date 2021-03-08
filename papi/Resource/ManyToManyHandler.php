@@ -20,10 +20,6 @@ class ManyToManyHandler
         ManyToMany $relation,
         Request $request
     ): JsonResponse {
-        if (! RequestMethodChecker::isPost($request)) {
-            return new MethodNotAllowedResponse('POST');
-        }
-
         $body = json_decode($request->rawBody(), true, 512, JSON_THROW_ON_ERROR);
 
         $validationErrors = (new ManyToManyValidator())->getValidationErrors($relation, $body);
@@ -53,13 +49,8 @@ class ManyToManyHandler
     public static function deleteRelation(
         ManyToMany $relation,
         string $rootResourceId,
-        string $relatedResourceId,
-        Request $request
+        string $relatedResourceId
     ): JsonResponse {
-        if (! RequestMethodChecker::isDelete($request)) {
-            return new MethodNotAllowedResponse('DELETE');
-        }
-
         $response = $relation->delete(
             $rootResourceId,
             $relatedResourceId
@@ -78,10 +69,6 @@ class ManyToManyHandler
         ?int $pagination = Paginator::CURSOR_PAGINATION,
         int $paginationItems = 10
     ): JsonResponse {
-        if (! RequestMethodChecker::isGet($request)) {
-            return new MethodNotAllowedResponse('GET');
-        }
-
         $filters = [];
 
         if ($stringQuery = $request->queryString()) {

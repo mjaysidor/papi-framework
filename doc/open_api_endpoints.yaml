@@ -5,14 +5,12 @@ info:
     version: '1.0'
 tags:
     -
-        name: custom
+        name: Other
     -
         name: Authentication
 paths:
     /:
         get:
-            tags:
-                - custom
             responses:
                 200:
                     description: 'Retrieves resource data'
@@ -23,18 +21,20 @@ paths:
                                 properties: {  }
                 404:
                     description: 'Resource not found'
-        post:
             tags:
-                - custom
-            responses:
-                201:
-                    description: 'Resource created'
-                400:
-                    description: 'Invalid body'
+                - Other
     /auth:
         post:
-            tags:
-                - Authentication
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                username:
+                                    type: string
+                                password:
+                                    type: string
             responses:
                 200:
                     description: 'Retrieves resource data'
@@ -46,13 +46,5 @@ paths:
                                     token: { type: string }
                 403:
                     description: 'Invalid credentials'
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                username:
-                                    type: string
-                                password:
-                                    type: string
+            tags:
+                - Authentication

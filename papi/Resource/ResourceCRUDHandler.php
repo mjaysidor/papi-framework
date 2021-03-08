@@ -9,7 +9,7 @@ use papi\Database\Paginator\Paginator;
 use papi\Database\Paginator\PaginatorFactory;
 use papi\Response\ErrorResponse;
 use papi\Response\JsonResponse;
-use papi\Response\MethodNotAllowedResponse;
+use papi\Response\NotFoundResponse;
 use papi\Response\ValidationErrorResponse;
 use Workerman\Protocols\Http\Request;
 
@@ -22,10 +22,6 @@ class ResourceCRUDHandler
         ?PreExecutionBodyModifier $preExecutionBodyModifier = null,
         ?PostExecutionHandler $postExecutionHandler = null
     ): JsonResponse {
-        if (! RequestMethodChecker::isPut($request)) {
-            return new MethodNotAllowedResponse('PUT');
-        }
-
         $body = json_decode($request->rawBody(), true, 512, JSON_THROW_ON_ERROR);
 
         if ($preExecutionBodyModifier !== null) {
@@ -54,7 +50,7 @@ class ResourceCRUDHandler
             return new JsonResponse(200, $body);
         }
 
-        return new JsonResponse(404);
+        return new NotFoundResponse();
     }
 
     public static function create(
@@ -63,10 +59,6 @@ class ResourceCRUDHandler
         ?PreExecutionBodyModifier $preExecutionBodyModifier = null,
         ?PostExecutionHandler $postExecutionHandler = null
     ): JsonResponse {
-        if (! RequestMethodChecker::isPost($request)) {
-            return new MethodNotAllowedResponse('POST');
-        }
-
         $body = json_decode($request->rawBody(), true, 512, JSON_THROW_ON_ERROR);
 
         $validationErrors = (new Validator())->getValidationErrors($resource, $body);
@@ -101,38 +93,28 @@ class ResourceCRUDHandler
 
     public static function delete(
         Resource $resource,
-        int $id,
-        Request $request
+        int $id
     ): JsonResponse {
-        if (! RequestMethodChecker::isDelete($request)) {
-            return new MethodNotAllowedResponse('DELETE');
-        }
-
         $response = $resource->delete($id);
 
         if ($response) {
             return new JsonResponse(204);
         }
 
-        return new JsonResponse(404);
+        return new NotFoundResponse();
     }
 
     public static function getById(
         Resource $resource,
-        int $id,
-        Request $request
+        int $id
     ): JsonResponse {
-        if (! RequestMethodChecker::isGet($request)) {
-            return new MethodNotAllowedResponse('GET');
-        }
-
         $response = $resource->getById($id);
 
         if ($response) {
             return new JsonResponse(200, $response);
         }
 
-        return new JsonResponse(404);
+        return new NotFoundResponse();
     }
 
     public static function getCollection(
@@ -141,10 +123,6 @@ class ResourceCRUDHandler
         ?int $pagination = Paginator::CURSOR_PAGINATION,
         int $paginationItems = 10
     ): JsonResponse {
-        if (! RequestMethodChecker::isGet($request)) {
-            return new MethodNotAllowedResponse('GET');
-        }
-
         $filters = [];
 
         if ($stringQuery = $request->queryString()) {

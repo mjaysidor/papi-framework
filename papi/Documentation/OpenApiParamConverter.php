@@ -26,13 +26,11 @@ class OpenApiParamConverter
     {
         $filters = [];
         foreach ($params as $filter) {
-            $data = [
-                'name' => $filter,
-                'in'   => $in,
-            ];
-
             $filters[] = array_merge(
-                $data,
+                [
+                    'name' => $filter,
+                    'in'   => $in,
+                ],
                 self::OPTIONS[$in]
             );
         }

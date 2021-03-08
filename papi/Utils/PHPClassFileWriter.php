@@ -137,10 +137,14 @@ $vars$functions
         $this->functions[] = $text;
     }
 
-    public function addVariable(string $access, string $type, string $name, mixed $defaultValue = null): void
-    {
+    public function addVariable(
+        string $access,
+        string $type,
+        string $name,
+        mixed $defaultValue = null
+    ): void {
         $var = "$access $type $$name";
-        if ($defaultValue) {
+        if ($defaultValue !== null) {
             if (is_string($defaultValue)) {
                 $defaultValue = "'$defaultValue'";
             }

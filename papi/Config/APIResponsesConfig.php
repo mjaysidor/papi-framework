@@ -8,6 +8,8 @@ abstract class APIResponsesConfig
     public function getResponses(string $method = 'GET'): array
     {
         switch ($method) {
+            case 'GET':
+                return $this->getGETResponses();
             case 'POST':
                 return $this->getPOSTResponses();
             case 'DELETE':
@@ -16,7 +18,7 @@ abstract class APIResponsesConfig
                 return $this->getPUTResponses();
         }
 
-        return $this->getGETResponses();
+        return [];
     }
 
     abstract public function getGETResponses(): array;

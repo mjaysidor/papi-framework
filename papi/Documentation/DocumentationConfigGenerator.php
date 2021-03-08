@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace papi\Config;
+namespace papi\Documentation;
 
 abstract class DocumentationConfigGenerator
 {

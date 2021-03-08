@@ -8,8 +8,10 @@ use Workerman\Protocols\Http\Request;
 
 class AuthVoter
 {
-    public static function hasValidToken(string $secret, Request $request): bool
-    {
+    public static function hasValidToken(
+        string $secret,
+        Request $request
+    ): bool {
         return JWT::isValid($secret, $request->header('Authorization'));
     }
 

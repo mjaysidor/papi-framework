@@ -6,6 +6,7 @@ namespace papi\Worker;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use papi\Response\ErrorResponse;
+use papi\Response\MethodNotAllowedResponse;
 use papi\Response\NotFoundResponse;
 use Throwable;
 use Workerman\Connection\TcpConnection;
@@ -15,61 +16,61 @@ use function FastRoute\simpleDispatcher;
 
 class App extends Worker
 {
-    protected array $routeInfo = [];
+    /**
+     * @var Route[]
+     */
+    protected array $routes = [];
 
-    private array $callbacksCache = [];
+    /**
+     * @var callable[]
+     */
+    private array $handlerCache = [];
 
     protected Dispatcher $dispatcher;
 
-    public function __construct($socket_name = '', array $context_option = [])
-    {
-        parent::__construct($socket_name, $context_option);
-        $this->onMessage = [$this, 'onMessage'];
+    public function __construct(
+        string $protocolAddress = 'http://0.0.0.0:3000',
+        array $context = []
+    ) {
+        parent::__construct($protocolAddress, $context);
+        $this->onMessage = [$this, 'onRequest'];
     }
 
-    public function getRouteInfo(): array
+    public function getRoutes(): array
     {
-        return $this->routeInfo;
+        return $this->routes;
     }
 
-    public function addDocumentedRoute(
-        string $method,
+    public function addRoute(
+        mixed $method,
         string $path,
         callable $callback,
         array $requestBody = [],
         array $urlParameters = [],
         array $responses = [],
-        ?string $resourceName = null
-    ): void {
-        $this->routeInfo[$method][] = [
-            $path,
-            $callback,
-            'resourceName' => $resourceName,
-            'responses'    => $responses,
-            'body'         => $requestBody,
-            'parameters'   => $urlParameters,
-        ];
-    }
-
-    public function addRoute(
-        string $method,
-        string $path,
-        callable $callback
+        string $resourceName = 'Other'
     ): void {
         $methods = (array)$method;
         foreach ($methods as $m) {
-            $this->routeInfo[$m][] = [$path, $callback];
+            $this->routes[]
+                = new Route(
+                $path,
+                $m,
+                $callback,
+                $resourceName,
+                $responses,
+                $requestBody,
+                $urlParameters
+            );
         }
     }
 
     public function start(): void
     {
         $this->dispatcher = simpleDispatcher(
-            function (RouteCollector $r) {
-                foreach ($this->routeInfo as $method => $endpoints) {
-                    foreach ($endpoints as $data) {
-                        $r->addRoute($method, $data[0], $data[1]);
-                    }
+            function (RouteCollector $router) {
+                foreach ($this->routes as $route) {
+                    $router->addRoute($route->getMethod(), $route->getPath(), $route->getHandler());
                 }
             }
         );
@@ -77,36 +78,49 @@ class App extends Worker
         Worker::runAll();
     }
 
-    public function onMessage(TcpConnection $connection, Request $request): void
-    {
+    public function onRequest(
+        TcpConnection $connection,
+        Request $request
+    ): void {
         try {
             $method = $request->method();
 
-            $callback = $this->callbacksCache[$request->path().$method] ?? null;
-            if ($callback) {
-                $connection->send($callback($request));
+            if ($handler = $this->handlerCache[$request->path().$method] ?? null) {
+                $connection->send($handler($request));
 
                 return;
             }
 
-            $ret = $this->dispatcher->dispatch($method, $request->path());
-            if ($ret[0] === Dispatcher::FOUND) {
-                $callback = $ret[1];
-                if (! empty($ret[2])) {
-                    $args = array_values($ret[2]);
-                    $callback = static function ($request) use ($args, $callback) {
-                        return $callback($request, ... $args);
+            $route = $this->dispatcher->dispatch($method, $request->path());
+            $status = $route[0];
+
+            if ($status === Dispatcher::FOUND) {
+                [, $handler, $argumentList] = $route;
+                if (! empty($argumentList)) {
+                    $args = array_values($argumentList);
+                    $handler = static function ($request) use ($args, $handler) {
+                        return $handler($request, ... $args);
                     };
                 }
-                $this->callbacksCache[$request->path().$method] = $callback;
-                $connection->send($callback($request));
+                $this->handlerCache[$request->path().$method] = $handler;
+                $connection->send($handler($request));
+
+                return;
+            }
+
+            if ($status === Dispatcher::METHOD_NOT_ALLOWED) {
+                $connection->send(new MethodNotAllowedResponse(implode(',', $route[1])));
+
+                return;
+            }
+
+            if ($status === Dispatcher::NOT_FOUND) {
+                $connection->send(new NotFoundResponse());
 
                 return;
             }
         } catch (Throwable $e) {
             $connection->send(new ErrorResponse($e->getMessage()));
         }
-
-        $connection->send(new NotFoundResponse());
     }
 }

@@ -46,7 +46,7 @@ abstract class RESTController
 
     protected function post(Closure $callback): void
     {
-        $this->api->addDocumentedRoute(
+        $this->api->addRoute(
             'POST',
             $this->getEndpoint(),
             $callback,
@@ -59,7 +59,7 @@ abstract class RESTController
 
     protected function getById(Closure $callback): void
     {
-        $this->api->addDocumentedRoute(
+        $this->api->addRoute(
             'GET',
             $this->getEndpointWithId(),
             $callback,
@@ -72,7 +72,7 @@ abstract class RESTController
 
     protected function get(Closure $callback): void
     {
-        $this->api->addDocumentedRoute(
+        $this->api->addRoute(
             'GET',
             $this->getEndpoint(),
             $callback,
@@ -85,7 +85,7 @@ abstract class RESTController
 
     protected function delete(Closure $callback): void
     {
-        $this->api->addDocumentedRoute(
+        $this->api->addRoute(
             'DELETE',
             $this->getEndpointWithId(),
             $callback,
@@ -98,7 +98,7 @@ abstract class RESTController
 
     protected function put(Closure $callback): void
     {
-        $this->api->addDocumentedRoute(
+        $this->api->addRoute(
             'PUT',
             $this->getEndpointWithId(),
             $callback,

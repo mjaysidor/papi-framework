@@ -8,12 +8,12 @@ use papi\Documentation\DocGenerator;
 use papi\DotEnv;
 use papi\Worker\App;
 
-$api = new App('http://0.0.0.0:3000');
+$api = new App();
 $api->count = 4;
 DotEnv::load('.env.local');
 DotEnv::load();
 (new ControllerInitializer)->init($api);
-DocGenerator::generateOpenAPIDocs(ProjectStructure::getOpenApiDocPath(), $api->getRouteInfo());
+DocGenerator::generateOpenAPIDocs(ProjectStructure::getOpenApiDocPath(), $api->getRoutes());
 
 $api->start();
 

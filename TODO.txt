@@ -21,6 +21,9 @@ REFACTORING:
         - Database
         + db
         - Documentation
+            + DocGenerator
+            + DocumentationConfigGenerator
+            - OpenApiParamConverter (rozkminmić jak to działa z konotrolerami itp.)
         + Exception
         + generate
         + Generator
@@ -29,9 +32,8 @@ REFACTORING:
         - Relation
         - Resource
         + Response
-        - Utils
-            - PHPClassFileWriter
+        + Utils
         + Validator
         - Voter
-        - Worker
+        + Worker
         + DotEnv.php

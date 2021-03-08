@@ -3,61 +3,37 @@ declare(strict_types=1);
 
 namespace papi\Documentation;
 
-use config\APIResponses;
 use config\DocumentationConfig;
+use papi\Worker\Route;
 use Symfony\Component\Yaml\Yaml;
 
 class DocGenerator
 {
+    /**
+     * @param string  $directory
+     * @param Route[] $routes
+     */
     public static function generateOpenAPIDocs(string $directory, array $routes): void
     {
         $doc = [];
 
-        foreach ($routes as $method => $route) {
-            foreach ($route as $data) {
-                $path = $data[0];
-                $resourceName = $data['resourceName'] ?? 'custom';
-                $tagExists = false;
+        foreach ($routes as $route) {
+            $tagExists = false;
+            $tag = $route->getTag();
 
-                foreach ($doc['tags'] ?? [] as $tag) {
-                    if ($tag['name'] === $resourceName) {
-                        $tagExists = true;
-                    }
+            foreach ($doc['tags'] ?? [] as $t) {
+                if ($t['name'] === $tag) {
+                    $tagExists = true;
                 }
-
-                if (! $tagExists) {
-                    $doc['tags'][] = [
-                        'name' => $resourceName,
-                    ];
-                }
-
-                $requestBody = [];
-
-                if (isset($data['body'])) {
-                    $requestBody = [
-                        'requestBody' => [
-                            'content' => [
-                                'application/json' => [
-                                    'schema' => [
-                                        'type'       => 'object',
-                                        'properties' => $data['body'],
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ];
-                }
-                $doc['paths'][$path][strtolower($method)] = array_merge(
-                    [
-                        'tags'      => [$resourceName],
-                        'responses' => $data['responses'] ?? (new APIResponses())->getResponses($method),
-                    ],
-                    $requestBody,
-                    isset($data['parameters']) && $data['parameters'] ? [
-                        'parameters' => $data['parameters'] ?? [],
-                    ] : []
-                );
             }
+
+            if ($tagExists === false) {
+                $doc['tags'][] = [
+                    'name' => $tag,
+                ];
+            }
+
+            $doc['paths'][$route->getPath()][strtolower($route->getMethod())] = $route->getRouteOpenApiDoc();
         }
 
         if (isset($doc['paths'])) {

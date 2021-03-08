@@ -106,13 +106,13 @@ abstract class ResourceController extends RESTController
 
         $this->delete(
             function ($request, $id) {
-                return ResourceCRUDHandler::delete($this->resource, $id, $request);
+                return ResourceCRUDHandler::delete($this->resource, $id);
             }
         );
 
         $this->getById(
             function ($request, $id) {
-                return ResourceCRUDHandler::getById($this->resource, $id, $request);
+                return ResourceCRUDHandler::getById($this->resource, $id);
             }
         );
 
