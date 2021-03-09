@@ -3,38 +3,28 @@ declare(strict_types=1);
 
 namespace papi\Voter;
 
+use config\AuthConfig;
 use papi\Auth\JWT;
 use Workerman\Protocols\Http\Request;
 
 class AuthVoter
 {
     public static function hasValidToken(
-        string $secret,
         Request $request
     ): bool {
-        return JWT::isValid($secret, $request->header('Authorization'));
+        return JWT::isValid(AuthConfig::getSecret(), $request->header('Authorization'));
     }
 
     public static function hasAttributesInPayload(
-        string $secret,
         Request $request,
         array $attributes
     ): bool {
         $token = $request->header('Authorization');
 
-        if (empty($token) || ! JWT::isValid($secret, $token)) {
+        if (empty($token) || ! JWT::isValid(AuthConfig::getSecret(), $token)) {
             return false;
         }
 
-        $payload = JWT::getPayload($token);
-        foreach ($attributes as $key => $attribute) {
-            if (! (isset($payload[$key])
-                   && $payload[$key] === $attribute
-            )) {
-                return false;
-            }
-        }
-
-        return true;
+        return array_intersect_assoc($attributes, JWT::getPayload($token)) === $attributes;
     }
 }

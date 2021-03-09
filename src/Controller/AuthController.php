@@ -6,21 +6,17 @@ namespace App\Controller;
 
 class AuthController extends \papi\Auth\AuthController
 {
-    protected function checkCredentials(?array $body): bool
+    protected function credentialsValid(?array $requestBody): bool
     {
         return true;
     }
 
-    protected function getPayload(?array $body): array
+    protected function getPayload(?array $requestBody): array
     {
         return [
-            'user_id' => 1,
+            'user_id' => 2,
+            'user_id_3' => '3',
         ];
-    }
-
-    protected function getSecret(): string
-    {
-        return 'secret';
     }
 
     protected function getOpenApiDocRequestBody(): array

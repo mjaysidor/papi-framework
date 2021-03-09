@@ -65,4 +65,28 @@ class APIResponses extends APIResponsesConfig
             ],
         ];
     }
+
+    public function getAuthResponses(): array
+    {
+        return [
+            200 => [
+                'description' => 'Returns JSON Web Token (JWT)',
+                'content'     => [
+                    'application/json' => [
+                        'schema' => [
+                            'type'       => 'object',
+                            'properties' => [
+                                'token' => [
+                                    'type' => 'string',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            403 => [
+                'description' => 'Invalid credentials',
+            ],
+        ];
+    }
 }

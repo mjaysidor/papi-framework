@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace papi\Controller;
 
-use papi\Documentation\OpenApiParamConverter;
+use papi\Documentation\RouteParametersDocGenerator;
 use papi\Relation\ManyToMany;
 use papi\Resource\Field\Id;
 use papi\Worker\App;
@@ -26,7 +26,7 @@ abstract class ManyToManyController extends RESTController
         return "/$this->resourceName";
     }
 
-    public function getEndpointIds(): array
+    public function getRouteParameters(): array
     {
         return [
             $this->getRelation()->rootResourceIdField,
@@ -53,9 +53,9 @@ abstract class ManyToManyController extends RESTController
 
     public function getQueryFilters(): array
     {
-        return OpenApiParamConverter::convertArrayToDoc(
+        return RouteParametersDocGenerator::generate(
             $this->relation->getFields(),
-            OpenApiParamConverter::QUERY
+            RouteParametersDocGenerator::QUERY
         );
     }
 }

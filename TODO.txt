@@ -1,4 +1,5 @@
 DOING:
+    - make user command
 
 BUGS:
 
@@ -13,27 +14,24 @@ BACKLOG:
 
 REFACTORING:
     - papi
-        - Auth
+        - Controller
+        - Database
+        - Relation
+        - Resource
+        + Auth
         + Callbacks
         + CLI
         + Config
-        - Controller
-        - Database
         + db
-        - Documentation
-            + DocGenerator
-            + DocumentationConfigGenerator
-            - OpenApiParamConverter (rozkminmić jak to działa z konotrolerami itp.)
+        + Documentation
         + Exception
         + generate
         + Generator
         + Migrations
         + migrations
-        - Relation
-        - Resource
         + Response
         + Utils
         + Validator
-        - Voter
+        + Voter
         + Worker
         + DotEnv.php

@@ -3,11 +3,17 @@ declare(strict_types=1);
 
 namespace papi\Auth;
 
+use config\APIResponses;
+use config\AuthConfig;
 use papi\Response\AccessDeniedResponse;
 use papi\Response\JsonResponse;
 use papi\Response\OKResponse;
 use papi\Worker\App;
 
+/**
+ * Creates endpoint used for generating JSON Web Tokens for validated users
+ * More at: https://jwt.io/introduction
+ */
 abstract class AuthController
 {
     protected App $api;
@@ -27,44 +33,40 @@ abstract class AuthController
             },
             $this->getOpenApiDocRequestBody(),
             [],
-            [
-                200 => [
-                    'description' => 'Retrieves resource data',
-                    'content'     => [
-                        'application/json' => [
-                            'schema' => [
-                                'type'       => 'object',
-                                'properties' => [
-                                    'token' => [
-                                        'type' => 'string',
-                                    ],
-                                ],
-                            ],
-                        ],
-                    ],
-                ],
-                403 => [
-                    'description' => 'Invalid credentials',
-                ],
-            ],
-            'Authentication'
+            (new APIResponses())->getAuthResponses(),
+            'Auth'
         );
     }
 
-    protected function getToken(?array $body): JsonResponse
+    protected function getToken(?array $requestBody): JsonResponse
     {
-        if (! $this->checkCredentials($body)) {
+        if (! $this->credentialsValid($requestBody)) {
             return new AccessDeniedResponse('Invalid credentials');
         }
 
-        return new OKResponse(['token' => JWT::encode($this->getSecret(), $this->getPayload($body))]);
+        return new OKResponse(
+            [
+                'token' => JWT::encode(
+                    AuthConfig::getSecret(),
+                    $this->getPayload($requestBody)
+                ),
+            ]
+        );
     }
 
-    abstract protected function checkCredentials(?array $body): bool;
+    /**
+     * Check if request credentials provided by user are valid
+     * (ex. check provided username & password against DB table 'users')
+     */
+    abstract protected function credentialsValid(?array $requestBody): bool;
 
-    abstract protected function getPayload(?array $body): array;
+    /**
+     * Return payload to be contained in JWT after successful validation
+     */
+    abstract protected function getPayload(?array $requestBody): array;
 
-    abstract protected function getSecret(): string;
-
+    /**
+     * Return array containing required request body fields stored in OpenAPI format
+     */
     abstract protected function getOpenApiDocRequestBody(): array;
 }

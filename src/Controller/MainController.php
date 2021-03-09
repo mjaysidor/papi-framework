@@ -20,18 +20,11 @@ class MainController extends Controller
             }
         );
 
-//        $this->get(
-//            "/{id}",
-//            function (Request $request, $id) {
-//                return new JsonResponse(201, ['Welcome to papi!']);
-//            }
-//        );
-
-//        $this->post(
-//            "/",
-//            function (Request $request) {
-//                return new OKResponse();
-//            }
-//        );
+        $this->post(
+            "/",
+            function (Request $request) {
+                return new OKResponse();
+            }
+        );
     }
 }

@@ -7,7 +7,7 @@ tags:
     -
         name: Other
     -
-        name: Authentication
+        name: Auth
 paths:
     /:
         get:
@@ -21,6 +21,14 @@ paths:
                                 properties: {  }
                 404:
                     description: 'Resource not found'
+            tags:
+                - Other
+        post:
+            responses:
+                201:
+                    description: 'Resource created'
+                400:
+                    description: 'Invalid body'
             tags:
                 - Other
     /auth:
@@ -37,7 +45,7 @@ paths:
                                     type: string
             responses:
                 200:
-                    description: 'Retrieves resource data'
+                    description: 'Returns JSON Web Token (JWT)'
                     content:
                         application/json:
                             schema:
@@ -47,4 +55,4 @@ paths:
                 403:
                     description: 'Invalid credentials'
             tags:
-                - Authentication
+                - Auth

@@ -5,7 +5,7 @@ namespace papi\Controller;
 
 use Closure;
 use config\APIResponses;
-use papi\Documentation\OpenApiParamConverter;
+use papi\Documentation\RouteParametersDocGenerator;
 use papi\Worker\App;
 
 abstract class RESTController
@@ -28,12 +28,12 @@ abstract class RESTController
 
     abstract public function getQueryFilters(): array;
 
-    abstract public function getEndpointIds(): array;
+    abstract public function getRouteParameters(): array;
 
     public function getEndpointWithId(): string
     {
         $url = $this->getEndpoint();
-        foreach ($this->getEndpointIds() as $id) {
+        foreach ($this->getRouteParameters() as $id) {
             $url .= '/{'.$id.'}';
         }
 
@@ -64,7 +64,7 @@ abstract class RESTController
             $this->getEndpointWithId(),
             $callback,
             [],
-            OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds()),
+            RouteParametersDocGenerator::generate($this->getRouteParameters()),
             $this->apiResponses->getGETResponses($this->getGETResponseBody()),
             $this->resourceName
         );
@@ -90,7 +90,7 @@ abstract class RESTController
             $this->getEndpointWithId(),
             $callback,
             [],
-            OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds()),
+            RouteParametersDocGenerator::generate($this->getRouteParameters()),
             $this->apiResponses->getDELETEResponses(),
             $this->resourceName
         );
@@ -103,7 +103,7 @@ abstract class RESTController
             $this->getEndpointWithId(),
             $callback,
             $this->getPOSTPUTBody(),
-            OpenApiParamConverter::convertArrayToDoc($this->getEndpointIds()),
+            RouteParametersDocGenerator::generate($this->getRouteParameters()),
             $this->apiResponses->getPUTResponses(),
             $this->resourceName
         );

@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace papi\Documentation;
 
-class OpenApiParamConverter
+class RouteParametersDocGenerator
 {
     public const PATH  = 'path';
     public const QUERY = 'query';
@@ -22,19 +22,21 @@ class OpenApiParamConverter
             ],
         ];
 
-    public static function convertArrayToDoc(array $params, string $in = self::PATH): array
-    {
-        $filters = [];
-        foreach ($params as $filter) {
-            $filters[] = array_merge(
+    public static function generate(
+        array $parameterNames,
+        string $in = self::PATH
+    ): array {
+        $doc = [];
+        foreach ($parameterNames as $name) {
+            $doc[] = array_merge(
                 [
-                    'name' => $filter,
+                    'name' => $name,
                     'in'   => $in,
                 ],
                 self::OPTIONS[$in]
             );
         }
 
-        return $filters;
+        return $doc;
     }
 }

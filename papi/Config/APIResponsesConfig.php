@@ -28,4 +28,6 @@ abstract class APIResponsesConfig
     abstract public function getPUTResponses(): array;
 
     abstract public function getDELETEResponses(): array;
+
+    abstract public function getAuthResponses(): array;
 }
