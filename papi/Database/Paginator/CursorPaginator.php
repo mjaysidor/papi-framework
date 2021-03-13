@@ -10,9 +10,11 @@ class CursorPaginator extends Paginator
 {
     private string $cursor;
 
-    private string $column;
+    private string $column = 'id';
 
     private string $order;
+
+    private string $cursorComparisonOperator;
 
     private int $limit;
 
@@ -22,39 +24,36 @@ class CursorPaginator extends Paginator
 
     public function __construct(
         string $cursor = '',
-        string $column = 'id',
-        string $order = 'asc',
+        string $order = 'desc',
         int $limit = 10
     ) {
         $this->cursor = $cursor;
-        $this->column = $column;
         $this->order = $order;
         $this->limit = $limit;
+        $this->cursorComparisonOperator = $this->order === 'asc' ? 'gt' : 'lt';
     }
 
     public function getPaginatedResults(Resource $resource, array $filters): array
     {
-        $columnValueOperator = $this->order === 'desc' ? '>' : '<';
-
-        if ($this->cursor) {
-            $filters["$this->column$columnValueOperator"] = $this->cursor;
+        if ($this->cursor !== '') {
+            $filters[$this->column] = [$this->cursorComparisonOperator => $this->cursor];
         }
 
-        return $this->addPaginationLinks((new $resource())->get($filters, null, $this->column, $this->order, $this->limit+1));
+        return $this->addPaginationLinks(
+            (new $resource())->get($filters, [], $this->column, $this->order, $this->limit + 1)
+        );
     }
 
     public function getPaginatedManyToManyResults(ManyToMany $relation, array $filters): array
     {
-        $columnValueOperator = $this->order === 'asc' ? '>' : '<';
-
-        if ($this->cursor) {
-            $filters["$this->column$columnValueOperator"] = $this->cursor;
+        if ($this->cursor !== '') {
+            $filters[$this->column] = [$this->cursorComparisonOperator => $this->cursor];
         }
 
-        return $this->addPaginationLinks($relation->get($filters, $this->order, $this->limit+1));
+        return $this->addPaginationLinks($relation->get($filters, $this->order, $this->limit + 1));
     }
 
-    public function addPaginationLinks(array $response): array
+    protected function addPaginationLinks(array $response): array
     {
         if (isset($response[0])) {
             $this->previousCursor['cursor'] = reset($response)[$this->column];
@@ -64,7 +63,7 @@ class CursorPaginator extends Paginator
         }
 
         if (isset($response[$this->limit])) {
-            unset($response[array_key_last($response)]);
+            unset($response[$this->limit]);
             $this->nextCursor['cursor'] = end($response)[$this->column];
             $this->nextCursor['order'] = $this->order;
         }
@@ -73,6 +72,7 @@ class CursorPaginator extends Paginator
             $response,
             [
                 '__pagination' => [
+                    'type'                 => 'CURSOR',
                     'next_page_cursor'     => $this->nextCursor,
                     'previous_page_cursor' => $this->previousCursor,
                 ],

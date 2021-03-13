@@ -55,7 +55,7 @@ abstract class ResourceController extends RESTController
     public function getGETResponseBody(): array
     {
         $body = [];
-        foreach ($this->resource->getDefaultReadFields() as $fieldName) {
+        foreach ($this->resource->getDefaultSELECTFields() as $fieldName) {
             if (isset($this->resource->getFields()[$fieldName])) {
                 $field = $this->resource->getFields()[$fieldName];
                 $body[$fieldName] = [

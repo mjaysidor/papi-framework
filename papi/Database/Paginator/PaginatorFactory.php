@@ -3,41 +3,31 @@ declare(strict_types=1);
 
 namespace papi\Database\Paginator;
 
-use papi\Exception\NotImplementedException;
-
 class PaginatorFactory
 {
     public static function getPaginator(
-        int $paginationType,
         array &$filters,
         int $items
     ): Paginator {
-        switch ($paginationType) {
-            case Paginator::CURSOR_PAGINATION:
-                return self::getCursorPaginator($filters, $items);
-            case Paginator::OFFSET_PAGINATION:
-                return self::getOffsetPaginator($filters, $items);
+        if (($column = $filters['orderBy'] ?? null) !== null) {
+            $order = $filters['order'] ?? 'asc';
+            $offset = $filters['offset'] ?? null;
+            unset($filters['orderBy'], $filters['order'], $filters['offset']);
+
+            return new OffsetPaginator($column, $items, $order, $offset);
         }
 
-        throw new NotImplementedException();
+        return self::getCursorPaginator($filters, $items);
     }
 
-    private static function getCursorPaginator(
+    public static function getCursorPaginator(
         array &$filters,
         int $items
     ): CursorPaginator {
         $cursor = $filters['cursor'] ?? '';
-        $column = $filters['orderBy'] ?? 'id';
-        $order = $filters['order'] ?? 'ASC';
-        unset($filters['cursor'], $filters['order'], $filters['orderBy']);
+        $order = $filters['order'] ?? 'asc';
+        unset($filters['cursor'], $filters['order']);
 
-        return new CursorPaginator($cursor, $column, $order, $items);
-    }
-
-    private static function getOffsetPaginator(
-        array &$filters,
-        int $items
-    ): CursorPaginator {
-        throw new NotImplementedException();
+        return new CursorPaginator($cursor, $order, $items);
     }
 }

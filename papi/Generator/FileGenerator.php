@@ -46,7 +46,7 @@ class FileGenerator
         $writer->addFunction(
             'public',
             'array',
-            'getDefaultReadFields',
+            'getDefaultSELECTFields',
             "return ['id'];"
         );
         $writer->addFunction(

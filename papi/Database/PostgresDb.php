@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace papi\Database;
 
 use config\DatabaseConfig;
+use RuntimeException;
 
 class PostgresDb
 {
@@ -21,7 +22,7 @@ class PostgresDb
         $user = DatabaseConfig::getUsername();
         $password = DatabaseConfig::getPassword();
 
-        if ($isLocal) {
+        if ($isLocal === true) {
             return pg_connect("dbname = $name user = $user password = $password");
         }
 
@@ -33,31 +34,21 @@ class PostgresDb
     public function __construct()
     {
         $this->connection = self::getConnection();
-        //        set_error_handler(
-        //            function ($number, $text) {
-        //                if (str_contains($text, 'Query failed')) {
-        //                    pg_close($this->connection);
-        //                }
-        //            }
-        //        );
     }
 
     public function query(
         string $sql
     ): bool {
-        $result = pg_query($this->connection, $sql);
-        if ($result === false) {
-            throw $this->throwError();
+        if (pg_query($this->connection, $sql) === false) {
+            throw  $this->throwError();
         }
 
         return true;
     }
 
-    public function throwError(): \RuntimeException
+    private function throwError(): RuntimeException
     {
-        $error = pg_last_error($this->connection);
-
-        return new \RuntimeException('DB ERROR: '.$error);
+        return new RuntimeException(pg_last_error($this->connection));
     }
 
     public function clearAliases(): void
@@ -68,17 +59,16 @@ class PostgresDb
 
     public function exists(
         string $table,
-        ?array $filters = null,
+        array $filters = [],
     ): bool {
         $query = "select exists(select 1 from $table";
 
-        if ($filters) {
-            $this->addFilters($query, $filters);
+        if ($filters !== []) {
+            $this->addWhereConditions($query, $filters);
         }
         $query .= ')';
-        $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
 
-        if ($queryParams === false) {
+        if (($queryParams = pg_query_params($this->connection, $query, $this->aliasValues)) === false) {
             throw $this->throwError();
         }
         if (($result = pg_fetch_row($queryParams)) === false) {
@@ -90,32 +80,35 @@ class PostgresDb
 
     public function select(
         string $from,
-        ?array $columns = null,
-        ?array $filters = null,
+        array $columns = [],
+        array $filters = [],
         ?string $orderBy = null,
         ?string $order = null,
-        ?int $limit = null
+        ?int $limit = null,
+        ?string $offset = null
     ): array {
-        if ($columns) {
+        if ($columns !== []) {
             $query = 'select '.implode(',', $columns)." from $from";
         } else {
             $query = "select * from $from";
         }
-        if ($filters) {
-            $this->addFilters($query, $filters);
+        if ($filters !== []) {
+            $this->addQueryFilters($query, $filters);
         }
-        if ($orderBy) {
-            if ($order && $order !== 'desc') {
+        if ($orderBy !== null) {
+            if ($order !== 'desc') {
                 $order = 'asc';
             }
             $query .= ' order by '.pg_escape_string($orderBy)." $order";
         }
-        if ($limit) {
+        if ($limit !== null) {
             $query .= " limit $limit";
         }
-        $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
+        if ($offset !== null) {
+            $query .= " offset $offset";
+        }
 
-        if ($queryParams === false) {
+        if (($queryParams = pg_query_params($this->connection, $query, $this->aliasValues)) === false) {
             throw $this->throwError();
         }
 
@@ -127,9 +120,9 @@ class PostgresDb
         array $where = []
     ): int {
         $query = "delete from $table";
-        $this->addFilters($query, $where);
-        $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
-        if ($queryParams === false) {
+        $this->addWhereConditions($query, $where);
+
+        if (($queryParams = pg_query_params($this->connection, $query, $this->aliasValues)) === false) {
             throw $this->throwError();
         }
 
@@ -140,19 +133,24 @@ class PostgresDb
         string $table,
         array $data
     ): array {
-        $query = "insert into $table ";
-        $query .= '('.implode(', ', array_keys($data)).')';
-        $query .= ' values(';
+        $query = "insert into $table (";
+
         foreach ($data as $key => $condition) {
-            if (array_key_first($data) !== $key) {
+            $query .= pg_escape_string($key);
+        }
+        $query .= ") values(";
+
+        $firstKey = array_key_first($data);
+
+        foreach ($data as $key => $condition) {
+            if ($firstKey !== $key) {
                 $query .= ', ';
             }
             $this->addAlias($query, $condition);
         }
         $query .= ') returning *';
-        $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
 
-        if ($queryParams === false) {
+        if (($queryParams = pg_query_params($this->connection, $query, $this->aliasValues)) === false) {
             throw $this->throwError();
         }
 
@@ -175,7 +173,7 @@ class PostgresDb
 
         foreach ($data as $key => $condition) {
             if (! is_string($key)) {
-                throw new \RuntimeException('Array keys must be of type string');
+                throw new RuntimeException('Array keys must be of type string');
             }
             if ($firstKey !== $key) {
                 $query .= ',';
@@ -184,9 +182,8 @@ class PostgresDb
             $this->addAlias($query, $condition);
         }
         $this->addWhereConditions($query, $where);
-        $queryParams = pg_query_params($this->connection, $query, $this->aliasValues);
 
-        if ($queryParams === false) {
+        if (($queryParams = pg_query_params($this->connection, $query, $this->aliasValues)) === false) {
             throw $this->throwError();
         }
 
@@ -203,9 +200,10 @@ class PostgresDb
     {
         $query .= ' where ';
         $firstKey = array_key_first($where);
+
         foreach ($where as $key => $condition) {
             if (! is_string($key)) {
-                throw new \RuntimeException('Array keys must be of type string');
+                throw new RuntimeException('Array keys must be of type string');
             }
             if ($firstKey !== $key) {
                 $query .= ' and ';
@@ -215,21 +213,44 @@ class PostgresDb
         }
     }
 
-    private function addFilters(string &$query, array $filters): void
+    private function addQueryFilters(string &$query, array $filters): void
     {
         $query .= ' where ';
         $firstKey = array_key_first($filters);
+
         foreach ($filters as $key => $condition) {
             if (! is_string($key)) {
-                throw new \RuntimeException('Array keys must be of type string');
+                throw new RuntimeException('Array keys must be of type string');
             }
             if ($firstKey !== $key) {
                 $query .= ' and ';
             }
-            $query .= pg_escape_string($key);
-            if (! in_array(substr($key, -1), ['<', '>', '='])) {
-                $query .= '=';
+
+            if (is_array($condition)) {
+                foreach ($condition as $operator => $value) {
+                    $condition = $value;
+
+                    if ($operator === 'lte') {
+                        $key .= '<=';
+                        continue;
+                    }
+                    if ($operator === 'gte') {
+                        $key .= '>=';
+                        continue;
+                    }
+                    if ($operator === 'lt') {
+                        $key .= '<';
+                        continue;
+                    }
+                    if ($operator === 'gt') {
+                        $key .= '>';
+                        continue;
+                    }
+                }
+            } else {
+                $key .= '=';
             }
+            $query .= pg_escape_string($key);
             $this->addAlias($query, $condition);
         }
     }

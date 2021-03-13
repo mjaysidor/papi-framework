@@ -6,6 +6,7 @@ namespace papi\Worker;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 use papi\Response\ErrorResponse;
+use papi\Response\JsonResponse;
 use papi\Response\MethodNotAllowedResponse;
 use papi\Response\NotFoundResponse;
 use Throwable;
@@ -120,7 +121,7 @@ class App extends Worker
                 return;
             }
         } catch (Throwable $e) {
-            $connection->send(new ErrorResponse($e->getMessage()));
+            $connection->send(new JsonResponse(500, ['error:' => $e->getMessage(), '@' => $e->getFile().': '.$e->getLine()]));
         }
     }
 }

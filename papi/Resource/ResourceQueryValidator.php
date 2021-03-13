@@ -7,35 +7,14 @@ class ResourceQueryValidator
 {
     public function getValidationErrors(
         Resource $resource,
-        array $data
+        array $queryFilters
     ): ?string {
-        if ($error = $this->getInvalidQueryFields($resource, $data)) {
-            return $error;
-        }
-
-        return null;
-    }
-
-    private function getInvalidQueryFields(
-        Resource $resource,
-        array $data
-    ): ?string {
-        $invalidFields = array_diff(
-            array_keys($data),
-            array_merge(
-                array_keys($resource->getFields()),
-                [
-                    'cursor',
-                    'order',
-                    'orderBy',
-                ]
-            )
-        );
-
-        if (! empty($invalidFields)) {
-            $firstError = reset($invalidFields);
-
-            return "Invalid query: $firstError";
+        foreach ($queryFilters as $field => $value) {
+            if (! in_array($field, ['offset', 'cursor', 'order', 'orderBy'])
+                && ! array_key_exists($field, $resource->getFields())
+            ) {
+                return "Invalid query: $field";
+            }
         }
 
         return null;

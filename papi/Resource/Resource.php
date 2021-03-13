@@ -7,7 +7,7 @@ use papi\Database\PostgresDb;
 
 abstract class Resource
 {
-    public function getDbHandler(): PostgresDb
+    private function getDbHandler(): PostgresDb
     {
         return new PostgresDb();
     }
@@ -16,42 +16,44 @@ abstract class Resource
 
     abstract public function getFields(): array;
 
-    abstract public function getDefaultReadFields(): array;
+    abstract public function getDefaultSELECTFields(): array;
 
     abstract public function getEditableFields(): array;
 
     abstract public function getFieldValidators(): array;
 
     public function getById(
-        int $id,
+        string $id,
         ?array $fields = null
     ): array {
         return $this->getDbHandler()
                     ->select(
                         $this->getTableName(),
-                        $fields ?? $this->getDefaultReadFields(),
+                        $fields ?? $this->getDefaultSELECTFields(),
                         [
-                            'id' => $id,
+                            'id=' => $id,
                         ]
                     )
             ;
     }
 
     public function get(
-        ?array $filters = null,
-        ?array $fields = null,
+        array $filters = [],
+        array $fields = [],
         ?string $orderBy = null,
         ?string $order = null,
-        ?int $limit = null
+        ?int $limit = null,
+        ?string $offset = null
     ): array {
         return $this->getDbHandler()
                     ->select(
                         $this->getTableName(),
-                        $fields ?? $this->getDefaultReadFields(),
+                        $fields ?? $this->getDefaultSELECTFields(),
                         $filters,
                         $orderBy,
                         $order,
-                        $limit
+                        $limit,
+                        $offset
                     )
             ;
     }
@@ -67,7 +69,7 @@ abstract class Resource
     }
 
     public function update(
-        int $id,
+        string $id,
         array $data
     ): int {
         return $this->getDbHandler()
@@ -82,7 +84,7 @@ abstract class Resource
     }
 
     public function delete(
-        int $id
+        string $id
     ): int {
         return $this->getDbHandler()
                     ->delete(

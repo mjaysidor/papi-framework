@@ -78,9 +78,10 @@ class ManyToMany extends Relation
     }
 
     public function get(
-        ?array $filters = null,
+        array $filters = [],
         ?string $order = null,
-        ?int $limit = null
+        ?int $limit = null,
+        ?string $offset = null
     ): array {
         return $this->getDbHandler()
                     ->select(
@@ -89,7 +90,8 @@ class ManyToMany extends Relation
                         $filters,
                         'id',
                         $order,
-                        $limit
+                        $limit,
+                        $offset
                     )
             ;
     }

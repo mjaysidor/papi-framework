@@ -5,6 +5,8 @@ info:
     version: '1.0'
 tags:
     -
+        name: test_reso
+    -
         name: Other
     -
         name: Auth
@@ -56,3 +58,91 @@ paths:
                     description: 'Invalid credentials'
             tags:
                 - Auth
+    /test_reso:
+        post:
+            responses:
+                201:
+                    description: 'Resource created'
+                400:
+                    description: 'Invalid body'
+            tags:
+                - test_reso
+        get:
+            parameters:
+                -
+                    name: id
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: text
+                    in: query
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: 'Retrieves resource data'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id: { type: integer }
+                404:
+                    description: 'Resource not found'
+            tags:
+                - test_reso
+    '/test_reso/{id}':
+        put:
+            parameters:
+                -
+                    name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+            responses:
+                200:
+                    description: 'Resource updated'
+                400:
+                    description: 'Invalid body'
+                404:
+                    description: 'Resource not found'
+            tags:
+                - test_reso
+        delete:
+            parameters:
+                -
+                    name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+            responses:
+                204:
+                    description: 'Resource deleted'
+                404:
+                    description: 'Resource not found'
+            tags:
+                - test_reso
+        get:
+            parameters:
+                -
+                    name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+            responses:
+                200:
+                    description: 'Retrieves resource data'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id: { type: integer }
+                404:
+                    description: 'Resource not found'
+            tags:
+                - test_reso

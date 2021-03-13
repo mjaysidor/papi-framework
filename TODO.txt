@@ -11,13 +11,21 @@ TODO:
 BACKLOG:
     - doc
     - export papi to separate repo & composer package
+    - pg connection pooling (pgpool2/pgbouncer?)
 
 REFACTORING:
     - papi
-        - Controller
-        - Database
-        - Relation
+        + Database
         - Resource
+            + Resource
+            - ResourceCRUDHandler
+            + ResourceQueryValidator
+            - Validator
+            - ManyToManyHandler
+            + ManyToManyQueryValidator
+            - Field
+        - Controller
+        - Relation
         + Auth
         + Callbacks
         + CLI

@@ -5,7 +5,6 @@ namespace papi\Resource;
 
 use papi\Callbacks\PostExecutionHandler;
 use papi\Callbacks\PreExecutionBodyModifier;
-use papi\Database\Paginator\Paginator;
 use papi\Database\Paginator\PaginatorFactory;
 use papi\Response\ErrorResponse;
 use papi\Response\JsonResponse;
@@ -17,7 +16,7 @@ class ResourceCRUDHandler
 {
     public static function update(
         Resource $resource,
-        int $id,
+        string $id,
         Request $request,
         ?PreExecutionBodyModifier $preExecutionBodyModifier = null,
         ?PostExecutionHandler $postExecutionHandler = null
@@ -39,18 +38,18 @@ class ResourceCRUDHandler
             $body
         );
 
-        if ($response) {
-            if ($postExecutionHandler !== null) {
-                $handlerResponse = $postExecutionHandler->handle($body);
-                if ($handlerResponse) {
-                    $body = array_merge($body, ['handler' => $handlerResponse]);
-                }
-            }
-
-            return new JsonResponse(200, $body);
+        if ($response === 0) {
+            return new NotFoundResponse();
         }
 
-        return new NotFoundResponse();
+        if ($postExecutionHandler !== null) {
+            $handlerResponse = $postExecutionHandler->handle($body);
+            if ($handlerResponse) {
+                $body = array_merge($body, ['handler' => $handlerResponse]);
+            }
+        }
+
+        return new JsonResponse(200, $body);
     }
 
     public static function create(
@@ -73,69 +72,68 @@ class ResourceCRUDHandler
 
         $response = $resource->create($body);
 
-        if ($response) {
-            if ($postExecutionHandler !== null) {
-                $handlerResponse = $postExecutionHandler->handle($body);
-                if ($handlerResponse) {
-                    $body = array_merge($body, ['handler' => $handlerResponse]);
-                }
-            }
-
-            return new JsonResponse(
-                201,
-                $response,
-                ['Location' => $request->host().$request->uri()."/".$response['id']]
-            );
+        if ($response === []) {
+            return new ErrorResponse('Unknown database error');
         }
 
-        return new ErrorResponse('Unknown database error');
+        if ($postExecutionHandler !== null) {
+            $handlerResponse = $postExecutionHandler->handle($body);
+            if ($handlerResponse) {
+                $body = array_merge($body, ['handler' => $handlerResponse]);
+            }
+        }
+
+        return new JsonResponse(
+            201,
+            $response,
+            ['Location' => $request->host().$request->uri()."/".$response['id']]
+        );
     }
 
     public static function delete(
         Resource $resource,
-        int $id
+        string $id
     ): JsonResponse {
         $response = $resource->delete($id);
 
-        if ($response) {
-            return new JsonResponse(204);
+        if ($response === 0) {
+            return new NotFoundResponse();
         }
 
-        return new NotFoundResponse();
+        return new JsonResponse(204);
     }
 
     public static function getById(
         Resource $resource,
-        int $id
+        string $id
     ): JsonResponse {
         $response = $resource->getById($id);
 
-        if ($response) {
-            return new JsonResponse(200, $response);
+        if ($response === []) {
+            return new NotFoundResponse();
         }
 
-        return new NotFoundResponse();
+        return new JsonResponse(200, $response);
     }
 
     public static function getCollection(
         Resource $resource,
         Request $request,
-        ?int $pagination = Paginator::CURSOR_PAGINATION,
+        bool $pagination = true,
         int $paginationItems = 10
     ): JsonResponse {
         $filters = [];
-
         if ($stringQuery = $request->queryString()) {
             parse_str($stringQuery, $filters);
         }
         $validationErrors = (new ResourceQueryValidator())->getValidationErrors($resource, $filters);
 
-        if ($validationErrors) {
+        if ($validationErrors !== null) {
             return new ValidationErrorResponse($validationErrors);
         }
 
-        if ($pagination) {
-            $paginator = PaginatorFactory::getPaginator($pagination, $filters, $paginationItems);
+        if ($pagination === true) {
+            $paginator = PaginatorFactory::getPaginator($filters, $paginationItems);
             $result = $paginator->getPaginatedResults($resource, $filters);
         } else {
             $result = $resource->get($filters);
