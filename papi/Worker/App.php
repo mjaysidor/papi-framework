@@ -5,7 +5,6 @@ namespace papi\Worker;
 
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
-use papi\Response\ErrorResponse;
 use papi\Response\JsonResponse;
 use papi\Response\MethodNotAllowedResponse;
 use papi\Response\NotFoundResponse;
@@ -35,6 +34,7 @@ class App extends Worker
     ) {
         parent::__construct($protocolAddress, $context);
         $this->onMessage = [$this, 'onRequest'];
+        $this->count = 4;
     }
 
     public function getRoutes(): array
@@ -121,7 +121,9 @@ class App extends Worker
                 return;
             }
         } catch (Throwable $e) {
-            $connection->send(new JsonResponse(500, ['error:' => $e->getMessage(), '@' => $e->getFile().': '.$e->getLine()]));
+            $connection->send(
+                new JsonResponse(500, ['error:' => $e->getMessage(), '@' => $e->getFile().': '.$e->getLine()])
+            );
         }
     }
 }

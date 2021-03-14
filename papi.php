@@ -9,7 +9,6 @@ use papi\DotEnv;
 use papi\Worker\App;
 
 $api = new App();
-$api->count = 4;
 DotEnv::load('.env.local');
 DotEnv::load();
 (new ControllerInitializer)->init($api);
