@@ -5,17 +5,9 @@ namespace papi\Resource\Field;
 
 class SmallInt extends Field
 {
-    private ?int $length;
-
-    public function __construct(?int $length = null, ?string $properties = null)
-    {
-        parent::__construct($properties);
-        $this->length = $length;
-    }
-
     protected function getDefaultProperties(): string
     {
-        return $this->length ? "SMALLINT($this->length)" : 'SMALLINT';
+        return 'smallint';
     }
 
     public function getPHPTypeName(): string

@@ -7,7 +7,7 @@ class Time extends Field
 {
     protected function getDefaultProperties(): string
     {
-        return 'TIME';
+        return 'time';
     }
 
     public function getPHPTypeName(): string

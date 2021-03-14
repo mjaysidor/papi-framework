@@ -7,7 +7,7 @@ class Date extends Field
 {
     protected function getDefaultProperties(): string
     {
-        return 'DATE';
+        return 'date';
     }
 
     public function getPHPTypeName(): string

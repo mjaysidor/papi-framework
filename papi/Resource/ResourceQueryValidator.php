@@ -9,10 +9,14 @@ class ResourceQueryValidator
         Resource $resource,
         array $queryFilters
     ): ?string {
+        $resourceFields = $resource->getFields();
+
         foreach ($queryFilters as $field => $value) {
-            if (! in_array($field, ['offset', 'cursor', 'order', 'orderBy'])
-                && ! array_key_exists($field, $resource->getFields())
-            ) {
+            if (! array_key_exists($field, $resourceFields)
+                && ! in_array(
+                    $field,
+                    ['offset', 'cursor', 'order', 'orderBy']
+                )) {
                 return "Invalid query: $field";
             }
         }

@@ -5,20 +5,9 @@ namespace papi\Resource\Field;
 
 class Double extends Field
 {
-    private int $length;
-
-    private int $precision;
-
-    public function __construct(int $length, int $precision, ?string $properties = null)
-    {
-        parent::__construct($properties);
-        $this->length = $length;
-        $this->precision = $precision;
-    }
-
     protected function getDefaultProperties(): string
     {
-        return "DOUBLE($this->length,$this->precision)";
+        return "double precision";
     }
 
     public function getPHPTypeName(): string

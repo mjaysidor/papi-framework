@@ -7,7 +7,7 @@ class Timestamp extends Field
 {
     protected function getDefaultProperties(): string
     {
-        return 'TIMESTAMP';
+        return 'timestamp';
     }
 
     public function getPHPTypeName(): string

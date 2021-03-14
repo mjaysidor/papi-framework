@@ -7,7 +7,7 @@ class Id extends Field
 {
     protected function getDefaultProperties(): string
     {
-        return "INTEGER GENERATED ALWAYS AS IDENTITY PRIMARY KEY";
+        return "integer generated always as identity primary key";
     }
 
     public function getPHPTypeName(): string

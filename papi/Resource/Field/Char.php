@@ -15,7 +15,7 @@ class Char extends Field
 
     protected function getDefaultProperties(): string
     {
-        return "CHAR($this->length)";
+        return "char($this->length)";
     }
 
     public function getPHPTypeName(): string

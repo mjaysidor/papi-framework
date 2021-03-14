@@ -5,5 +5,5 @@ namespace papi\Callbacks;
 
 interface PreExecutionBodyModifier
 {
-    public function modify(array &$data): void;
+    public function modify(array &$body): void;
 }

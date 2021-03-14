@@ -5,17 +5,9 @@ namespace papi\Resource\Field;
 
 class BigInt extends Field
 {
-    private ?int $length;
-
-    public function __construct(?int $length = null, ?string $properties = null)
-    {
-        parent::__construct($properties);
-        $this->length = $length;
-    }
-
     protected function getDefaultProperties(): string
     {
-        return $this->length ? "BIGINT($this->length)" : 'BIGINT';
+        return 'bigint';
     }
 
     public function getPHPTypeName(): string

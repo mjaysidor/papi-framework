@@ -15,7 +15,7 @@ class Varchar extends Field
 
     protected function getDefaultProperties(): string
     {
-        return "VARCHAR($this->length)";
+        return "varchar($this->length)";
     }
 
     public function getPHPTypeName(): string

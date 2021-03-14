@@ -19,8 +19,8 @@ class AddCurrentDate implements PreExecutionBodyModifier
         $this->dateFormat = $dateFormat;
     }
 
-    public function modify(array &$data): void
+    public function modify(array &$body): void
     {
-        $data[$this->fieldName] = (new DateTime())->format($this->dateFormat);
+        $body[$this->fieldName] = (new DateTime())->format($this->dateFormat);
     }
 }

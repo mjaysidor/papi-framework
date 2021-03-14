@@ -7,7 +7,7 @@ class Text extends Field
 {
     protected function getDefaultProperties(): string
     {
-        return 'TEXT';
+        return 'text';
     }
 
     public function getPHPTypeName(): string

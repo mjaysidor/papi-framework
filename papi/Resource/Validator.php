@@ -9,50 +9,22 @@ class Validator
         Resource $resource,
         array $data
     ): ?string {
-        if ($error = $this->getEmptyBodyError($data)) {
-            return $error;
-        }
+        $editableFields = $resource->getEditableFields();
 
-        if ($error = $this->getInvalidFields($resource, $data)) {
-            return $error;
-        }
-
-        foreach ($resource->getFieldValidators() as $field => $validators) {
-            foreach ($validators as $validator) {
-                $validationErrors = $validator->getValidationErrors($field, $data[$field] ?? null);
-
-                if ($validationErrors) {
-                    return $validationErrors;
-                }
+        foreach ($data as $field => $value) {
+            if (! in_array($field, $editableFields, true)) {
+                return "Invalid field: $field";
             }
         }
 
-        return null;
-    }
+        $validators = $resource->getFieldValidators();
 
-    private function getInvalidFields(
-        Resource $resource,
-        array $data
-    ): ?string {
-        $invalidFields = array_diff(
-            array_keys($data),
-            array_values($resource->getEditableFields())
-        );
-
-        if (! empty($invalidFields)) {
-            $firstError = reset($invalidFields);
-
-            return "Invalid field: $firstError";
-        }
-
-        return null;
-    }
-
-    private function getEmptyBodyError(
-        array $data
-    ): ?string {
-        if (empty($data)) {
-            return 'Body cannot be empty';
+        foreach ($validators as $field => $fieldValidators) {
+            foreach ($fieldValidators as $validator) {
+                if (($validationError = $validator->getErrors($field, $data[$field] ?? null)) !== null) {
+                    return $validationError;
+                }
+            }
         }
 
         return null;

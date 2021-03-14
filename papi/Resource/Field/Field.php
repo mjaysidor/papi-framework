@@ -15,8 +15,9 @@ abstract class Field
     public function getProperties(): string
     {
         $definition = $this->getDefaultProperties();
-        if ($this->properties) {
-            $definition .= ' '.$this->properties;
+
+        if ($this->properties !== null) {
+            return "$definition $this->properties";
         }
 
         return $definition;

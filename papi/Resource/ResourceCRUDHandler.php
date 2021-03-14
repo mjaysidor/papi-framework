@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace papi\Resource;
 
-use papi\Callbacks\PostExecutionHandler;
+use JsonException;
 use papi\Callbacks\PreExecutionBodyModifier;
 use papi\Database\Paginator\PaginatorFactory;
-use papi\Response\ErrorResponse;
 use papi\Response\JsonResponse;
 use papi\Response\NotFoundResponse;
+use papi\Response\OKResponse;
 use papi\Response\ValidationErrorResponse;
 use Workerman\Protocols\Http\Request;
 
@@ -18,18 +18,19 @@ class ResourceCRUDHandler
         Resource $resource,
         string $id,
         Request $request,
-        ?PreExecutionBodyModifier $preExecutionBodyModifier = null,
-        ?PostExecutionHandler $postExecutionHandler = null
+        ?PreExecutionBodyModifier $preExecutionBodyModifier = null
     ): JsonResponse {
-        $body = json_decode($request->rawBody(), true, 512, JSON_THROW_ON_ERROR);
+        try {
+            $body = json_decode($request->rawBody(), true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException) {
+            return new ValidationErrorResponse('Body cannot be empty');
+        }
 
         if ($preExecutionBodyModifier !== null) {
             $preExecutionBodyModifier->modify($body);
         }
 
-        $validationErrors = (new Validator())->getValidationErrors($resource, $body);
-
-        if ($validationErrors) {
+        if (($validationErrors = (new Validator())->getValidationErrors($resource, $body)) !== null) {
             return new ValidationErrorResponse($validationErrors);
         }
 
@@ -42,46 +43,29 @@ class ResourceCRUDHandler
             return new NotFoundResponse();
         }
 
-        if ($postExecutionHandler !== null) {
-            $handlerResponse = $postExecutionHandler->handle($body);
-            if ($handlerResponse) {
-                $body = array_merge($body, ['handler' => $handlerResponse]);
-            }
-        }
-
-        return new JsonResponse(200, $body);
+        return new OKResponse($body);
     }
 
     public static function create(
         Resource $resource,
         Request $request,
-        ?PreExecutionBodyModifier $preExecutionBodyModifier = null,
-        ?PostExecutionHandler $postExecutionHandler = null
+        ?PreExecutionBodyModifier $preExecutionBodyModifier = null
     ): JsonResponse {
-        $body = json_decode($request->rawBody(), true, 512, JSON_THROW_ON_ERROR);
-
-        $validationErrors = (new Validator())->getValidationErrors($resource, $body);
-
-        if ($validationErrors) {
-            return new ValidationErrorResponse($validationErrors);
+        try {
+            $body = json_decode($request->rawBody(), true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException) {
+            return new ValidationErrorResponse('Body cannot be empty');
         }
 
         if ($preExecutionBodyModifier !== null) {
             $preExecutionBodyModifier->modify($body);
         }
 
+        if (($validationErrors = (new Validator())->getValidationErrors($resource, $body)) !== null) {
+            return new ValidationErrorResponse($validationErrors);
+        }
+
         $response = $resource->create($body);
-
-        if ($response === []) {
-            return new ErrorResponse('Unknown database error');
-        }
-
-        if ($postExecutionHandler !== null) {
-            $handlerResponse = $postExecutionHandler->handle($body);
-            if ($handlerResponse) {
-                $body = array_merge($body, ['handler' => $handlerResponse]);
-            }
-        }
 
         return new JsonResponse(
             201,
@@ -113,7 +97,7 @@ class ResourceCRUDHandler
             return new NotFoundResponse();
         }
 
-        return new JsonResponse(200, $response);
+        return new OKResponse($response);
     }
 
     public static function getCollection(
@@ -125,11 +109,10 @@ class ResourceCRUDHandler
         $filters = [];
         if ($stringQuery = $request->queryString()) {
             parse_str($stringQuery, $filters);
-        }
-        $validationErrors = (new ResourceQueryValidator())->getValidationErrors($resource, $filters);
-
-        if ($validationErrors !== null) {
-            return new ValidationErrorResponse($validationErrors);
+            if (($queryValidationErrors = (new ResourceQueryValidator())->getValidationErrors($resource, $filters))
+                !== null) {
+                return new ValidationErrorResponse($queryValidationErrors);
+            }
         }
 
         if ($pagination === true) {
@@ -139,6 +122,6 @@ class ResourceCRUDHandler
             $result = $resource->get($filters);
         }
 
-        return new JsonResponse(200, $result);
+        return new OKResponse($result);
     }
 }

@@ -60,6 +60,14 @@ paths:
                 - Auth
     /test_reso:
         post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                text:
+                                    type: string
             responses:
                 201:
                     description: 'Resource created'
@@ -88,12 +96,21 @@ paths:
                                 type: object
                                 properties:
                                     id: { type: integer }
+                                    text: { type: string }
                 404:
                     description: 'Resource not found'
             tags:
                 - test_reso
     '/test_reso/{id}':
         put:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                text:
+                                    type: string
             parameters:
                 -
                     name: id
@@ -142,6 +159,7 @@ paths:
                                 type: object
                                 properties:
                                     id: { type: integer }
+                                    text: { type: string }
                 404:
                     description: 'Resource not found'
             tags:

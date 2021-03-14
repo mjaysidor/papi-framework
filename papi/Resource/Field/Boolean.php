@@ -7,7 +7,7 @@ class Boolean extends Field
 {
     protected function getDefaultProperties(): string
     {
-        return "BOOLEAN";
+        return "boolean";
     }
 
     public function getPHPTypeName(): string
