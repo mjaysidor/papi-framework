@@ -5,9 +5,13 @@ info:
     version: '1.0'
 tags:
     -
-        name: test_reso
+        name: post
     -
         name: Other
+    -
+        name: comment
+    -
+        name: comment_post
     -
         name: Auth
 paths:
@@ -58,7 +62,7 @@ paths:
                     description: 'Invalid credentials'
             tags:
                 - Auth
-    /test_reso:
+    /comment:
         post:
             requestBody:
                 content:
@@ -66,7 +70,7 @@ paths:
                         schema:
                             type: object
                             properties:
-                                text:
+                                content:
                                     type: string
             responses:
                 201:
@@ -74,7 +78,7 @@ paths:
                 400:
                     description: 'Invalid body'
             tags:
-                - test_reso
+                - comment
         get:
             parameters:
                 -
@@ -83,7 +87,7 @@ paths:
                     schema:
                         type: string
                 -
-                    name: text
+                    name: content
                     in: query
                     schema:
                         type: string
@@ -96,12 +100,11 @@ paths:
                                 type: object
                                 properties:
                                     id: { type: integer }
-                                    text: { type: string }
                 404:
                     description: 'Resource not found'
             tags:
-                - test_reso
-    '/test_reso/{id}':
+                - comment
+    '/comment/{id}':
         put:
             requestBody:
                 content:
@@ -109,7 +112,7 @@ paths:
                         schema:
                             type: object
                             properties:
-                                text:
+                                content:
                                     type: string
             parameters:
                 -
@@ -126,7 +129,7 @@ paths:
                 404:
                     description: 'Resource not found'
             tags:
-                - test_reso
+                - comment
         delete:
             parameters:
                 -
@@ -141,7 +144,7 @@ paths:
                 404:
                     description: 'Resource not found'
             tags:
-                - test_reso
+                - comment
         get:
             parameters:
                 -
@@ -159,8 +162,183 @@ paths:
                                 type: object
                                 properties:
                                     id: { type: integer }
-                                    text: { type: string }
                 404:
                     description: 'Resource not found'
             tags:
-                - test_reso
+                - comment
+    /comment_post:
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                comment_id:
+                                    type: integer
+                                post_id:
+                                    type: integer
+            responses:
+                201:
+                    description: 'Resource created'
+                400:
+                    description: 'Invalid body'
+            tags:
+                - comment_post
+        get:
+            parameters:
+                -
+                    name: id
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: comment_id
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: post_id
+                    in: query
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: 'Retrieves resource data'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    comment_id: { type: integer }
+                                    post_id: { type: integer }
+                404:
+                    description: 'Resource not found'
+            tags:
+                - comment_post
+    '/comment_post/{comment_id}/{post_id}':
+        delete:
+            parameters:
+                -
+                    name: comment_id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+                -
+                    name: post_id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+            responses:
+                204:
+                    description: 'Resource deleted'
+                404:
+                    description: 'Resource not found'
+            tags:
+                - comment_post
+    /post:
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                content:
+                                    type: string
+            responses:
+                201:
+                    description: 'Resource created'
+                400:
+                    description: 'Invalid body'
+            tags:
+                - post
+        get:
+            parameters:
+                -
+                    name: id
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: content
+                    in: query
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: 'Retrieves resource data'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id: { type: integer }
+                404:
+                    description: 'Resource not found'
+            tags:
+                - post
+    '/post/{id}':
+        put:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                content:
+                                    type: string
+            parameters:
+                -
+                    name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+            responses:
+                200:
+                    description: 'Resource updated'
+                400:
+                    description: 'Invalid body'
+                404:
+                    description: 'Resource not found'
+            tags:
+                - post
+        delete:
+            parameters:
+                -
+                    name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+            responses:
+                204:
+                    description: 'Resource deleted'
+                404:
+                    description: 'Resource not found'
+            tags:
+                - post
+        get:
+            parameters:
+                -
+                    name: id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+            responses:
+                200:
+                    description: 'Retrieves resource data'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    id: { type: integer }
+                404:
+                    description: 'Resource not found'
+            tags:
+                - post

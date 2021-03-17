@@ -25,7 +25,7 @@ class PaginatorFactory
         int $items
     ): CursorPaginator {
         $cursor = $filters['cursor'] ?? '';
-        $order = $filters['order'] ?? 'asc';
+        $order = $filters['order'] ?? 'desc';
         unset($filters['cursor'], $filters['order']);
 
         return new CursorPaginator($cursor, $order, $items);

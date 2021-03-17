@@ -223,13 +223,13 @@ class FileGenerator
 
         $this->delete(
             function (Request $request, $id) {
-                return ResourceCRUDHandler::delete($this->resource, $id, $request);
+                return ResourceCRUDHandler::delete($this->resource, $id);
             }
         );
 
         $this->getById(
             function (Request $request, $id) {
-                return ResourceCRUDHandler::getById($this->resource, $id, $request);
+                return ResourceCRUDHandler::getById($this->resource, $id);
             }
         );
 

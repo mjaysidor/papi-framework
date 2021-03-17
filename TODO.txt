@@ -16,14 +16,7 @@ BACKLOG:
 
 REFACTORING:
     - papi
-        - Resource
-            + Resource
-            + ResourceCRUDHandler
-            + ResourceQueryValidator
-            + Validator
-            - ManyToManyHandler
-            + ManyToManyQueryValidator
-            + Field
+        + Resource
         - Controller
             - Controller
             + ControllerInitializer

@@ -12,7 +12,8 @@ class ManyToManyQueryValidator
         array $queryFilters
     ): ?string {
         if ($queryFilters === []) {
-            return "Query must contain at least one of following parameters: $relation->rootResourceIdField, $relation->relatedResourceIdField";
+            return "Query must contain at least one of following parameters: ".$relation->rootResourceIdField.", "
+                   .$relation->relatedResourceIdField;
         }
 
         foreach ($queryFilters as $field => $value) {

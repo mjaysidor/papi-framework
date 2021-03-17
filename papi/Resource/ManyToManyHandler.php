@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace papi\Resource;
 
+use JsonException;
 use papi\Database\Paginator\PaginatorFactory;
 use papi\Relation\ManyToMany;
 use papi\Relation\ManyToManyValidator;
@@ -19,11 +20,13 @@ class ManyToManyHandler
         ManyToMany $relation,
         Request $request
     ): JsonResponse {
-        $body = json_decode($request->rawBody(), true, 512, JSON_THROW_ON_ERROR);
+        try {
+            $body = json_decode($request->rawBody(), true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException) {
+            return new ValidationErrorResponse('Body cannot be empty');
+        }
 
-        $validationErrors = (new ManyToManyValidator())->getValidationErrors($relation, $body);
-
-        if ($validationErrors) {
+        if (($validationErrors = (new ManyToManyValidator())->getValidationErrors($relation, $body)) !== null) {
             return new ValidationErrorResponse($validationErrors);
         }
 
@@ -55,11 +58,11 @@ class ManyToManyHandler
             $relatedResourceId
         );
 
-        if ($response) {
-            return new JsonResponse(204);
+        if ($response === 0) {
+            return new NotFoundResponse();
         }
 
-        return new NotFoundResponse();
+        return new JsonResponse(204);
     }
 
     public static function getRelation(
@@ -76,7 +79,7 @@ class ManyToManyHandler
 
         $validationErrors = (new ManyToManyQueryValidator())->getValidationErrors($relation, $filters);
 
-        if ($validationErrors) {
+        if ($validationErrors !== null) {
             return new ValidationErrorResponse($validationErrors);
         }
 

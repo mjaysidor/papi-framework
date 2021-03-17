@@ -79,7 +79,7 @@ class ManyToMany extends Relation
 
     public function get(
         array $filters = [],
-        ?string $order = null,
+        string $order = 'desc',
         ?int $limit = null,
         ?string $offset = null
     ): array {
@@ -119,8 +119,8 @@ class ManyToMany extends Relation
                     ->delete(
                         $this->getTableName(),
                         [
-                            $this->rootResourceIdField    => $rootResourceId,
-                            $this->relatedResourceIdField => $relatedResourceId,
+                            "$this->rootResourceIdField="   => $rootResourceId,
+                            "$this->relatedResourceIdField=" => $relatedResourceId,
                         ]
                     )
             ;
@@ -134,8 +134,8 @@ class ManyToMany extends Relation
                     ->exists(
                         $this->getTableName(),
                         [
-                            $this->rootResourceIdField    => $rootResourceId,
-                            $this->relatedResourceIdField => $relatedResourceId,
+                            "$this->rootResourceIdField="   => $rootResourceId,
+                            "$this->relatedResourceIdField=" => $relatedResourceId,
                         ]
                     )
             ;
