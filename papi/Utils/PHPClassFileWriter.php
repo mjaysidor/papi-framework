@@ -60,7 +60,7 @@ class PHPClassFileWriter
         $vars = $this->getVars();
         $functions = $this->getFunctions();
         $imports = $this->getImports();
-
+        $className = rtrim("class $this->name $this->extends $this->implements");
         return "<?php
 declare(strict_types=1);
 
@@ -68,7 +68,7 @@ namespace $this->namespace;
 
 $imports
 
-class $this->name $this->extends $this->implements
+$className
 {
 $vars$functions
 }";

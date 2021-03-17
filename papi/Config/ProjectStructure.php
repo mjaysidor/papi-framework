@@ -10,9 +10,19 @@ class ProjectStructure implements ProjectStructureConfig
         return 'src/Controller';
     }
 
+    public static function getManyToManyControllersPath(): string
+    {
+        return 'src/Controller/ManyToMany';
+    }
+
     public static function getControllersNamespace(): string
     {
         return 'App\Controller';
+    }
+
+    public static function getManyToManyControllersNamespace(): string
+    {
+        return 'App\Controller\ManyToMany';
     }
 
     public static function getResourcesPath(): string

@@ -17,4 +17,30 @@ class ConsoleInput extends Console
 
         return (string)readline();
     }
+
+    public static function getInputFromChoices(string $title, array $options): string
+    {
+        ConsoleOutput::info($title);
+
+        foreach ($options as $key => $value) {
+            ConsoleOutput::output("[$key] $value");
+        }
+
+        readline_completion_function(
+            static function () use ($options) {
+                return $options;
+            }
+        );
+        $firstKey = array_key_first($options);
+
+        while (! array_key_exists(
+            ($result = self::getInput("Choice (ex. $firstKey for $options[$firstKey]):")),
+            $options
+        )) {
+            ConsoleOutput::warning('Invalid input!');
+            continue;
+        }
+
+        return $options[$result];
+    }
 }

@@ -5,8 +5,11 @@ namespace papi\Generator;
 
 use papi\Config\ProjectStructure;
 use papi\Controller\Controller;
+use papi\Controller\ManyToManyController;
 use papi\Controller\ResourceController;
+use papi\Relation\ManyToMany;
 use papi\Resource\Field\Id;
+use papi\Resource\ManyToManyHandler;
 use papi\Resource\Resource;
 use papi\Resource\ResourceCRUDHandler;
 use papi\Response\JsonResponse;
@@ -136,6 +139,43 @@ class FileGenerator
         $writer->write();
     }
 
+    public static function generateManyToManyController(
+        string $rootResource,
+        string $relatedResource
+    ): void {
+        $rootResourcePathName = explode('\\', $rootResource);
+        $relatedResourcePathName = explode('\\', $relatedResource);
+        $rootResourceClass = end($rootResourcePathName);
+        $relatedResourceClass = end($relatedResourcePathName);
+        $writer = new PHPClassFileWriter(
+            $rootResourceClass.$relatedResourceClass.'Controller',
+            ProjectStructure::getManyToManyControllersNamespace(),
+            ProjectStructure::getManyToManyControllersPath(),
+            'ManyToManyController',
+            null
+        );
+        $writer->addImport(ManyToManyController::class);
+        $writer->addImport(ManyToManyHandler::class);
+        $writer->addImport(ManyToMany::class);
+        $writer->addImport(Request::class);
+        $writer->addImport($rootResource);
+        $writer->addImport($relatedResource);
+        $writer->addFunction(
+            'protected',
+            'ManyToMany',
+            'getRelation',
+            "return new ManyToMany($rootResourceClass::class, $relatedResourceClass::class);"
+        );
+        $writer->addFunction(
+            'public',
+            'void',
+            'init',
+            self::getStandardManyToManyControllerInit()
+        );
+
+        $writer->write();
+    }
+
     private static function getStandardControllerInit(): string
     {
         return '$this->post(
@@ -199,5 +239,26 @@ class FileGenerator
             }
         );
         ';
+    }
+
+    private static function getStandardManyToManyControllerInit(): string
+    {
+        return '$this->post(
+            function (Request $request) {
+                return ManyToManyHandler::createRelation($this->relation, $request);
+            }
+        );
+        
+        $this->delete(
+            function (Request $request, $rootResourceId, $relatedResourceId) {
+                return ManyToManyHandler::deleteRelation($this->relation, $rootResourceId, $relatedResourceId);
+            }
+        );
+
+        $this->get(
+            function (Request $request) {
+                return ManyToManyHandler::getRelation($this->relation, $request);
+            }
+        );';
     }
 }

@@ -134,13 +134,15 @@ class PostgresDb
         array $data
     ): array {
         $query = "insert into $table (";
+        $firstKey = array_key_first($data);
 
         foreach ($data as $key => $condition) {
+            if ($firstKey !== $key) {
+                $query .= ', ';
+            }
             $query .= pg_escape_string($key);
         }
         $query .= ") values(";
-
-        $firstKey = array_key_first($data);
 
         foreach ($data as $key => $condition) {
             if ($firstKey !== $key) {

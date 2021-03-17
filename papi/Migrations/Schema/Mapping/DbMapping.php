@@ -13,7 +13,7 @@ class DbMapping extends Mapping
         $lastMigration = (new PostgresDb())->select(
                 SchemaManager::MIGRATION_COLUMN_NAME,
                 ['current_state'],
-                null,
+                [],
                 'id',
                 'desc',
                 1

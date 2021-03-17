@@ -9,6 +9,7 @@ use papi\Relation\ManyToManyValidator;
 use papi\Response\ErrorResponse;
 use papi\Response\JsonResponse;
 use papi\Response\NotFoundResponse;
+use papi\Response\OKResponse;
 use papi\Response\ValidationErrorResponse;
 use Workerman\Protocols\Http\Request;
 
@@ -86,6 +87,6 @@ class ManyToManyHandler
             $result = $relation->get($filters);
         }
 
-        return new JsonResponse(200, $result);
+        return new OKResponse($result);
     }
 }
