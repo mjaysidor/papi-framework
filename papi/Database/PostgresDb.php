@@ -140,6 +140,9 @@ class PostgresDb
             if ($firstKey !== $key) {
                 $query .= ', ';
             }
+            if (! is_string($key)) {
+                throw new RuntimeException('Array keys must be of type string');
+            }
             $query .= pg_escape_string($key);
         }
         $query .= ") values(";

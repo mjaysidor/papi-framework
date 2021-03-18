@@ -51,7 +51,7 @@ class RelationMaker
         }
 
         $relationDefinition = "            ";
-
+        $fieldName = '';
         if ($relationType !== self::MANY_TO_MANY) {
             $fieldName = explode('\\', $relatedResource);
             $fieldName = end($fieldName);
