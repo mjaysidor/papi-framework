@@ -20,7 +20,8 @@ class ManyToOne extends Relation
         return [
             $this->rootTableName =>
                 [
-                    $this->relatedTableName.'_id' => "REFERENCES $this->relatedTableName(id) $this->onDelete $this->onUpdate",
+                    $this->relatedTableName.'_id' =>
+                        "REFERENCES $this->relatedTableName(id) $this->onDelete $this->onUpdate",
                 ],
         ];
     }

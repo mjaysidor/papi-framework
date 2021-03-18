@@ -14,23 +14,16 @@ abstract class ManyToManyController extends RESTController
 
     public function __construct(App $api)
     {
-        parent::__construct($api);
-        $this->relation = $this->getRelation();
+        $this->relation = $this->getResource();
         $this->resourceName = $this->relation->getTableName();
+        parent::__construct($api);
     }
 
-    abstract protected function getRelation(): ManyToMany;
-
-    public function getEndpoint(): string
-    {
-        return "/$this->resourceName";
-    }
-
-    public function getRouteParameters(): array
+    public function getUrlIdParams(): array
     {
         return [
-            $this->getRelation()->rootResourceIdField,
-            $this->getRelation()->relatedResourceIdField,
+            $this->relation->rootResourceIdField,
+            $this->relation->relatedResourceIdField,
         ];
     }
 

@@ -6,47 +6,34 @@ namespace papi\Controller;
 use papi\Documentation\RouteParametersDocGenerator;
 use papi\Relation\ManyToMany;
 use papi\Relation\Relation;
-use papi\Resource\Field\Id;
+use papi\Resource\Resource;
 use papi\Resource\ResourceCRUDHandler;
 use papi\Worker\App;
 
 abstract class ResourceController extends RESTController
 {
-    public mixed $resource;
+    public Resource $resource;
 
     public function __construct(App $api)
     {
-        parent::__construct($api);
         $this->resource = $this->getResource();
         $this->resourceName = $this->resource->getTableName();
+        parent::__construct($api);
     }
 
-    abstract protected function getResource(): mixed;
-
-    public function getEndpoint(): string
+    public function getUrlIdParams(): array
     {
-        return "/$this->resourceName";
-    }
-
-    public function getRouteParameters(): array
-    {
-        return ["id"];
+        return ['id'];
     }
 
     public function getPOSTPUTBody(): array
     {
         $body = [];
         foreach ($this->resource->getEditableFields() as $fieldName) {
-            if (isset($this->resource->getFields()[$fieldName])) {
-                $field = $this->resource->getFields()[$fieldName];
-                $body[$fieldName] = [
-                    'type' => $field->getPHPTypeName(),
-                ];
-            } else {
-                $body[$fieldName] = [
-                    'type' => (new Id())->getPHPTypeName(),
-                ];
-            }
+            $field = $this->resource->getFields()[$fieldName];
+            $body[$fieldName] = [
+                'type' => $field->getPHPTypeName(),
+            ];
         }
 
         return $body;
@@ -56,16 +43,10 @@ abstract class ResourceController extends RESTController
     {
         $body = [];
         foreach ($this->resource->getDefaultSELECTFields() as $fieldName) {
-            if (isset($this->resource->getFields()[$fieldName])) {
-                $field = $this->resource->getFields()[$fieldName];
-                $body[$fieldName] = [
-                    'type' => $field->getPHPTypeName(),
-                ];
-            } else {
-                $body[$fieldName] = [
-                    'type' => (new Id())->getPHPTypeName(),
-                ];
-            }
+            $field = $this->resource->getFields()[$fieldName];
+            $body[$fieldName] = [
+                'type' => $field->getPHPTypeName(),
+            ];
         }
 
         return $body;

@@ -12,33 +12,72 @@ abstract class RESTController
 {
     protected App $api;
 
-    protected APIResponses $apiResponses;
-
     public string $resourceName;
+
+    protected string $endpoint;
+
+    protected string $endpointWithId;
+
+    protected array $urlIdParamsDoc = [];
+
+    protected array $postPutBody = [];
+
+    protected array $getResponses = [];
+
+    protected array $postResponses = [];
+
+    protected array $deleteResponses = [];
+
+    protected array $putResponses = [];
+
+    protected array $queryFilters = [];
 
     public function __construct(App $api)
     {
         $this->api = $api;
-        $this->apiResponses = new APIResponses();
+        $this->initDoc();
+        $this->initUrl();
+    }
+
+    private function initDoc(): void
+    {
+        $apiResponses = new APIResponses();
+        [
+            $this->getResponses,
+            $this->postResponses,
+            $this->deleteResponses,
+            $this->putResponses,
+            $this->postPutBody,
+            $this->queryFilters,
+        ]
+            = [
+            $apiResponses->getGETResponses($this->getGETResponseBody()),
+            $apiResponses->getPOSTResponses(),
+            $apiResponses->getDELETEResponses(),
+            $apiResponses->getPUTResponses(),
+            $this->getPOSTPUTBody(),
+            $this->getQueryFilters(),
+        ];
+    }
+
+    private function initUrl(): void
+    {
+        $urlParams = $this->getUrlIdParams();
+        $this->urlIdParamsDoc = RouteParametersDocGenerator::generate($urlParams);
+        $this->endpoint = $this->endpointWithId = "/$this->resourceName";
+
+        foreach ($urlParams as $param) {
+            $this->endpointWithId .= '/{'.$param.'}';
+        }
     }
 
     abstract public function init(): void;
 
-    abstract public function getEndpoint(): string;
+    abstract protected function getResource(): mixed;
 
     abstract public function getQueryFilters(): array;
 
-    abstract public function getRouteParameters(): array;
-
-    public function getEndpointWithId(): string
-    {
-        $url = $this->getEndpoint();
-        foreach ($this->getRouteParameters() as $id) {
-            $url .= '/{'.$id.'}';
-        }
-
-        return $url;
-    }
+    abstract public function getUrlIdParams(): array;
 
     abstract public function getPOSTPUTBody(): array;
 
@@ -48,50 +87,11 @@ abstract class RESTController
     {
         $this->api->addRoute(
             'POST',
-            $this->getEndpoint(),
+            $this->endpoint,
             $callback,
-            $this->getPOSTPUTBody(),
+            $this->postPutBody,
             [],
-            $this->apiResponses->getPOSTResponses(),
-            $this->resourceName
-        );
-    }
-
-    protected function getById(Closure $callback): void
-    {
-        $this->api->addRoute(
-            'GET',
-            $this->getEndpointWithId(),
-            $callback,
-            [],
-            RouteParametersDocGenerator::generate($this->getRouteParameters()),
-            $this->apiResponses->getGETResponses($this->getGETResponseBody()),
-            $this->resourceName
-        );
-    }
-
-    protected function get(Closure $callback): void
-    {
-        $this->api->addRoute(
-            'GET',
-            $this->getEndpoint(),
-            $callback,
-            [],
-            $this->getQueryFilters(),
-            $this->apiResponses->getGETResponses($this->getGETResponseBody()),
-            $this->resourceName
-        );
-    }
-
-    protected function delete(Closure $callback): void
-    {
-        $this->api->addRoute(
-            'DELETE',
-            $this->getEndpointWithId(),
-            $callback,
-            [],
-            RouteParametersDocGenerator::generate($this->getRouteParameters()),
-            $this->apiResponses->getDELETEResponses(),
+            $this->postResponses,
             $this->resourceName
         );
     }
@@ -100,11 +100,50 @@ abstract class RESTController
     {
         $this->api->addRoute(
             'PUT',
-            $this->getEndpointWithId(),
+            $this->endpointWithId,
             $callback,
-            $this->getPOSTPUTBody(),
-            RouteParametersDocGenerator::generate($this->getRouteParameters()),
-            $this->apiResponses->getPUTResponses(),
+            $this->postPutBody,
+            $this->urlIdParamsDoc,
+            $this->putResponses,
+            $this->resourceName
+        );
+    }
+
+    protected function getById(Closure $callback): void
+    {
+        $this->api->addRoute(
+            'GET',
+            $this->endpointWithId,
+            $callback,
+            [],
+            $this->urlIdParamsDoc,
+            $this->getResponses,
+            $this->resourceName
+        );
+    }
+
+    protected function get(Closure $callback): void
+    {
+        $this->api->addRoute(
+            'GET',
+            $this->endpoint,
+            $callback,
+            [],
+            $this->queryFilters,
+            $this->getResponses,
+            $this->resourceName
+        );
+    }
+
+    protected function delete(Closure $callback): void
+    {
+        $this->api->addRoute(
+            'DELETE',
+            $this->endpointWithId,
+            $callback,
+            [],
+            $this->urlIdParamsDoc,
+            $this->deleteResponses,
             $this->resourceName
         );
     }

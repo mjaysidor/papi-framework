@@ -71,7 +71,8 @@ $imports
 $className
 {
 $vars$functions
-}";
+}
+";
     }
 
     private function getVars(): string

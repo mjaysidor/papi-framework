@@ -15,4 +15,3 @@ DotEnv::load();
 DocGenerator::generateOpenAPIDocs(ProjectStructure::getOpenApiDocPath(), $api->getRoutes());
 
 $api->start();
-

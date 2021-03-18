@@ -44,25 +44,31 @@ class FileGenerator
             'public',
             'array',
             'getFields',
-            "return ['id' => new Id()];"
+            "return [
+            'id' => new Id(),
+        ];"
         );
         $writer->addFunction(
             'public',
             'array',
             'getDefaultSELECTFields',
-            "return ['id'];"
+            "return [
+            'id',
+        ];"
         );
         $writer->addFunction(
             'public',
             'array',
             'getEditableFields',
-            "return [];"
+            "return [
+        ];"
         );
         $writer->addFunction(
             'public',
             'array',
             'getFieldValidators',
-            "return [];"
+            "return [
+        ];"
         );
 
         $writer->write();
@@ -163,7 +169,7 @@ class FileGenerator
         $writer->addFunction(
             'protected',
             'ManyToMany',
-            'getRelation',
+            'getResource',
             "return new ManyToMany($rootResourceClass::class, $relatedResourceClass::class);"
         );
         $writer->addFunction(

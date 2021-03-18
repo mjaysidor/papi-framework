@@ -60,8 +60,9 @@ class ManyToMany extends Relation
     {
         return [
             $this->getTableName() => [
-                $this->rootResourceIdField    => "REFERENCES $this->rootTableName(id) $this->onDelete $this->onUpdate",
-                $this->relatedResourceIdField => "REFERENCES $this->relatedTableName(id) $this->onDelete $this->onUpdate",
+                $this->rootResourceIdField => "REFERENCES $this->rootTableName(id) $this->onDelete $this->onUpdate",
+                $this->relatedResourceIdField
+                                           => "REFERENCES $this->relatedTableName(id) $this->onDelete $this->onUpdate",
             ],
         ];
     }
@@ -81,7 +82,6 @@ class ManyToMany extends Relation
         array $filters = [],
         string $order = 'desc',
         ?int $limit = null,
-        ?string $offset = null
     ): array {
         return $this->getDbHandler()
                     ->select(
@@ -90,8 +90,7 @@ class ManyToMany extends Relation
                         $filters,
                         'id',
                         $order,
-                        $limit,
-                        $offset
+                        $limit
                     )
             ;
     }
@@ -119,7 +118,7 @@ class ManyToMany extends Relation
                     ->delete(
                         $this->getTableName(),
                         [
-                            "$this->rootResourceIdField="   => $rootResourceId,
+                            "$this->rootResourceIdField="    => $rootResourceId,
                             "$this->relatedResourceIdField=" => $relatedResourceId,
                         ]
                     )
@@ -134,7 +133,7 @@ class ManyToMany extends Relation
                     ->exists(
                         $this->getTableName(),
                         [
-                            "$this->rootResourceIdField="   => $rootResourceId,
+                            "$this->rootResourceIdField="    => $rootResourceId,
                             "$this->relatedResourceIdField=" => $relatedResourceId,
                         ]
                     )

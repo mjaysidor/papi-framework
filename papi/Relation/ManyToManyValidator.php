@@ -9,25 +9,17 @@ class ManyToManyValidator
         ManyToMany $relation,
         array $data
     ): ?string {
-        if (! (
-            array_key_exists($relation->rootResourceIdField, $data)
-            && array_key_exists($relation->relatedResourceIdField, $data)
+        if (! (array_key_exists($relation->rootResourceIdField, $data)
+               && array_key_exists($relation->relatedResourceIdField, $data)
         )) {
-            return "Both IDs must be specified: $relation->rootResourceIdField, $relation->relatedResourceIdField";
+            return 'Both IDs must be specified in the request body: '.
+                   "$relation->rootResourceIdField, $relation->relatedResourceIdField";
         }
 
-        $invalidFields = array_diff(
-            array_keys($data),
-            [
-                $relation->rootResourceIdField,
-                $relation->relatedResourceIdField,
-            ]
-        );
-
-        if (! empty($invalidFields)) {
-            $firstError = reset($invalidFields);
-
-            return "Invalid field: $firstError";
+        foreach ($data as $field => $value) {
+            if (! in_array($field, [$relation->rootResourceIdField, $relation->relatedResourceIdField], true)) {
+                return "Invalid field: $field";
+            }
         }
 
         return null;

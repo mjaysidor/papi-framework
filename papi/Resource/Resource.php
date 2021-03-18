@@ -31,7 +31,7 @@ abstract class Resource
                         $this->getTableName(),
                         $fields ?? $this->getDefaultSELECTFields(),
                         [
-                            'id' => $id,
+                            'id=' => $id,
                         ]
                     )
             ;
@@ -77,7 +77,7 @@ abstract class Resource
                         $this->getTableName(),
                         $data,
                         [
-                            'id' => $id,
+                            'id=' => $id,
                         ]
                     )
             ;
@@ -90,7 +90,7 @@ abstract class Resource
                     ->delete(
                         $this->getTableName(),
                         [
-                            'id' => $id,
+                            'id=' => $id,
                         ]
                     )
             ;

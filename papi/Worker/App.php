@@ -55,14 +55,14 @@ class App extends Worker
         foreach ($methods as $m) {
             $this->routes[]
                 = new Route(
-                $path,
-                $m,
-                $callback,
-                $resourceName,
-                $responses,
-                $requestBody,
-                $urlParameters
-            );
+                    $path,
+                    $m,
+                    $callback,
+                    $resourceName,
+                    $responses,
+                    $requestBody,
+                    $urlParameters
+                );
         }
     }
 

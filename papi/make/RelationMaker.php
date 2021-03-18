@@ -10,19 +10,23 @@ use ReflectionClass;
 
 class RelationMaker
 {
+    public const ONE_TO_ONE   = 'OneToOne';
+    public const MANY_TO_ONE  = 'ManyToOne';
+    public const MANY_TO_MANY = 'ManyToMany';
+
     public static function makeOneToOne(string $rootResource, string $relatedResource): void
     {
-        self::addRelation($rootResource, $relatedResource, "OneToOne");
+        self::addRelation($rootResource, $relatedResource, self::ONE_TO_ONE);
     }
 
     public static function makeManyToOne(string $rootResource, string $relatedResource): void
     {
-        self::addRelation($rootResource, $relatedResource, "ManyToOne");
+        self::addRelation($rootResource, $relatedResource, self::MANY_TO_ONE);
     }
 
     public static function makeManyToMany(string $rootResource, string $relatedResource): void
     {
-        self::addRelation($rootResource, $relatedResource, "ManyToMany");
+        self::addRelation($rootResource, $relatedResource, self::MANY_TO_MANY);
         try {
             FileGenerator::generateManyToManyController($rootResource, $relatedResource);
             ConsoleOutput::success('Controller created!');
@@ -46,8 +50,16 @@ class RelationMaker
             throw new \RuntimeException('Cannot open file');
         }
 
+        $relationDefinition = "            ";
+
+        if ($relationType !== self::MANY_TO_MANY) {
+            $fieldName = explode('\\', $relatedResource);
+            $fieldName = end($fieldName);
+            $fieldName = strtolower($fieldName).'_id';
+            $relationDefinition .= "'$fieldName' => ";
+        }
         $relationDefinition
-            = "            new \\papi\\Relation\\$relationType(__CLASS__, \\$relatedResource::class),\n";
+            .= "new \\papi\\Relation\\$relationType(__CLASS__, \\$relatedResource::class),\n";
 
         if (in_array($relationDefinition, $data, true)) {
             ConsoleOutput::errorDie('Relation already exists in resource class');
@@ -60,6 +72,15 @@ class RelationMaker
                     $j++;
                 }
                 array_splice($data, $j, 0, $relationDefinition);
+            }
+            if ($relationType !== self::MANY_TO_MANY) {
+                if (str_contains($line, 'getDefaultSELECTFields()') || str_contains($line, 'getEditableFields()')) {
+                    $j = $key;
+                    while (! str_contains($data[$j], '];')) {
+                        $j++;
+                    }
+                    array_splice($data, $j, 0, "            '$fieldName',\n");
+                }
             }
         }
 

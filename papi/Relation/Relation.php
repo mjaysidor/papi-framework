@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace papi\Relation;
 
-use papi\Database\PostgresDb;
-
 abstract class Relation
 {
     public const ON_UPDATE_RESTRICT = 'on update restrict';
@@ -22,8 +20,6 @@ abstract class Relation
 
     protected string $onDelete;
 
-    protected mixed $connection;
-
     public function __construct(
         string $rootResource,
         string $relatedResource,
@@ -34,7 +30,6 @@ abstract class Relation
         $this->onDelete = $onDelete;
         $this->rootTableName = (new $rootResource)->getTableName();
         $this->relatedTableName = (new $relatedResource)->getTableName();
-        $this->connection = PostgresDb::getConnection();
     }
 
     abstract public function getRelationFieldName(): ?string;
