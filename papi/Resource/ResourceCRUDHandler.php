@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\Resource;
@@ -89,9 +90,11 @@ class ResourceCRUDHandler
 
     public static function getById(
         Resource $resource,
-        string $id
+        string $id,
+        bool $cache = false,
+        ?int $cacheTtl = 300
     ): JsonResponse {
-        $response = $resource->getById($id);
+        $response = $resource->getById($id, null, $cache, $cacheTtl);
 
         if ($response === []) {
             return new NotFoundResponse();
@@ -103,23 +106,35 @@ class ResourceCRUDHandler
     public static function getCollection(
         Resource $resource,
         Request $request,
+        bool $cache = false,
         bool $pagination = true,
+        ?int $cacheTtl = 300,
         int $paginationItems = 10
     ): JsonResponse {
         $filters = [];
         if ($stringQuery = $request->queryString()) {
             parse_str($stringQuery, $filters);
             if (($queryValidationErrors = (new ResourceQueryValidator())->getValidationErrors($resource, $filters))
-                !== null) {
+                !== null
+            ) {
                 return new ValidationErrorResponse($queryValidationErrors);
             }
         }
 
         if ($pagination === true) {
             $paginator = PaginatorFactory::getPaginator($filters, $paginationItems);
-            $result = $paginator->getPaginatedResults($resource, $filters);
+            $result = $paginator->getPaginatedResults($resource, $filters, $cache, $cacheTtl);
         } else {
-            $result = $resource->get($filters);
+            $result = $resource->get(
+                $filters,
+                [],
+                $filters['orderBy'] ?? null,
+                $filters['order'] ?? null,
+                null,
+                null,
+                $cache,
+                $cacheTtl
+            );
         }
 
         return new OKResponse($result);

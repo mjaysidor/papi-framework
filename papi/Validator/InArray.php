@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\Validator;
@@ -27,6 +28,6 @@ class InArray extends AbstractValidator
 
     protected function getErrorMessage(): string
     {
-        return 'Not in specified array of values: ['.implode(',', $this->array).']';
+        return 'Not in specified array of values: [' . implode(',', $this->array) . ']';
     }
 }

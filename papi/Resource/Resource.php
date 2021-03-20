@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\Resource;
@@ -24,7 +25,9 @@ abstract class Resource
 
     public function getById(
         string $id,
-        ?array $fields = null
+        ?array $fields = null,
+        bool $cache = false,
+        ?int $cacheTtl = 300
     ): array {
         return $this->getDbHandler()
                     ->select(
@@ -32,7 +35,13 @@ abstract class Resource
                         $fields ?? $this->getDefaultSELECTFields(),
                         [
                             'id=' => $id,
-                        ]
+                        ],
+                        null,
+                        null,
+                        null,
+                        null,
+                        $cache,
+                        $cacheTtl
                     )
             ;
     }
@@ -43,7 +52,9 @@ abstract class Resource
         ?string $orderBy = null,
         ?string $order = null,
         ?int $limit = null,
-        ?string $offset = null
+        ?string $offset = null,
+        bool $cache = false,
+        ?int $cacheTtl = 300
     ): array {
         return $this->getDbHandler()
                     ->select(
@@ -53,7 +64,9 @@ abstract class Resource
                         $orderBy,
                         $order,
                         $limit,
-                        $offset
+                        $offset,
+                        $cache,
+                        $cacheTtl
                     )
             ;
     }

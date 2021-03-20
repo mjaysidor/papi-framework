@@ -11,6 +11,8 @@ tags:
     -
         name: comment
     -
+        name: comment_post
+    -
         name: Auth
 paths:
     /:
@@ -62,14 +64,6 @@ paths:
                 - Auth
     /comment:
         post:
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                post_id:
-                                    type: integer
             responses:
                 201:
                     description: 'Resource created'
@@ -84,11 +78,6 @@ paths:
                     in: query
                     schema:
                         type: string
-                -
-                    name: post_id
-                    in: query
-                    schema:
-                        type: string
             responses:
                 200:
                     description: 'Retrieves resource data'
@@ -98,21 +87,12 @@ paths:
                                 type: object
                                 properties:
                                     id: { type: integer }
-                                    post_id: { type: integer }
                 404:
                     description: 'Resource not found'
             tags:
                 - comment
     '/comment/{id}':
         put:
-            requestBody:
-                content:
-                    application/json:
-                        schema:
-                            type: object
-                            properties:
-                                post_id:
-                                    type: integer
             parameters:
                 -
                     name: id
@@ -161,11 +141,82 @@ paths:
                                 type: object
                                 properties:
                                     id: { type: integer }
-                                    post_id: { type: integer }
                 404:
                     description: 'Resource not found'
             tags:
                 - comment
+    /comment_post:
+        post:
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                comment_id:
+                                    type: integer
+                                post_id:
+                                    type: integer
+            responses:
+                201:
+                    description: 'Resource created'
+                400:
+                    description: 'Invalid body'
+            tags:
+                - comment_post
+        get:
+            parameters:
+                -
+                    name: id
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: comment_id
+                    in: query
+                    schema:
+                        type: string
+                -
+                    name: post_id
+                    in: query
+                    schema:
+                        type: string
+            responses:
+                200:
+                    description: 'Retrieves resource data'
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    comment_id: { type: integer }
+                                    post_id: { type: integer }
+                404:
+                    description: 'Resource not found'
+            tags:
+                - comment_post
+    '/comment_post/{comment_id}/{post_id}':
+        delete:
+            parameters:
+                -
+                    name: comment_id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+                -
+                    name: post_id
+                    in: path
+                    required: true
+                    schema:
+                        type: integer
+            responses:
+                204:
+                    description: 'Resource deleted'
+                404:
+                    description: 'Resource not found'
+            tags:
+                - comment_post
     /post:
         post:
             requestBody:

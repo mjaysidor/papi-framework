@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\Resource;
@@ -12,11 +13,13 @@ class ResourceQueryValidator
         $resourceFields = $resource->getFields();
 
         foreach ($queryFilters as $field => $value) {
-            if (! array_key_exists($field, $resourceFields)
+            if (
+                ! array_key_exists($field, $resourceFields)
                 && ! in_array(
                     $field,
                     ['offset', 'cursor', 'order', 'orderBy']
-                )) {
+                )
+            ) {
                 return "Invalid query: $field";
             }
         }

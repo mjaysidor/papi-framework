@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\Auth;
@@ -12,11 +13,11 @@ class JWT
         $base64UrlHeader = self::getEncodedHeader();
         $base64UrlPayload = self::base64UrlEncode(json_encode($payload, JSON_THROW_ON_ERROR));
 
-        return $base64UrlHeader.".".$base64UrlPayload.".".self::getSignature(
-                $base64UrlHeader,
-                $base64UrlPayload,
-                $secret
-            );
+        return $base64UrlHeader . "." . $base64UrlPayload . "." . self::getSignature(
+            $base64UrlHeader,
+            $base64UrlPayload,
+            $secret
+        );
     }
 
     public static function isValid(
@@ -30,10 +31,10 @@ class JWT
         [$header, $payload, $signature] = explode('.', $token);
 
         return $signature === self::getSignature(
-                $header,
-                $payload,
-                $secret
-            );
+            $header,
+            $payload,
+            $secret
+        );
     }
 
     public static function getPayload(string $token): array
@@ -46,7 +47,7 @@ class JWT
         string $base64UrlPayload,
         string $secret
     ): string {
-        return self::base64UrlEncode(hash_hmac('sha256', $base64UrlHeader.".".$base64UrlPayload, $secret, true));
+        return self::base64UrlEncode(hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, $secret, true));
     }
 
     private static function getEncodedHeader(): string

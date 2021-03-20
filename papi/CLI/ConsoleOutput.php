@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\CLI;
@@ -39,14 +40,14 @@ class ConsoleOutput extends Console
         $output = "\n";
 
         if (isset(self::COLORS[$color])) {
-            $output .= "\e[".self::COLORS[$color]."m";
+            $output .= "\e[" . self::COLORS[$color] . "m";
         }
         if (isset(self::BACKGROUNDS[$background])) {
-            $output .= "\e[".self::BACKGROUNDS[$background]."m";
+            $output .= "\e[" . self::BACKGROUNDS[$background] . "m";
         }
 
         $output .= "   $string   \033[0m";
 
-        echo($output.PHP_EOL);
+        echo($output . PHP_EOL);
     }
 }

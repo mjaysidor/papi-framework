@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace papi\Database;
 
 use config\DatabaseConfig;
+use papi\Utils\CacheStorage;
 use RuntimeException;
 
 class PostgresDb
@@ -85,7 +86,9 @@ class PostgresDb
         ?string $orderBy = null,
         ?string $order = null,
         ?int $limit = null,
-        ?string $offset = null
+        ?string $offset = null,
+        bool $cache = false,
+        ?int $cacheTtl = 300
     ): array {
         if ($columns !== []) {
             $query = 'select '.implode(',', $columns)." from $from";
@@ -106,6 +109,32 @@ class PostgresDb
         }
         if ($offset !== null) {
             $query .= " offset $offset";
+        }
+
+        if ($cache === true) {
+            $params = $this->aliasValues;
+            $escapedQuery = preg_replace_callback(
+                '/\$(\d+)\b/',
+                static function ($match) use ($params) {
+                    $key = ($match[1] - 1);
+
+                    return (is_null($params[$key]) ? 'NULL' : pg_escape_literal($params[$key]));
+                },
+                $query
+            );
+
+            if (($cachedResult = CacheStorage::get($escapedQuery)) !== false) {
+                return $cachedResult;
+            }
+
+            if (($queryParams = pg_query_params($this->connection, $query, $this->aliasValues)) === false) {
+                throw $this->throwError();
+            }
+
+            $queryResult = pg_fetch_all($queryParams);
+            CacheStorage::set($escapedQuery, $queryResult, $cacheTtl);
+
+            return $queryResult;
         }
 
         if (($queryParams = pg_query_params($this->connection, $query, $this->aliasValues)) === false) {
@@ -195,14 +224,18 @@ class PostgresDb
         return pg_affected_rows($queryParams);
     }
 
-    private function addAlias(string &$query, mixed $value): void
-    {
+    private function addAlias(
+        string &$query,
+        mixed $value
+    ): void {
         $query .= ' $'.++$this->aliasCount;
         $this->aliasValues[] = $value;
     }
 
-    private function addWhereConditions(string &$query, array $where): void
-    {
+    private function addWhereConditions(
+        string &$query,
+        array $where
+    ): void {
         $query .= ' where ';
         $firstKey = array_key_first($where);
 
@@ -218,8 +251,10 @@ class PostgresDb
         }
     }
 
-    private function addQueryFilters(string &$query, array $filters): void
-    {
+    private function addQueryFilters(
+        string &$query,
+        array $filters
+    ): void {
         $query .= ' where ';
         $firstKey = array_key_first($filters);
 

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\Worker;
@@ -12,6 +13,7 @@ use Throwable;
 use Workerman\Connection\TcpConnection;
 use Workerman\Protocols\Http\Request;
 use Workerman\Worker;
+
 use function FastRoute\simpleDispatcher;
 
 class App extends Worker
@@ -86,7 +88,7 @@ class App extends Worker
         try {
             $method = $request->method();
 
-            if ($handler = $this->handlerCache[$request->path().$method] ?? null) {
+            if ($handler = $this->handlerCache[$request->path() . $method] ?? null) {
                 $connection->send($handler($request));
 
                 return;
@@ -103,7 +105,7 @@ class App extends Worker
                         return $handler($request, ... $args);
                     };
                 }
-                $this->handlerCache[$request->path().$method] = $handler;
+                $this->handlerCache[$request->path() . $method] = $handler;
                 $connection->send($handler($request));
 
                 return;
@@ -122,7 +124,7 @@ class App extends Worker
             }
         } catch (Throwable $e) {
             $connection->send(
-                new JsonResponse(500, ['error:' => $e->getMessage(), '@' => $e->getFile().': '.$e->getLine()])
+                new JsonResponse(500, ['error:' => $e->getMessage(), '@' => $e->getFile() . ': ' . $e->getLine()])
             );
         }
     }

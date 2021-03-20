@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\Resource;
@@ -30,10 +31,12 @@ class ManyToManyHandler
             return new ValidationErrorResponse($validationErrors);
         }
 
-        if ($relation->exists(
-            $body[$relation->rootResourceIdField],
-            $body[$relation->relatedResourceIdField],
-        )) {
+        if (
+            $relation->exists(
+                $body[$relation->rootResourceIdField],
+                $body[$relation->relatedResourceIdField],
+            )
+        ) {
             return new ErrorResponse('Relation already exists');
         }
 

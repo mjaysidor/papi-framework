@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\Migrations\Schema\Mapping;
@@ -11,13 +12,13 @@ class DbMapping extends Mapping
     protected function init(): void
     {
         $lastMigration = (new PostgresDb())->select(
-                SchemaManager::MIGRATION_COLUMN_NAME,
-                ['current_state'],
-                [],
-                'id',
-                'desc',
-                1
-            )[0]['current_state'] ?? [];
+            SchemaManager::MIGRATION_COLUMN_NAME,
+            ['current_state'],
+            [],
+            'id',
+            'desc',
+            1
+        )[0]['current_state'] ?? [];
 
         if (! empty($lastMigration)) {
             $lastMigration = json_decode(

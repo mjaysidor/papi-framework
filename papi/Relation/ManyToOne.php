@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\Relation;
@@ -7,7 +8,7 @@ class ManyToOne extends Relation
 {
     public function getRelationFieldName(): string
     {
-        return $this->relatedTableName."_id";
+        return $this->relatedTableName . "_id";
     }
 
     public function getColumnDefinitions(): array
@@ -20,7 +21,7 @@ class ManyToOne extends Relation
         return [
             $this->rootTableName =>
                 [
-                    $this->relatedTableName.'_id' =>
+                    $this->relatedTableName . '_id' =>
                         "REFERENCES $this->relatedTableName(id) $this->onDelete $this->onUpdate",
                 ],
         ];
@@ -29,8 +30,8 @@ class ManyToOne extends Relation
     public function getIndexDefinition(): array
     {
         return [
-            'index FK_'.$this->rootTableName.'_'
-            ."$this->relatedTableName ON $this->rootTableName($this->relatedTableName".'_id)',
+            'index FK_' . $this->rootTableName . '_'
+            . "$this->relatedTableName ON $this->rootTableName($this->relatedTableName" . '_id)',
         ];
     }
 

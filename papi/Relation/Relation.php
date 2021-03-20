@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\Relation;
@@ -28,8 +29,8 @@ abstract class Relation
     ) {
         $this->onUpdate = $onUpdate;
         $this->onDelete = $onDelete;
-        $this->rootTableName = (new $rootResource)->getTableName();
-        $this->relatedTableName = (new $relatedResource)->getTableName();
+        $this->rootTableName = (new $rootResource())->getTableName();
+        $this->relatedTableName = (new $relatedResource())->getTableName();
     }
 
     abstract public function getRelationFieldName(): ?string;

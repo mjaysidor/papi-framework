@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\Database\Paginator;
@@ -27,10 +28,23 @@ class OffsetPaginator extends Paginator
         $this->offset = $offset;
     }
 
-    public function getPaginatedResults(Resource $resource, array $filters): array
-    {
+    public function getPaginatedResults(
+        Resource $resource,
+        array $filters,
+        bool $cache = false,
+        ?int $cacheTtl = 300
+    ): array {
         return $this->addPaginationLinks(
-            (new $resource())->get($filters, [], $this->column, $this->order, $this->limit, $this->offset)
+            (new $resource())->get(
+                $filters,
+                [],
+                $this->column,
+                $this->order,
+                $this->limit,
+                $this->offset,
+                $cache,
+                $cacheTtl
+            )
         );
     }
 

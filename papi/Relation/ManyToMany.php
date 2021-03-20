@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\Relation;
@@ -24,8 +25,8 @@ class ManyToMany extends Relation
         string $onDelete = self::ON_DELETE_CASCADE
     ) {
         parent::__construct($rootResource, $relatedResource, $onUpdate, $onDelete);
-        $this->rootResourceIdField = $this->rootTableName.'_id';
-        $this->relatedResourceIdField = $this->relatedTableName.'_id';
+        $this->rootResourceIdField = $this->rootTableName . '_id';
+        $this->relatedResourceIdField = $this->relatedTableName . '_id';
     }
 
     public function getFields(): array
@@ -44,7 +45,7 @@ class ManyToMany extends Relation
 
     public function getTableName(): string
     {
-        return $this->rootTableName.'_'.$this->relatedTableName;
+        return $this->rootTableName . '_' . $this->relatedTableName;
     }
 
     public function getColumnDefinitions(): array
@@ -70,11 +71,11 @@ class ManyToMany extends Relation
     public function getIndexDefinition(): array
     {
         return [
-            "index FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->rootTableName ON "
-            .$this->getTableName()."($this->rootResourceIdField)"
+            "index FK_" . $this->rootTableName . '_' . $this->relatedTableName . '_' . "$this->rootTableName ON "
+            . $this->getTableName() . "($this->rootResourceIdField)"
             ,
-            "index FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->relatedTableName ON "
-            .$this->getTableName()."($this->relatedResourceIdField)",
+            "index FK_" . $this->rootTableName . '_' . $this->relatedTableName . '_' . "$this->relatedTableName ON "
+            . $this->getTableName() . "($this->relatedResourceIdField)",
         ];
     }
 

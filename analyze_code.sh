@@ -11,10 +11,10 @@ echo "--------------------------------------------------------------------------
 echo ""
 echo -e "\e[43m\e[30m                                                        PHPCBF:                                                        \033[0m"
 echo ""
-./vendor/bin/phpcbf src
+./vendor/bin/phpcbf src config papi
 
 echo "-----------------------------------------------------------------------------------------------------------------------"
 echo ""
 echo -e "\e[43m\e[30m                                                        PHPCS:                                                        \033[0m"
 echo ""
-./vendor/bin/phpcs src
+./vendor/bin/phpcs src config papi

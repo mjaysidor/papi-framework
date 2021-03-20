@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\Controller;
@@ -67,7 +68,7 @@ abstract class RESTController
         $this->endpoint = $this->endpointWithId = "/$this->resourceName";
 
         foreach ($urlParams as $param) {
-            $this->endpointWithId .= '/{'.$param.'}';
+            $this->endpointWithId .= '/{' . $param . '}';
         }
     }
 

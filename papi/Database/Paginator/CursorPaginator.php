@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\Database\Paginator;
@@ -33,14 +34,18 @@ class CursorPaginator extends Paginator
         $this->cursorComparisonOperator = $this->order === 'asc' ? 'gt' : 'lt';
     }
 
-    public function getPaginatedResults(Resource $resource, array $filters): array
-    {
+    public function getPaginatedResults(
+        Resource $resource,
+        array $filters,
+        bool $cache = false,
+        ?int $cacheTtl = 300
+    ): array {
         if ($this->cursor !== '') {
             $filters[$this->column] = [$this->cursorComparisonOperator => $this->cursor];
         }
 
         return $this->addPaginationLinks(
-            (new $resource())->get($filters, [], $this->column, $this->order, $this->limit + 1)
+            (new $resource())->get($filters, [], $this->column, $this->order, $this->limit + 1, null, $cache, $cacheTtl)
         );
     }
 

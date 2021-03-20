@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\make;
@@ -37,7 +38,7 @@ class RelationMaker
 
     private static function addRelation(string $rootResource, string $relatedResource, string $relationType): void
     {
-        $reflector = new ReflectionClass(new $rootResource);
+        $reflector = new ReflectionClass(new $rootResource());
         $rootResourceFileName = $reflector->getFileName();
 
         if ($rootResourceFileName === false) {
@@ -55,7 +56,7 @@ class RelationMaker
         if ($relationType !== self::MANY_TO_MANY) {
             $fieldName = explode('\\', $relatedResource);
             $fieldName = end($fieldName);
-            $fieldName = strtolower($fieldName).'_id';
+            $fieldName = strtolower($fieldName) . '_id';
             $relationDefinition .= "'$fieldName' => ";
         }
         $relationDefinition

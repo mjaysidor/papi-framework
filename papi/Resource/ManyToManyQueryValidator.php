@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\Resource;
@@ -12,16 +13,17 @@ class ManyToManyQueryValidator
         array $queryFilters
     ): ?string {
         if ($queryFilters === []) {
-            return "Query must contain at least one of following parameters: ".$relation->rootResourceIdField.", "
-                   .$relation->relatedResourceIdField;
+            return "Query must contain at least one of following parameters: " . $relation->rootResourceIdField . ", "
+                   . $relation->relatedResourceIdField;
         }
 
         foreach ($queryFilters as $field => $value) {
-            if (! in_array(
-                $field,
-                ['cursor', 'order', 'orderBy', $relation->rootResourceIdField, $relation->relatedResourceIdField],
-                true
-            )
+            if (
+                ! in_array(
+                    $field,
+                    ['cursor', 'order', 'orderBy', $relation->rootResourceIdField, $relation->relatedResourceIdField],
+                    true
+                )
             ) {
                 return "Invalid query: $field";
             }
