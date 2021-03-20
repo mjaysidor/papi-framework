@@ -10,12 +10,12 @@ class CacheStorage
     {
         $value = var_export($value, true);
         $pathName = "var/cache/$key.tmp";
-        $content = '$val = '."$value;";
+        $content = '$val = ' . "$value;";
 
         if ($ttl !== null) {
             $expirationDate = (new \DateTime());
             $expirationDate->modify("+$ttl seconds");
-            $content .= '$expirationDate = '.var_export($expirationDate, true).';';
+            $content .= '$expirationDate = ' . var_export($expirationDate, true) . ';';
         }
 
         file_put_contents($pathName, "<?php $content", LOCK_EX);

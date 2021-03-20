@@ -91,7 +91,7 @@ class PostgresDb
         ?int $cacheTtl = 300
     ): array {
         if ($columns !== []) {
-            $query = 'select '.implode(',', $columns)." from $from";
+            $query = 'select ' . implode(',', $columns) . " from $from";
         } else {
             $query = "select * from $from";
         }
@@ -102,7 +102,7 @@ class PostgresDb
             if ($order !== 'desc') {
                 $order = 'asc';
             }
-            $query .= ' order by '.pg_escape_string($orderBy)." $order";
+            $query .= ' order by ' . pg_escape_string($orderBy) . " $order";
         }
         if ($limit !== null) {
             $query .= " limit $limit";
@@ -212,7 +212,7 @@ class PostgresDb
             if ($firstKey !== $key) {
                 $query .= ',';
             }
-            $query .= pg_escape_string($key).'=';
+            $query .= pg_escape_string($key) . '=';
             $this->addAlias($query, $condition);
         }
         $this->addWhereConditions($query, $where);
@@ -228,7 +228,7 @@ class PostgresDb
         string &$query,
         mixed $value
     ): void {
-        $query .= ' $'.++$this->aliasCount;
+        $query .= ' $' . ++$this->aliasCount;
         $this->aliasValues[] = $value;
     }
 
