@@ -1,8 +1,7 @@
 <?php
-
 declare(strict_types=1);
 
-namespace App\Controller;
+namespace App\Controller\Auth;
 
 class AuthController extends \papi\Auth\AuthController
 {
@@ -13,10 +12,7 @@ class AuthController extends \papi\Auth\AuthController
 
     protected function getPayload(?array $requestBody): array
     {
-        return [
-            'user_id' => 2,
-            'user_id_3' => '3',
-        ];
+        return [];
     }
 
     protected function getOpenApiDocRequestBody(): array
