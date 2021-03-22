@@ -1,5 +1,5 @@
 DOING:
-    - make user command
+    - TEST: make user command
 
 BUGS:
 
