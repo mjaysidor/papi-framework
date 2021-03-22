@@ -13,7 +13,7 @@ use papi\Worker\App;
 
 /**
  * Creates endpoint used for generating JSON Web Tokens for validated users
- * More at: https://jwt.io/introduction
+ * @link : https://jwt.io/introduction
  */
 abstract class AuthController
 {

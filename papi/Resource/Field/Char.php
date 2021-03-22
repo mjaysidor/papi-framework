@@ -21,6 +21,6 @@ class Char extends Field
 
     public function getPHPTypeName(): string
     {
-        return 'char';
+        return 'string';
     }
 }

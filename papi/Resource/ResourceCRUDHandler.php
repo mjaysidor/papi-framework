@@ -15,11 +15,14 @@ use Workerman\Protocols\Http\Request;
 
 class ResourceCRUDHandler
 {
+    /**
+     * @param PreExecutionBodyModifier[] $preExecutionBodyModifier
+     */
     public static function update(
         Resource $resource,
         string $id,
         Request $request,
-        ?PreExecutionBodyModifier $preExecutionBodyModifier = null
+        array $preExecutionBodyModifier = []
     ): JsonResponse {
         try {
             $body = json_decode($request->rawBody(), true, 512, JSON_THROW_ON_ERROR);
@@ -27,8 +30,8 @@ class ResourceCRUDHandler
             return new ValidationErrorResponse('Body cannot be empty');
         }
 
-        if ($preExecutionBodyModifier !== null) {
-            $preExecutionBodyModifier->modify($body);
+        foreach ($preExecutionBodyModifier as $modifier) {
+            $modifier->modify($body);
         }
 
         if (($validationErrors = (new Validator())->getValidationErrors($resource, $body)) !== null) {
@@ -47,10 +50,13 @@ class ResourceCRUDHandler
         return new OKResponse($body);
     }
 
+    /**
+     * @param PreExecutionBodyModifier[] $preExecutionBodyModifier
+     */
     public static function create(
         Resource $resource,
         Request $request,
-        ?PreExecutionBodyModifier $preExecutionBodyModifier = null
+        array $preExecutionBodyModifier = []
     ): JsonResponse {
         try {
             $body = json_decode($request->rawBody(), true, 512, JSON_THROW_ON_ERROR);
@@ -58,8 +64,8 @@ class ResourceCRUDHandler
             return new ValidationErrorResponse('Body cannot be empty');
         }
 
-        if ($preExecutionBodyModifier !== null) {
-            $preExecutionBodyModifier->modify($body);
+        foreach ($preExecutionBodyModifier as $modifier) {
+            $modifier->modify($body);
         }
 
         if (($validationErrors = (new Validator())->getValidationErrors($resource, $body)) !== null) {
@@ -71,7 +77,7 @@ class ResourceCRUDHandler
         return new JsonResponse(
             201,
             $response,
-            ['Location' => $request->host() . $request->uri() . "/" . $response['id']]
+            ['Location' => $request->host().$request->uri()."/".$response['id']]
         );
     }
 

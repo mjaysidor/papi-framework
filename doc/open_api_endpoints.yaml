@@ -7,13 +7,13 @@ tags:
     -
         name: post
     -
+        name: Auth
+    -
         name: Other
     -
         name: comment
     -
         name: comment_post
-    -
-        name: Auth
 paths:
     /:
         get:

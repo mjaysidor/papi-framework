@@ -6,6 +6,16 @@ namespace papi\Config;
 
 class ProjectStructure implements ProjectStructureConfig
 {
+    public static function getConfigPath(): string
+    {
+        return 'config';
+    }
+
+    public static function getConfigNamespace(): string
+    {
+        return 'config';
+    }
+
     public static function getControllersPath(): string
     {
         return 'src/Controller';
