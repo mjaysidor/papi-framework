@@ -24,7 +24,7 @@ class JWT
         string $secret,
         ?string $token
     ): bool {
-        if (is_null($token)) {
+        if (empty($token) === true) {
             return false;
         }
 

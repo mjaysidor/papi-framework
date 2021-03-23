@@ -1,5 +1,4 @@
 DOING:
-    - TEST: make user command
 
 BUGS:
 
@@ -9,6 +8,7 @@ TESTY:
 TODO:
 
 BACKLOG:
+    - separate validation for post & put
     - doc
     - export papi to separate repo & composer package
     - pg connection pooling (pgpool2/pgbouncer?)

@@ -17,6 +17,7 @@ use papi\Resource\ResourceCRUDHandler;
 use papi\Utils\PasswordEncoder;
 use papi\Utils\PHPClassFileWriter;
 use papi\Validator\NotBlank;
+use RuntimeException;
 use Workerman\Protocols\Http\Request;
 
 class AuthGenerator
@@ -93,6 +94,16 @@ class AuthGenerator
         );
 
         $writer->write();
+    }
+
+    public static function makeVoterDirectory(): void
+    {
+        $dir = ProjectStructure::getVoterPath();
+        if (! is_dir($dir)) {
+            if (! mkdir($concurrentDirectory = $dir, 0777, true) && ! is_dir($concurrentDirectory)) {
+                throw new RuntimeException("Directory $concurrentDirectory was not created");
+            }
+        }
     }
 
     public static function generateAuthConfig(string $secret): void

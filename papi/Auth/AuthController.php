@@ -13,7 +13,8 @@ use papi\Worker\App;
 
 /**
  * Creates endpoint used for generating JSON Web Tokens for validated users
- * @link : https://jwt.io/introduction
+ *
+ * @link: https://jwt.io/introduction
  */
 abstract class AuthController
 {
@@ -62,7 +63,7 @@ abstract class AuthController
     abstract protected function credentialsValid(?array $requestBody): bool;
 
     /**
-     * Return payload to be contained in JWT after successful validation
+     * Return payload (data) to be contained in JWT after successful validation
      */
     abstract protected function getPayload(?array $requestBody): array;
 

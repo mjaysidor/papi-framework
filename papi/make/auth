@@ -21,6 +21,7 @@ if ($generateUser === true) {
 }
 try {
     AuthGenerator::generateAuthController($generateUser);
+    AuthGenerator::makeVoterDirectory();
 } catch (Exception $exception) {
     ConsoleOutput::errorDie($exception->getMessage());
 }

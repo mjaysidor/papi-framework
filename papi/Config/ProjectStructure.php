@@ -21,6 +21,11 @@ class ProjectStructure implements ProjectStructureConfig
         return 'src/Controller';
     }
 
+    public static function getVoterPath(): string
+    {
+        return 'src/Voter';
+    }
+
     public static function getManyToManyControllersPath(): string
     {
         return 'src/Controller/ManyToMany';
