@@ -9,6 +9,7 @@ use FastRoute\RouteCollector;
 use papi\Response\JsonResponse;
 use papi\Response\MethodNotAllowedResponse;
 use papi\Response\NotFoundResponse;
+use papi\Utils\ErrorLogger;
 use Throwable;
 use Workerman\Connection\TcpConnection;
 use Workerman\Protocols\Http\Request;
@@ -56,14 +57,14 @@ class App extends Worker
         foreach ($methods as $m) {
             $this->routes[]
                 = new Route(
-                    $path,
-                    $m,
-                    $callback,
-                    $resourceName,
-                    $responses,
-                    $requestBody,
-                    $urlParameters
-                );
+                $path,
+                $m,
+                $callback,
+                $resourceName,
+                $responses,
+                $requestBody,
+                $urlParameters
+            );
         }
     }
 
@@ -122,6 +123,7 @@ class App extends Worker
                 return;
             }
         } catch (Throwable $e) {
+            ErrorLogger::logError($e);
             $connection->send(
                 new JsonResponse(500, ['error:' => $e->getMessage(), '@' => $e->getFile().': '.$e->getLine()])
             );
