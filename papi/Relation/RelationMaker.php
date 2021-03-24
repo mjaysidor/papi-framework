@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace papi\make;
+namespace papi\Relation;
 
 use Exception;
 use papi\CLI\ConsoleOutput;

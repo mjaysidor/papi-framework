@@ -35,19 +35,23 @@ class ConsoleOutput extends Console
     public static function output(
         string $string,
         ?string $color = null,
-        ?string $background = null
+        ?string $background = null,
+        bool $emptyLineAtTheEnd = true
     ): void {
         $output = "\n";
 
         if (isset(self::COLORS[$color])) {
-            $output .= "\e[" . self::COLORS[$color] . "m";
+            $output .= "\e[".self::COLORS[$color]."m";
         }
         if (isset(self::BACKGROUNDS[$background])) {
-            $output .= "\e[" . self::BACKGROUNDS[$background] . "m";
+            $output .= "\e[".self::BACKGROUNDS[$background]."m";
         }
 
         $output .= "   $string   \033[0m";
 
-        echo($output . PHP_EOL);
+        if ($emptyLineAtTheEnd === true) {
+            $output .= PHP_EOL;
+        }
+        echo($output);
     }
 }

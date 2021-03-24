@@ -8,8 +8,8 @@ class ConsoleInput extends Console
 {
     public static function getInput(string $prompt): string
     {
-        $output = "\n\e[" . self::COLORS[self::COLOR_BLACK] . "m";
-        $output .= "\e[" . self::BACKGROUNDS[self::BACKGROUND_BLUE] . "m";
+        $output = "\n\e[".self::COLORS[self::COLOR_BLACK]."m";
+        $output .= "\e[".self::BACKGROUNDS[self::BACKGROUND_GREEN]."m";
 
         $output .= "   $prompt   \033[0m  ";
         echo "$output\n";
@@ -17,9 +17,11 @@ class ConsoleInput extends Console
         return (string)readline();
     }
 
-    public static function getInputFromChoices(string $title, array $options): string
-    {
-        ConsoleOutput::info($title);
+    public static function getInputFromChoices(
+        string $title,
+        array $options
+    ): string {
+        ConsoleOutput::success($title);
         $choices = [];
         foreach ($options as $key => $value) {
             $choices[] = "[$key] $value";
@@ -33,11 +35,10 @@ class ConsoleInput extends Console
         );
         $firstKey = array_key_first($options);
 
-        while (
-            ! array_key_exists(
-                ($result = self::getInput("Choice (ex. $firstKey for $options[$firstKey]):")),
-                $options
-            )
+        while (! array_key_exists(
+            ($result = self::getInput("Choice (ex. $firstKey for $options[$firstKey]):")),
+            $options
+        )
         ) {
             ConsoleOutput::warning('Invalid input!');
             continue;

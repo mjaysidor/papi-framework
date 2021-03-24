@@ -1,0 +1,45 @@
+<?php
+declare(strict_types=1);
+
+use papi\CLI\Command;
+use papi\CLI\Console;
+use papi\CLI\ConsoleOutput;
+use papi\Utils\ClassGetter;
+
+require 'vendor/autoload.php';
+
+$inputCommand = $argv[1] ?? null;
+
+$commandObjects = ClassGetter::getClasses('papi/CLI/Commands');
+$commands = [];
+
+foreach ($commandObjects as $object) {
+    /** @var Command $object */
+    $object = new $object();
+    $commands[$object->getCommand()] = $object;
+}
+
+if (! array_key_exists($inputCommand, $commands)) {
+    printCommands($commands);
+
+    return;
+}
+
+$commands[$inputCommand]->execute();
+
+function printCommands(array $commands): void
+{
+    $group = '';
+    ConsoleOutput::success('Available commands:');
+    foreach ($commands as $command => $commandObject) {
+        $path = explode('\\', get_class($commandObject));
+        if (($currentGroup = $path[array_key_last($path) - 1]) !== $group) {
+            $group = $currentGroup;
+            ConsoleOutput::output($group, Console::COLOR_GREEN, null, false);
+        }
+        ConsoleOutput::output("    $command", null, null, false);
+    }
+    echo PHP_EOL;
+    ConsoleOutput::success('Type in "php cli group:command" (ex. "php cli db:drop")');
+    echo PHP_EOL;
+}
