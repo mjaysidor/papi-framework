@@ -2,17 +2,17 @@ DOING:
 
 DOC:
     - phpdoc
+        - Controller
+        - Database
+        - Relation
         + Auth
         + Callbacks
         + CLI
         + Config
-        - Controller
-        - Database
         + Documentation
         + Exception
         + Generator
         + Migrations
-        - Relation
         + Resource
         + Response
         + Utils
