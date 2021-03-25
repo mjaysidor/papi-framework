@@ -8,20 +8,44 @@ use papi\Database\PostgresDb;
 
 abstract class Resource
 {
+    /**
+     * @return PostgresDb db handler object
+     */
     private function getDbHandler(): PostgresDb
     {
         return new PostgresDb();
     }
 
+    /**
+     * Returns resource database table name
+     */
     abstract public function getTableName(): string;
 
+    /**
+     * Get resource fields with definitions
+     * ex. 'content' => new Varchar(255)
+     */
     abstract public function getFields(): array;
 
+    /**
+     * Get default fields displayed on SELECT (get) requests
+     */
     abstract public function getDefaultSELECTFields(): array;
 
+    /**
+     * Get fields which are allowed to be updated by PUT requests
+     */
     abstract public function getEditableFields(): array;
 
-    abstract public function getFieldValidators(): array;
+    /**
+     * Get validators for POST (create) requests
+     */
+    abstract public function getPOSTValidators(): array;
+
+    /**
+     * Get validators for PUT (update) requests
+     */
+    abstract public function getPUTValidators(): array;
 
     public function getById(
         string $id,
@@ -36,12 +60,8 @@ abstract class Resource
                         [
                             'id=' => $id,
                         ],
-                        null,
-                        null,
-                        null,
-                        null,
-                        $cache,
-                        $cacheTtl
+                        cache: $cache,
+                        cacheTtl: $cacheTtl
                     )
             ;
     }

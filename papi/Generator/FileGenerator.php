@@ -28,8 +28,8 @@ class FileGenerator
     ): void {
         $writer = new PHPClassFileWriter(
             $name,
-            $dir ? ProjectStructure::getResourcesNamespace() . '\\' . $dir : ProjectStructure::getResourcesNamespace(),
-            $dir ? ProjectStructure::getResourcesPath() . '/' . $dir : ProjectStructure::getResourcesPath(),
+            $dir ? ProjectStructure::getResourcesNamespace().'\\'.$dir : ProjectStructure::getResourcesNamespace(),
+            $dir ? ProjectStructure::getResourcesPath().'/'.$dir : ProjectStructure::getResourcesPath(),
             'Resource',
             null
         );
@@ -39,7 +39,7 @@ class FileGenerator
             'public',
             'string',
             'getTableName',
-            "return '" . CaseConverter::camelToSnake($name) . "';"
+            "return '".CaseConverter::camelToSnake($name)."';"
         );
         $writer->addFunction(
             'public',
@@ -67,7 +67,14 @@ class FileGenerator
         $writer->addFunction(
             'public',
             'array',
-            'getFieldValidators',
+            'getPOSTValidators',
+            "return [
+        ];"
+        );
+        $writer->addFunction(
+            'public',
+            'array',
+            'getPUTValidators',
             "return [
         ];"
         );
@@ -83,10 +90,10 @@ class FileGenerator
         bool $customEndpoints = true
     ): void {
         $writer = new PHPClassFileWriter(
-            $name . 'Controller',
-            $dir ? ProjectStructure::getControllersNamespace() .
-                   '\\' . $dir : ProjectStructure::getControllersNamespace(),
-            $dir ? ProjectStructure::getControllersPath() . '/' . $dir : ProjectStructure::getControllersPath(),
+            $name.'Controller',
+            $dir ? ProjectStructure::getControllersNamespace().
+                   '\\'.$dir : ProjectStructure::getControllersNamespace(),
+            $dir ? ProjectStructure::getControllersPath().'/'.$dir : ProjectStructure::getControllersPath(),
             'ResourceController',
             null
         );
@@ -94,8 +101,8 @@ class FileGenerator
         $writer->addImport(ResourceCRUDHandler::class);
         $writer->addImport(Request::class);
         $writer->addImport(
-            $dir ? ProjectStructure::getResourcesNamespace() . '\\' . $dir . '\\' . $name
-                : ProjectStructure::getResourcesNamespace() . '\\' . $name
+            $dir ? ProjectStructure::getResourcesNamespace().'\\'.$dir.'\\'.$name
+                : ProjectStructure::getResourcesNamespace().'\\'.$name
         );
         $writer->addFunction(
             'public',
@@ -128,9 +135,9 @@ class FileGenerator
     ): void {
         $writer = new PHPClassFileWriter(
             $name,
-            $dir ? ProjectStructure::getControllersNamespace() .
-                   '\\' . $dir : ProjectStructure::getControllersNamespace(),
-            $dir ? ProjectStructure::getControllersPath() . '/' . $dir : ProjectStructure::getControllersPath(),
+            $dir ? ProjectStructure::getControllersNamespace().
+                   '\\'.$dir : ProjectStructure::getControllersNamespace(),
+            $dir ? ProjectStructure::getControllersPath().'/'.$dir : ProjectStructure::getControllersPath(),
             'Controller',
             null
         );
@@ -157,7 +164,7 @@ class FileGenerator
         $rootResourceClass = end($rootResourcePathName);
         $relatedResourceClass = end($relatedResourcePathName);
         $writer = new PHPClassFileWriter(
-            $rootResourceClass . $relatedResourceClass . 'Controller',
+            $rootResourceClass.$relatedResourceClass.'Controller',
             ProjectStructure::getManyToManyControllersNamespace(),
             ProjectStructure::getManyToManyControllersPath(),
             'ManyToManyController',

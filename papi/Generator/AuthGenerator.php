@@ -77,10 +77,17 @@ class AuthGenerator
         $writer->addFunction(
             'public',
             'array',
-            'getFieldValidators',
+            'getPOSTValidators',
             "return [
             'username' => [new NotBlank()],
             'password' => [new NotBlank()],
+        ];"
+        );
+        $writer->addFunction(
+            'public',
+            'array',
+            'getPUTValidators',
+            "return [
         ];"
         );
         $writer->addFunction(
@@ -112,8 +119,7 @@ class AuthGenerator
             'AuthConfig',
             ProjectStructure::getConfigNamespace(),
             ProjectStructure::getConfigPath(),
-            null,
-            '\\'.AuthConfig::class
+            implements: '\\'.AuthConfig::class
         );
         $writer->addFunction(
             'public static',
@@ -132,8 +138,7 @@ class AuthGenerator
             'UserController',
             ProjectStructure::getControllersNamespace().'\\Auth',
             ProjectStructure::getControllersPath().'/Auth',
-            'ResourceController',
-            null
+            'ResourceController'
         );
         $writer->addImport(ProjectStructure::getResourcesNamespace()."\\Auth\\$resourceName");
         $writer->addImport(EncodePassword::class);

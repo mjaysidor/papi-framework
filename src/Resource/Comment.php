@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Resource;
 
+use papi\Relation\ManyToMany;
 use papi\Resource\Field\Id;
+use papi\Resource\Field\Varchar;
 use papi\Resource\Resource;
 
 class Comment extends Resource
@@ -18,7 +20,8 @@ class Comment extends Resource
     {
         return [
             'id'      => new Id(),
-            new \papi\Relation\ManyToMany(__CLASS__, \App\Resource\Post::class),
+            'content'      => new Varchar(100),
+            new ManyToMany(__CLASS__, Post::class),
         ];
     }
 
@@ -35,7 +38,13 @@ class Comment extends Resource
         ];
     }
 
-    public function getFieldValidators(): array
+    public function getPUTValidators(): array
+    {
+        return [
+        ];
+    }
+
+    public function getPOSTValidators(): array
     {
         return [
         ];

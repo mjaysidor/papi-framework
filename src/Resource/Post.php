@@ -33,7 +33,13 @@ class Post extends Resource
         return ['content'];
     }
 
-    public function getFieldValidators(): array
+    public function getPUTValidators(): array
+    {
+        return [
+        ];
+    }
+
+    public function getPOSTValidators(): array
     {
         return [];
     }

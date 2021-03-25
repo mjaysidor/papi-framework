@@ -34,7 +34,7 @@ class ResourceCRUDHandler
             $modifier->modify($body);
         }
 
-        if (($validationErrors = (new Validator())->getValidationErrors($resource, $body)) !== null) {
+        if (($validationErrors = (new ResourceValidator())->getPUTValidationErrors($resource, $body)) !== null) {
             return new ValidationErrorResponse($validationErrors);
         }
 
@@ -68,7 +68,7 @@ class ResourceCRUDHandler
             $modifier->modify($body);
         }
 
-        if (($validationErrors = (new Validator())->getValidationErrors($resource, $body)) !== null) {
+        if (($validationErrors = (new ResourceValidator())->getPOSTValidationErrors($resource, $body)) !== null) {
             return new ValidationErrorResponse($validationErrors);
         }
 
@@ -100,7 +100,7 @@ class ResourceCRUDHandler
         bool $cache = false,
         ?int $cacheTtl = 300
     ): JsonResponse {
-        $response = $resource->getById($id, null, $cache, $cacheTtl);
+        $response = $resource->getById($id, cache: $cache, cacheTtl: $cacheTtl);
 
         if ($response === []) {
             return new NotFoundResponse();
@@ -120,8 +120,7 @@ class ResourceCRUDHandler
         $filters = [];
         if ($stringQuery = $request->queryString()) {
             parse_str($stringQuery, $filters);
-            if (
-                ($queryValidationErrors = (new ResourceQueryValidator())->getValidationErrors($resource, $filters))
+            if (($queryValidationErrors = (new ResourceQueryValidator())->getValidationErrors($resource, $filters))
                 !== null
             ) {
                 return new ValidationErrorResponse($queryValidationErrors);
@@ -134,13 +133,10 @@ class ResourceCRUDHandler
         } else {
             $result = $resource->get(
                 $filters,
-                [],
-                $filters['orderBy'] ?? null,
-                $filters['order'] ?? null,
-                null,
-                null,
-                $cache,
-                $cacheTtl
+                orderBy: $filters['orderBy'] ?? null,
+                order: $filters['order'] ?? null,
+                cache: $cache,
+                cacheTtl: $cacheTtl
             );
         }
 

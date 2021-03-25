@@ -10,8 +10,7 @@ class ManyToManyValidator
         ManyToMany $relation,
         array $data
     ): ?string {
-        if (
-            ! (array_key_exists($relation->rootResourceIdField, $data)
+        if (! (array_key_exists($relation->rootResourceIdField, $data)
                && array_key_exists($relation->relatedResourceIdField, $data)
             )
         ) {

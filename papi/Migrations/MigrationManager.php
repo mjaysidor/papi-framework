@@ -32,8 +32,7 @@ class MigrationManager
             $className,
             ProjectStructure::getMigrationsNamespace(),
             ProjectStructure::getMigrationsPath(),
-            null,
-            'Migration'
+            implements: 'Migration'
         );
         $writer->addImport(Migration::class);
         $writer->addFunction(

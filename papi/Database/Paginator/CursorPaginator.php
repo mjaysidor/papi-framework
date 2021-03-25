@@ -45,7 +45,15 @@ class CursorPaginator extends Paginator
         }
 
         return $this->addPaginationLinks(
-            (new $resource())->get($filters, [], $this->column, $this->order, $this->limit + 1, null, $cache, $cacheTtl)
+            (new $resource())->get(
+                $filters,
+                [],
+                $this->column,
+                $this->order,
+                $this->limit + 1,
+                cache: $cache,
+                cacheTtl: $cacheTtl
+            )
         );
     }
 

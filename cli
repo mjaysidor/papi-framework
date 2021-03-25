@@ -35,9 +35,9 @@ function printCommands(array $commands): void
         $path = explode('\\', get_class($commandObject));
         if (($currentGroup = $path[array_key_last($path) - 1]) !== $group) {
             $group = $currentGroup;
-            ConsoleOutput::output($group, Console::COLOR_GREEN, null, false);
+            ConsoleOutput::output($group, Console::COLOR_GREEN, emptyLineAtTheEnd: false);
         }
-        ConsoleOutput::output("    $command", null, null, false);
+        ConsoleOutput::output("    $command", emptyLineAtTheEnd: false);
     }
     echo PHP_EOL;
     ConsoleOutput::success('Type in "php cli group:command" (ex. "php cli db:drop")');
