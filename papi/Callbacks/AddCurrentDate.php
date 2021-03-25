@@ -6,6 +6,9 @@ namespace papi\Callbacks;
 
 use DateTime;
 
+/**
+ * Adds field containing current date to request body
+ */
 class AddCurrentDate implements PreExecutionBodyModifier
 {
     private string $fieldName;

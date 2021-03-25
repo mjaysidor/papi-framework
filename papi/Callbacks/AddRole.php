@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace papi\Callbacks;
 
+/**
+ * Adds field 'roles' to request body (default value ['ROLE_USER'])
+ */
 class AddRole implements PreExecutionBodyModifier
 {
     private string $fieldName;

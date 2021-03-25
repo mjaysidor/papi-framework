@@ -10,11 +10,19 @@ use papi\CLI\ConsoleOutput;
 use papi\Config\ProjectStructure;
 use papi\Generator\FileGenerator;
 
+/**
+ * Creates a REST resource with a CRUD controller
+ */
 class MakeResource implements Command
 {
     public function getCommand(): string
     {
         return 'make:resource';
+    }
+
+    public function getDescription(): string
+    {
+        return 'Creates a REST resource with a CRUD controller';
     }
 
     public function execute(): void

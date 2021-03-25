@@ -4,8 +4,18 @@ declare(strict_types=1);
 
 namespace papi\CLI;
 
+/**
+ * Gets user input via CLI
+ */
 class ConsoleInput extends Console
 {
+    /**
+     * Display prompt and get user CLI input
+     *
+     * @param string $prompt
+     *
+     * @return string
+     */
     public static function getInput(string $prompt): string
     {
         $output = "\n\e[".self::COLORS[self::COLOR_BLACK]."m";
@@ -17,6 +27,14 @@ class ConsoleInput extends Console
         return (string)readline();
     }
 
+    /**
+     * Display predefined options and get user's choice
+     *
+     * @param string $title
+     * @param array  $options
+     *
+     * @return string
+     */
     public static function getInputFromChoices(
         string $title,
         array $options

@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace papi\CLI;
 
+/**
+ * Class Console
+ *
+ * @package papi\CLI
+ */
 abstract class Console
 {
     public const    COLOR_BLACK           = '30';

@@ -5,6 +5,13 @@ namespace papi\Utils;
 
 class PasswordEncoder
 {
+    /**
+     * Encode password using argon2id algorithm
+     *
+     * @param string $plainPassword
+     *
+     * @return string
+     */
     public static function encodePassword(string $plainPassword): string
     {
         return password_hash($plainPassword, PASSWORD_ARGON2ID);

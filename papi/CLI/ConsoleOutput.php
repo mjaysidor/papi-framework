@@ -4,42 +4,77 @@ declare(strict_types=1);
 
 namespace papi\CLI;
 
+/**
+ * Displays output in CLI
+ */
 class ConsoleOutput extends Console
 {
-    public static function success(string $string): void
+    /**
+     * Displays success message
+     *
+     * @param string $message
+     */
+    public static function success(string $message): void
     {
-        self::output($string, self::COLOR_BLACK, self::BACKGROUND_GREEN);
+        self::output($message, self::COLOR_BLACK, self::BACKGROUND_GREEN);
     }
 
-    public static function error(string $string): void
+    /**
+     * Displays error message
+     *
+     * @param string $message
+     */
+    public static function error(string $message): void
     {
-        self::output($string, self::COLOR_WHITE, self::BACKGROUND_RED);
+        self::output($message, self::COLOR_WHITE, self::BACKGROUND_RED);
     }
 
-    public static function errorDie(string $string): void
+    /**
+     * Displays error message and stops the execution of current script
+     *
+     * @param string $message
+     */
+    public static function errorDie(string $message): void
     {
-        self::error($string);
+        self::error($message);
         die();
     }
 
-    public static function warning(string $string): void
+    /**
+     * Displays warning message
+     *
+     * @param string $message
+     */
+    public static function warning(string $message): void
     {
-        self::output($string, self::COLOR_BLACK, self::BACKGROUND_YELLOW);
+        self::output($message, self::COLOR_BLACK, self::BACKGROUND_YELLOW);
     }
 
-    public static function info(string $string): void
+    /**
+     * Displays informational message
+     *
+     * @param string $message
+     */
+    public static function info(string $message): void
     {
-        self::output($string, self::COLOR_BLACK, self::BACKGROUND_BLUE);
+        self::output($message, self::COLOR_BLACK, self::BACKGROUND_BLUE);
     }
 
+    /**
+     * Displays message
+     *
+     * @param string      $message
+     * @param string|null $color             Color from Console class (ex. CONSOLE::COLOR_BLACK)
+     * @param string|null $background        Color from Console class (ex. CONSOLE::BACKGROUND_GREEN)
+     * @param bool        $emptyLineAtTheEnd Display empty row after message
+     */
     public static function output(
-        string $string,
+        string $message,
         ?string $color = null,
         ?string $background = null,
         bool $emptyLineAtTheEnd = true
     ): void {
         $output = "\n";
-
         if (isset(self::COLORS[$color])) {
             $output .= "\e[".self::COLORS[$color]."m";
         }
@@ -47,7 +82,7 @@ class ConsoleOutput extends Console
             $output .= "\e[".self::BACKGROUNDS[$background]."m";
         }
 
-        $output .= "   $string   \033[0m";
+        $output .= "   $message   \033[0m";
 
         if ($emptyLineAtTheEnd === true) {
             $output .= PHP_EOL;

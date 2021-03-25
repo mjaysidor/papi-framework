@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace papi\CLI\Commands\Make;
+namespace papi\CLI\Commands\Auth;
 
 use Exception;
 use papi\CLI\Command;
@@ -9,11 +9,19 @@ use papi\CLI\ConsoleInput;
 use papi\CLI\ConsoleOutput;
 use papi\Generator\AuthGenerator;
 
-class MakeAuth implements Command
+/**
+ * Creates authentication system (user validation, JWT mechanisms + optionally user resource)
+ */
+class AuthCreate implements Command
 {
     public function getCommand(): string
     {
-        return 'make:auth';
+        return 'auth:create';
+    }
+
+    public function getDescription(): string
+    {
+        return 'Creates authentication system (user validation, JWT mechanisms + optionally user resource)';
     }
 
     public function execute(): void

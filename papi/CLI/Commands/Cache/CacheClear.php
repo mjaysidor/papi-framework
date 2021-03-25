@@ -6,11 +6,19 @@ namespace papi\CLI\Commands\Cache;
 use papi\CLI\Command;
 use papi\CLI\ConsoleOutput;
 
+/**
+ * Clears database query result cache
+ */
 class CacheClear implements Command
 {
     public function getCommand(): string
     {
         return 'cache:clear';
+    }
+
+    public function getDescription(): string
+    {
+        return 'Clears database query result cache';
     }
 
     public function execute(): void

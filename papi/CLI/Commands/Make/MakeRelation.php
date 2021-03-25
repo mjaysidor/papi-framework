@@ -10,11 +10,19 @@ use papi\Config\ProjectStructure;
 use papi\Relation\RelationMaker;
 use papi\Utils\ClassGetter;
 
+/**
+ * Creates a relation between resources
+ */
 class MakeRelation implements Command
 {
     public function getCommand(): string
     {
         return 'make:relation';
+    }
+
+    public function getDescription(): string
+    {
+        return 'Creates a relation between resources';
     }
 
     public function execute(): void

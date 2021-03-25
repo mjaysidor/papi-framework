@@ -37,7 +37,7 @@ function printCommands(array $commands): void
             $group = $currentGroup;
             ConsoleOutput::output($group, Console::COLOR_GREEN, emptyLineAtTheEnd: false);
         }
-        ConsoleOutput::output("    $command", emptyLineAtTheEnd: false);
+        ConsoleOutput::output("\e[".Console::COLOR_YELLOW."m"."    $command "."\e[".Console::COLOR_BLUE."m".$commandObject->getDescription(), emptyLineAtTheEnd: false);
     }
     echo PHP_EOL;
     ConsoleOutput::success('Type in "php cli group:command" (ex. "php cli db:drop")');

@@ -6,6 +6,9 @@ namespace papi\Callbacks;
 
 use papi\Utils\PasswordEncoder;
 
+/**
+ * Encodes password sent in request body via argon2id algorithm
+ */
 class EncodePassword implements PreExecutionBodyModifier
 {
     private string $fieldName;

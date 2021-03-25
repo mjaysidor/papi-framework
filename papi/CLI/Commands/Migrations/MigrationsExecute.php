@@ -7,11 +7,19 @@ use papi\CLI\Command;
 use papi\CLI\ConsoleOutput;
 use papi\Migrations\MigrationManager;
 
+/**
+ * Executes created migrations
+ */
 class MigrationsExecute implements Command
 {
     public function getCommand(): string
     {
         return 'migration:execute';
+    }
+
+    public function getDescription(): string
+    {
+        return 'Executes created migrations';
     }
 
     public function execute(): void

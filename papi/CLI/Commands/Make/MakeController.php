@@ -10,11 +10,19 @@ use papi\CLI\ConsoleOutput;
 use papi\Config\ProjectStructure;
 use papi\Generator\FileGenerator;
 
+/**
+ * Creates a plain controller
+ */
 class MakeController implements Command
 {
     public function getCommand(): string
     {
         return 'make:controller';
+    }
+
+    public function getDescription(): string
+    {
+        return 'Creates a plain controller';
     }
 
     public function execute(): void
