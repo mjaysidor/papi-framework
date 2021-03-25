@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace papi\Resource\Field;
 
+/**
+ * Postgresql "ID" column type
+ */
 class Id extends Field
 {
     protected function getDefaultProperties(): string

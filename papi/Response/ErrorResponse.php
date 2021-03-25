@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace papi\Response;
 
+/**
+ * Response returned on error occurrence
+ */
 class ErrorResponse extends JsonResponse
 {
     public function __construct(

@@ -8,6 +8,11 @@ use papi\Migrations\Schema\Mapping\CodeMapping;
 use papi\Migrations\Schema\Mapping\DbMapping;
 use papi\Utils\ArrayDiff;
 
+/**
+ * Class SchemaDiffGenerator
+ *
+ * @package papi\Migrations\Schema
+ */
 class SchemaDiffGenerator
 {
     private CodeMapping $codeMapping;

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace papi\Validator;
 
+/**
+ * Checks if data is no longer than N characters
+ */
 class MaxLength extends AbstractValidator
 {
     private int $maxLength;

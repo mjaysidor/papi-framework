@@ -15,8 +15,20 @@ use papi\Response\OKResponse;
 use papi\Response\ValidationErrorResponse;
 use Workerman\Protocols\Http\Request;
 
+/**
+ * Handles Create Read & Delete operations on many to many relations
+ */
 class ManyToManyHandler
 {
+    /**
+     * Creates many to many relation
+     *
+     * @param ManyToMany $relation
+     * @param Request    $request
+     *
+     * @return JsonResponse
+     * @throws JsonException
+     */
     public static function createRelation(
         ManyToMany $relation,
         Request $request
@@ -50,6 +62,16 @@ class ManyToManyHandler
         );
     }
 
+    /**
+     * Deletes many to many relation
+     *
+     * @param ManyToMany $relation
+     * @param string     $rootResourceId
+     * @param string     $relatedResourceId
+     *
+     * @return JsonResponse
+     * @throws JsonException
+     */
     public static function deleteRelation(
         ManyToMany $relation,
         string $rootResourceId,
@@ -67,6 +89,16 @@ class ManyToManyHandler
         return new JsonResponse(204);
     }
 
+    /**
+     * Gets many to many relations
+     *
+     * @param ManyToMany $relation
+     * @param Request    $request
+     * @param bool       $pagination
+     * @param int        $paginationItems
+     *
+     * @return JsonResponse
+     */
     public static function getRelation(
         ManyToMany $relation,
         Request $request,

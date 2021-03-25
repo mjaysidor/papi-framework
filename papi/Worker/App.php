@@ -6,6 +6,7 @@ namespace papi\Worker;
 
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
+use JsonException;
 use papi\Response\JsonResponse;
 use papi\Response\MethodNotAllowedResponse;
 use papi\Response\NotFoundResponse;
@@ -16,6 +17,10 @@ use Workerman\Protocols\Http\Request;
 use Workerman\Worker;
 use function FastRoute\simpleDispatcher;
 
+/**
+ * Application core server.
+ * Handles route management (defining & handling routes).
+ */
 class App extends Worker
 {
     /**
@@ -39,11 +44,27 @@ class App extends Worker
         $this->count = 4;
     }
 
+    /**
+     * Get routes defined in the server
+     *
+     * @return Route[]
+     */
     public function getRoutes(): array
     {
         return $this->routes;
     }
 
+    /**
+     * Define route and it's handling
+     *
+     * @param mixed    $method
+     * @param string   $path
+     * @param callable $callback
+     * @param array    $requestBody
+     * @param array    $urlParameters
+     * @param array    $responses
+     * @param string   $resourceName
+     */
     public function addRoute(
         mixed $method,
         string $path,
@@ -68,6 +89,9 @@ class App extends Worker
         }
     }
 
+    /**
+     * Run the server
+     */
     public function start(): void
     {
         $this->dispatcher = simpleDispatcher(
@@ -81,6 +105,14 @@ class App extends Worker
         Worker::runAll();
     }
 
+    /**
+     * Handle all incoming requests
+     *
+     * @param TcpConnection $connection
+     * @param Request       $request
+     *
+     * @throws JsonException
+     */
     public function onRequest(
         TcpConnection $connection,
         Request $request

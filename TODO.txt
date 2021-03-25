@@ -2,22 +2,23 @@ DOING:
 
 DOC:
     - phpdoc
-        - Auth
+        + Auth
         + Callbacks
         + CLI
-        - Config
+        + Config
         - Controller
         - Database
-        - Documentation
-        - Exception
-        - Generator
-        - Migrations
+        + Documentation
+        + Exception
+        + Generator
+        + Migrations
         - Relation
-        - Resource
-        - Response
-        - Utils
-        - Validator
-        - Worker
+        + Resource
+        + Response
+        + Utils
+        + Validator
+        + Worker
+        + DotEnv.php
 
 
 BUGS:
@@ -26,6 +27,7 @@ BUGS:
 TESTY:
 
 TODO:
+    - readthedocs
 
 BACKLOG:
 

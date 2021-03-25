@@ -3,6 +3,9 @@ declare(strict_types=1);
 
 namespace papi\Utils;
 
+/**
+ * Encodes plain password into argon2id encoded password
+ */
 class PasswordEncoder
 {
     /**

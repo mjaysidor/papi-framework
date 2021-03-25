@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace papi\Response;
 
+/**
+ * Response returned when endpoint has been requested using invalid method
+ */
 class MethodNotAllowedResponse extends JsonResponse
 {
     public function __construct(

@@ -20,10 +20,16 @@ use papi\Validator\NotBlank;
 use RuntimeException;
 use Workerman\Protocols\Http\Request;
 
+/**
+ * Generates files needed for authentication system
+ */
 class AuthGenerator
 {
     public const USER_RESOURCE_NAME = 'User';
 
+    /**
+     * Generate "User" resource class
+     */
     public static function generateUserResource(): void
     {
         $writer = new PHPClassFileWriter(
@@ -103,7 +109,10 @@ class AuthGenerator
         $writer->write();
     }
 
-    public static function makeVoterDirectory(): void
+    /**
+     * Create directory for JWT Voters
+     */
+    public static function createVoterDirectory(): void
     {
         $dir = ProjectStructure::getVoterPath();
         if (! is_dir($dir)) {
@@ -113,6 +122,11 @@ class AuthGenerator
         }
     }
 
+    /**
+     * Generate Authentication system config file
+     *
+     * @param string $secret
+     */
     public static function generateAuthConfig(string $secret): void
     {
         $writer = new PHPClassFileWriter(
@@ -131,6 +145,9 @@ class AuthGenerator
         $writer->write();
     }
 
+    /**
+     * Generate "User" resource CRUD controller
+     */
     public static function generateUserController(): void
     {
         $resourceName = self::USER_RESOURCE_NAME;
@@ -162,6 +179,11 @@ class AuthGenerator
         $writer->write();
     }
 
+    /**
+     * Get content of init() for "User" resource controller
+     *
+     * @return string
+     */
     private static function getUserControllerInit(): string
     {
         return '$this->post(
@@ -195,6 +217,11 @@ class AuthGenerator
         );';
     }
 
+    /**
+     * Generate controller handling JWT authentication
+     *
+     * @param bool $withUserResource
+     */
     public static function generateAuthController(bool $withUserResource = false): void
     {
         $resourceName = self::USER_RESOURCE_NAME;

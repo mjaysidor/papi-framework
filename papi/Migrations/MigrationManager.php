@@ -11,8 +11,14 @@ use papi\Migrations\Schema\SchemaManager;
 use papi\Utils\ClassGetter;
 use papi\Utils\PHPClassFileWriter;
 
+/**
+ * Makes, gets and executes migrations
+ */
 class MigrationManager
 {
+    /**
+     * Make migration to update db schema to match current resource objects mapping
+     */
     public static function make(): void
     {
         if (! empty(self::getUnexecuted())) {
@@ -27,7 +33,7 @@ class MigrationManager
             ConsoleOutput::info('Schema is up to date');
             die();
         }
-        $className = "Migration_" . (new \DateTime())->format('Y_m_d_h_i_s');
+        $className = "Migration_".(new \DateTime())->format('Y_m_d_h_i_s');
         $writer = new PHPClassFileWriter(
             $className,
             ProjectStructure::getMigrationsNamespace(),
@@ -39,17 +45,22 @@ class MigrationManager
             'public',
             'array',
             'getSQL',
-            'return ' . var_export($sql, true) . ';'
+            'return '.var_export($sql, true).';'
         );
         $writer->addFunction(
             'public',
             'array',
             'getMapping',
-            'return ' . var_export($queryBuilder->getCodeMappingArray(), true) . ';'
+            'return '.var_export($queryBuilder->getCodeMappingArray(), true).';'
         );
         $writer->write();
     }
 
+    /**
+     * Executes unexecuted migrations
+     *
+     * @return int
+     */
     public static function execute(): int
     {
         $executionCount = 0;
@@ -68,7 +79,7 @@ class MigrationManager
                     ]
                 );
             } catch (\JsonException $exception) {
-                ConsoleOutput::errorDie('ERROR: ' . $exception->getMessage());
+                ConsoleOutput::errorDie('ERROR: '.$exception->getMessage());
             }
             $executionCount++;
         }
@@ -76,6 +87,11 @@ class MigrationManager
         return $executionCount;
     }
 
+    /**
+     * Returns unexecuted migrations
+     *
+     * @return array
+     */
     public static function getUnexecuted(): array
     {
         $migrations = ClassGetter::getClasses(ProjectStructure::getMigrationsPath());

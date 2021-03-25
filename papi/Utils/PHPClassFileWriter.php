@@ -6,6 +6,9 @@ namespace papi\Utils;
 
 use RuntimeException;
 
+/**
+ * Creates PHP Class files based on provided data
+ */
 class PHPClassFileWriter
 {
     private string $name;
@@ -42,9 +45,12 @@ class PHPClassFileWriter
         }
     }
 
+    /**
+     * Write contained data into a PHP Class file
+     */
     public function write(): void
     {
-        $path = $this->dir . "/$this->name.php";
+        $path = $this->dir."/$this->name.php";
         if (file_exists($path)) {
             throw new RuntimeException("File $path already exists");
         }
@@ -53,15 +59,21 @@ class PHPClassFileWriter
                 throw new RuntimeException("Directory $concurrentDirectory was not created");
             }
         }
-        file_put_contents($this->dir . "/$this->name.php", $this->getTemplate());
+        file_put_contents($this->dir."/$this->name.php", $this->getTemplate());
     }
 
+    /**
+     * Get formatted PHP Class code
+     *
+     * @return string
+     */
     private function getTemplate(): string
     {
         $vars = $this->getVars();
         $functions = $this->getFunctions();
         $imports = $this->getImports();
         $className = rtrim("class $this->name $this->extends $this->implements");
+
         return "<?php
 declare(strict_types=1);
 
@@ -76,6 +88,11 @@ $vars$functions
 ";
     }
 
+    /**
+     * Get formatted class variables
+     *
+     * @return string
+     */
     private function getVars(): string
     {
         if (! $this->variables) {
@@ -92,6 +109,11 @@ $vars$functions
         return "$template\n";
     }
 
+    /**
+     * Get formatted class methods
+     *
+     * @return string
+     */
     private function getFunctions(): string
     {
         $template = '';
@@ -105,6 +127,11 @@ $vars$functions
         return $template;
     }
 
+    /**
+     * Get formatted class use statements
+     *
+     * @return string
+     */
     private function getImports(): string
     {
         $template = "";
@@ -118,6 +145,15 @@ $vars$functions
         return $template;
     }
 
+    /**
+     * Add class method
+     *
+     * @param string $access
+     * @param string $returnType
+     * @param string $name
+     * @param string $content
+     * @param array  $args
+     */
     public function addFunction(
         string $access,
         string $returnType,
@@ -139,6 +175,14 @@ $vars$functions
         $this->functions[] = $text;
     }
 
+    /**
+     * Add class variable
+     *
+     * @param string     $access
+     * @param string     $type
+     * @param string     $name
+     * @param mixed|null $defaultValue
+     */
     public function addVariable(
         string $access,
         string $type,
@@ -155,6 +199,11 @@ $vars$functions
         $this->variables[] = $var;
     }
 
+    /**
+     * Add use statement to class
+     *
+     * @param string $path
+     */
     public function addImport(string $path): void
     {
         $this->imports[] = $path;

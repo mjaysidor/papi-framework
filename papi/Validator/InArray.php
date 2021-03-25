@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace papi\Validator;
 
+/**
+ * Checks if data is in defined array
+ */
 class InArray extends AbstractValidator
 {
     private array $array;
@@ -28,6 +31,6 @@ class InArray extends AbstractValidator
 
     protected function getErrorMessage(): string
     {
-        return 'Not in specified array of values: [' . implode(',', $this->array) . ']';
+        return 'Not in specified array of values: ['.implode(',', $this->array).']';
     }
 }

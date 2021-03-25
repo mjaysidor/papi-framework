@@ -19,8 +19,18 @@ use papi\Utils\CaseConverter;
 use papi\Utils\PHPClassFileWriter;
 use Workerman\Protocols\Http\Request;
 
+/**
+ * Handles resource, controller classes generation
+ */
 class FileGenerator
 {
+    /**
+     * Generates resource class
+     *
+     * @param string $dir
+     * @param string $name
+     * @param bool   $customEndpoints
+     */
     public static function generateResource(
         string $dir,
         string $name,
@@ -84,6 +94,13 @@ class FileGenerator
         self::generateResourceController($dir, $name, $customEndpoints);
     }
 
+    /**
+     * Generates resource CRUD controller
+     *
+     * @param string $dir
+     * @param string $name
+     * @param bool   $customEndpoints
+     */
     private static function generateResourceController(
         string $dir,
         string $name,
@@ -129,6 +146,12 @@ class FileGenerator
         $writer->write();
     }
 
+    /**
+     * Generates plain controller
+     *
+     * @param string $dir
+     * @param string $name
+     */
     public static function generateController(
         string $dir,
         string $name
@@ -155,6 +178,12 @@ class FileGenerator
         $writer->write();
     }
 
+    /**
+     * Generates Many To Many relation CRUD controller
+     *
+     * @param string $rootResource
+     * @param string $relatedResource
+     */
     public static function generateManyToManyController(
         string $rootResource,
         string $relatedResource
@@ -192,6 +221,11 @@ class FileGenerator
         $writer->write();
     }
 
+    /**
+     * Get default init() content of plain controller
+     *
+     * @return string
+     */
     private static function getStandardControllerInit(): string
     {
         return '$this->post(
@@ -223,6 +257,11 @@ class FileGenerator
         );';
     }
 
+    /**
+     * Get default resource controller init() content
+     *
+     * @return string
+     */
     private static function getStandardResourceControllerInit(): string
     {
         return '$this->post(
@@ -257,6 +296,11 @@ class FileGenerator
         ';
     }
 
+    /**
+     * Get default many to many relation controller init() content
+     *
+     * @return string
+     */
     private static function getStandardManyToManyControllerInit(): string
     {
         return '$this->post(

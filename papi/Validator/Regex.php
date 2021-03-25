@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace papi\Validator;
 
+/**
+ * Checks if data is compliant with provided regular expression
+ */
 class Regex extends AbstractValidator
 {
     private string $regex;

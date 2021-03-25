@@ -8,9 +8,14 @@ use config\DocumentationConfig;
 use papi\Worker\Route;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Generates OpenAPI endpoints documentation
+ */
 class DocGenerator
 {
     /**
+     * Generates OpenAPI endpoints documentation
+     *
      * @param string  $directory
      * @param Route[] $routes
      */

@@ -6,6 +6,9 @@ namespace papi\Worker;
 
 use config\APIResponses;
 
+/**
+ * Contains Papi route data
+ */
 class Route
 {
     private string $path;
@@ -47,6 +50,11 @@ class Route
         $this->handler = $callback;
     }
 
+    /**
+     * Returns OpenApi Documentation of the route
+     *
+     * @return array
+     */
     public function getRouteOpenApiDoc(): array
     {
         $array = [];

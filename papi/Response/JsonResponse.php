@@ -6,6 +6,9 @@ namespace papi\Response;
 
 use Workerman\Protocols\Http\Response;
 
+/**
+ * Response containing JSON content
+ */
 class JsonResponse extends Response
 {
     public function __construct(

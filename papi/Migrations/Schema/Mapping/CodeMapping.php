@@ -9,6 +9,10 @@ use papi\Relation\Relation;
 use papi\Resource\Field\Field;
 use papi\Utils\ClassGetter;
 
+/**
+ * Contains database structure (tables, columns, foreign keys, indexes, etc.)
+ * based on current defined resources in application code
+ */
 class CodeMapping extends Mapping
 {
     private array $resources;
@@ -53,11 +57,23 @@ class CodeMapping extends Mapping
         }
     }
 
+    /**
+     * Adds table to data
+     *
+     * @param string $table
+     */
     private function addTable(string $table): void
     {
         $this->tables[$table] = [];
     }
 
+    /**
+     * Adds column to data
+     *
+     * @param string $table
+     * @param string $column
+     * @param string $properties
+     */
     private function addColumn(
         string $table,
         string $column,
@@ -66,6 +82,12 @@ class CodeMapping extends Mapping
         $this->tables[$table][$column] = $properties;
     }
 
+    /**
+     * Adds foreign key to data
+     *
+     * @param string $table
+     * @param array  $foreignKeys
+     */
     private function addFK(
         string $table,
         array $foreignKeys
@@ -73,6 +95,11 @@ class CodeMapping extends Mapping
         $this->FKs[$table] = $foreignKeys;
     }
 
+    /**
+     * Adds index to data
+     *
+     * @param string $definition
+     */
     private function addIndex(string $definition): void
     {
         $this->indexes[] = $definition;

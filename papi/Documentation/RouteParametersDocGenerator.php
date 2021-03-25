@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace papi\Documentation;
 
+/**
+ * Converts provided endpoint route parameters (ex. /"id") to OpenAPI documentation
+ */
 class RouteParametersDocGenerator
 {
     public const PATH  = 'path';
@@ -23,6 +26,14 @@ class RouteParametersDocGenerator
             ],
         ];
 
+    /**
+     * Generate OpenAPI documentation
+     *
+     * @param array  $parameterNames
+     * @param string $in
+     *
+     * @return array
+     */
     public static function generate(
         array $parameterNames,
         string $in = self::PATH

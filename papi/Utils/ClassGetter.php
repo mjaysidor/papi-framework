@@ -9,8 +9,18 @@ use papi\CLI\ConsoleOutput;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
+/**
+ * Returns PHP classes inside provided directory
+ */
 class ClassGetter
 {
+    /**
+     * Get PHP classes inside provided directory
+     *
+     * @param string $path
+     *
+     * @return array
+     */
     public static function getClasses(string $path): array
     {
         $files = [];
@@ -25,7 +35,7 @@ class ClassGetter
             if (! $file->isDir()) {
                 $name = $file->getBasename();
                 if (str_contains($name, '.php') && $namespace = self::getNamespace($file->getPathname())) {
-                    $files[] = $namespace . '\\' . str_replace('.php', '', $name);
+                    $files[] = $namespace.'\\'.str_replace('.php', '', $name);
                 }
             }
         }
@@ -33,10 +43,17 @@ class ClassGetter
         return $files;
     }
 
-    private static function getNamespace(string $file): ?string
+    /**
+     * Get namespace of file based on pathname
+     *
+     * @param string $pathname
+     *
+     * @return string|null
+     */
+    private static function getNamespace(string $pathname): ?string
     {
         $namespace = null;
-        $handle = fopen($file, 'rb');
+        $handle = fopen($pathname, 'rb');
         if ($handle !== false) {
             while (($line = fgets($handle)) !== false) {
                 if (str_starts_with($line, 'namespace')) {

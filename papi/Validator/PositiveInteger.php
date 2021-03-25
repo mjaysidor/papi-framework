@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace papi\Validator;
 
+/**
+ * Checks if data is an integer larger than or equal 0
+ */
 class PositiveInteger extends AbstractValidator
 {
     protected function isValid(mixed $data): bool

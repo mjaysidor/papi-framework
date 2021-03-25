@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace papi\Response;
 
+/**
+ * Response returned on successful request execution
+ */
 class OKResponse extends JsonResponse
 {
     public function __construct(

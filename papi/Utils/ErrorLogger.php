@@ -5,8 +5,16 @@ namespace papi\Utils;
 
 use Throwable;
 
+/**
+ * Handles app error logging
+ */
 class ErrorLogger
 {
+    /**
+     * Save error info to project var/log/error.log
+     *
+     * @param Throwable $exception
+     */
     public static function logError(Throwable $exception): void
     {
         file_put_contents(

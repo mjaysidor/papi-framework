@@ -7,6 +7,10 @@ namespace papi\Migrations\Schema\Mapping;
 use papi\Database\PostgresDb;
 use papi\Migrations\Schema\SchemaManager;
 
+/**
+ * Contains database structure (tables, columns, foreign keys, indexes, etc.)
+ * based on current state of configured Postgresql database
+ */
 class DbMapping extends Mapping
 {
     protected function init(): void

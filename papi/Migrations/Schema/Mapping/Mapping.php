@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace papi\Migrations\Schema\Mapping;
 
+/**
+ * Contains database structure (tables, columns, foreign keys, indexes, etc.)
+ */
 abstract class Mapping
 {
     protected array $tables = [];
@@ -32,6 +35,11 @@ abstract class Mapping
         return $this->indexes;
     }
 
+    /**
+     * Returns array containing database structure information
+     *
+     * @return array
+     */
     public function toArray(): array
     {
         return [
@@ -41,6 +49,11 @@ abstract class Mapping
         ];
     }
 
+    /**
+     * Initializes object from array containing database structure information
+     *
+     * @param array $array
+     */
     protected function fromArray(array $array): void
     {
         $this->tables = $array['tables'] ?? [];

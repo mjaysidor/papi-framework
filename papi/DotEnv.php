@@ -7,8 +7,16 @@ namespace papi;
 use InvalidArgumentException;
 use RuntimeException;
 
+/**
+ * Loads PHP environment variables from .env files
+ */
 class DotEnv
 {
+    /**
+     * Load environment variables from .env file
+     *
+     * @param string $path
+     */
     public static function load(string $path = '.env'): void
     {
         if (! file_exists($path)) {

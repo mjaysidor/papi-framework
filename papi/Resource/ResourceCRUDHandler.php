@@ -13,10 +13,19 @@ use papi\Response\OKResponse;
 use papi\Response\ValidationErrorResponse;
 use Workerman\Protocols\Http\Request;
 
+/**
+ * Handles CRUD operations on resources
+ */
 class ResourceCRUDHandler
 {
     /**
+     * Update resource
+     *
+     * @param string                     $id
+     * @param Request                    $request
      * @param PreExecutionBodyModifier[] $preExecutionBodyModifier
+     *
+     * @return JsonResponse
      */
     public static function update(
         Resource $resource,
@@ -51,7 +60,13 @@ class ResourceCRUDHandler
     }
 
     /**
+     * Create resource
+     *
+     * @param Request                    $request
      * @param PreExecutionBodyModifier[] $preExecutionBodyModifier
+     *
+     * @return JsonResponse
+     * @throws JsonException
      */
     public static function create(
         Resource $resource,
@@ -81,6 +96,14 @@ class ResourceCRUDHandler
         );
     }
 
+    /**
+     * Delete resource
+     *
+     * @param string $id
+     *
+     * @return JsonResponse
+     * @throws JsonException
+     */
     public static function delete(
         Resource $resource,
         string $id
@@ -94,6 +117,15 @@ class ResourceCRUDHandler
         return new JsonResponse(204);
     }
 
+    /**
+     * Get resource by id
+     *
+     * @param string   $id
+     * @param bool     $cache
+     * @param int|null $cacheTtl
+     *
+     * @return JsonResponse
+     */
     public static function getById(
         Resource $resource,
         string $id,
@@ -109,6 +141,17 @@ class ResourceCRUDHandler
         return new OKResponse($response);
     }
 
+    /**
+     * Get resources
+     *
+     * @param Request  $request
+     * @param bool     $cache
+     * @param bool     $pagination
+     * @param int|null $cacheTtl
+     * @param int      $paginationItems
+     *
+     * @return JsonResponse
+     */
     public static function getCollection(
         Resource $resource,
         Request $request,

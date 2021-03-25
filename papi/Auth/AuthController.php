@@ -6,13 +6,14 @@ namespace papi\Auth;
 
 use config\APIResponses;
 use config\AuthConfig;
+use JsonException;
 use papi\Response\AccessDeniedResponse;
 use papi\Response\JsonResponse;
 use papi\Response\OKResponse;
 use papi\Worker\App;
 
 /**
- * Creates endpoint used for generating JSON Web Tokens for validated users
+ * Creates endpoint used for validating users & generating JSON Web Tokens
  *
  * @link: https://jwt.io/introduction
  */
@@ -25,6 +26,9 @@ abstract class AuthController
         $this->api = $api;
     }
 
+    /**
+     * Create /auth endpoint
+     */
     public function init(): void
     {
         $this->api->addRoute(
@@ -40,6 +44,14 @@ abstract class AuthController
         );
     }
 
+    /**
+     * Return token if provided credentials are valid
+     *
+     * @param array|null $requestBody
+     *
+     * @return JsonResponse
+     * @throws JsonException
+     */
     protected function getToken(?array $requestBody): JsonResponse
     {
         if (! $this->credentialsValid($requestBody)) {

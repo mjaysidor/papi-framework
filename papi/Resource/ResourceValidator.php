@@ -4,8 +4,18 @@ declare(strict_types=1);
 
 namespace papi\Resource;
 
+/**
+ * Validates POST/PUT request body on resource endpoints based on resource config & validators
+ */
 class ResourceValidator
 {
+    /**
+     * Returns any existing POST request validation errors
+     *
+     * @param array $data
+     *
+     * @return string|null
+     */
     public function getPOSTValidationErrors(
         Resource $resource,
         array $data
@@ -31,6 +41,13 @@ class ResourceValidator
         return null;
     }
 
+    /**
+     * Returns any existing PUT request validation errors
+     *
+     * @param array $data
+     *
+     * @return string|null
+     */
     public function getPUTValidationErrors(
         Resource $resource,
         array $data

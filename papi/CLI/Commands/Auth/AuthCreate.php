@@ -40,7 +40,7 @@ class AuthCreate implements Command
         }
         try {
             AuthGenerator::generateAuthController($generateUser);
-            AuthGenerator::makeVoterDirectory();
+            AuthGenerator::createVoterDirectory();
         } catch (Exception $exception) {
             ConsoleOutput::errorDie($exception->getMessage());
         }

@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace config;
 
-use papi\Documentation\DocumentationConfigGenerator;
-
-class DocumentationConfig extends DocumentationConfigGenerator
+class DocumentationConfig extends \papi\Config\DocumentationConfig
 {
     public function getOpenApiVersion(): string
     {
@@ -23,7 +21,7 @@ class DocumentationConfig extends DocumentationConfigGenerator
         return 'App title';
     }
 
-    public function getVersion(): string
+    public function getAppVersion(): string
     {
         return '1.0';
     }

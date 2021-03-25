@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace papi\Resource\Field;
 
+/**
+ * Postgresql "varchar"" column type
+ */
 class Varchar extends Field
 {
     private int $length;
