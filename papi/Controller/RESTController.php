@@ -9,6 +9,9 @@ use config\APIResponses;
 use papi\Documentation\RouteParametersDocGenerator;
 use papi\Worker\App;
 
+/**
+ * Controller handling resource & many to many relation endpoints
+ */
 abstract class RESTController
 {
     protected App $api;
@@ -40,6 +43,9 @@ abstract class RESTController
         $this->initUrl();
     }
 
+    /**
+     * Initializes API Responses Documentation
+     */
     private function initDoc(): void
     {
         $apiResponses = new APIResponses();
@@ -52,15 +58,18 @@ abstract class RESTController
             $this->queryFilters,
         ]
             = [
-            $apiResponses->getGETResponses($this->getGETResponseBody()),
+            $apiResponses->getGETResponses($this->getGETResponseBodyDoc()),
             $apiResponses->getPOSTResponses(),
             $apiResponses->getDELETEResponses(),
             $apiResponses->getPUTResponses(),
-            $this->getPOSTPUTBody(),
-            $this->getQueryFilters(),
+            $this->getPOSTPUTBodyDoc(),
+            $this->getQueryFiltersDoc(),
         ];
     }
 
+    /**
+     * Initializes URL and parameters
+     */
     private function initUrl(): void
     {
         $urlParams = $this->getUrlIdParams();
@@ -68,21 +77,49 @@ abstract class RESTController
         $this->endpoint = $this->endpointWithId = "/$this->resourceName";
 
         foreach ($urlParams as $param) {
-            $this->endpointWithId .= '/{' . $param . '}';
+            $this->endpointWithId .= '/{'.$param.'}';
         }
     }
 
+    /**
+     * Add desired routes
+     */
     abstract public function init(): void;
 
+    /**
+     * Get API resource on which the controller operates
+     *
+     * @return mixed
+     */
     abstract protected function getResource(): mixed;
 
-    abstract public function getQueryFilters(): array;
+    /**
+     * Get OpenAPI documentation of filters available for GET request
+     *
+     * @return array
+     */
+    abstract public function getQueryFiltersDoc(): array;
 
+    /**
+     * Get URL ID parameters used in SELECT requests
+     *
+     * @return array
+     */
     abstract public function getUrlIdParams(): array;
 
-    abstract public function getPOSTPUTBody(): array;
+    /**
+     * Get OpenAPI documentation of POST/PUT requests body
+     *
+     * @return array
+     */
+    abstract public function getPOSTPUTBodyDoc(): array;
 
-    abstract public function getGETResponseBody(): array;
+    /**
+     * Get OpenAPI documentation of GET requests response body
+     *
+     * @return array
+     */
+    abstract public function getGETResponseBodyDoc(): array;
 
     protected function post(Closure $callback): void
     {

@@ -6,14 +6,19 @@ namespace papi\Relation;
 
 class ManyToOne extends Relation
 {
-    public function getRelationFieldName(): string
+    /**
+     * Get name of the field containing id of relation
+     *
+     * @return string
+     */
+    public function getColumnName(): string
     {
-        return $this->relatedTableName . "_id";
+        return $this->relatedTableName."_id";
     }
 
     public function getColumnDefinitions(): array
     {
-        return [$this->getRelationFieldName() => "INT"];
+        return [$this->getColumnName() => "INT"];
     }
 
     public function getForeignKeyDefinition(): array
@@ -21,7 +26,7 @@ class ManyToOne extends Relation
         return [
             $this->rootTableName =>
                 [
-                    $this->relatedTableName . '_id' =>
+                    $this->relatedTableName.'_id' =>
                         "REFERENCES $this->relatedTableName(id) $this->onDelete $this->onUpdate",
                 ],
         ];
@@ -30,8 +35,8 @@ class ManyToOne extends Relation
     public function getIndexDefinition(): array
     {
         return [
-            'index FK_' . $this->rootTableName . '_'
-            . "$this->relatedTableName ON $this->rootTableName($this->relatedTableName" . '_id)',
+            'index FK_'.$this->rootTableName.'_'
+            ."$this->relatedTableName ON $this->rootTableName($this->relatedTableName".'_id)',
         ];
     }
 

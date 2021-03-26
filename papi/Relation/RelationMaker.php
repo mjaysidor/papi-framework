@@ -8,23 +8,45 @@ use Exception;
 use papi\CLI\ConsoleOutput;
 use papi\Generator\FileGenerator;
 use ReflectionClass;
+use ReflectionException;
 
+/**
+ * Handles adding relations to resource class files
+ */
 class RelationMaker
 {
     public const ONE_TO_ONE   = 'OneToOne';
     public const MANY_TO_ONE  = 'ManyToOne';
     public const MANY_TO_MANY = 'ManyToMany';
 
+    /**
+     * Creates One to One relation
+     *
+     * @param string $rootResource
+     * @param string $relatedResource
+     */
     public static function makeOneToOne(string $rootResource, string $relatedResource): void
     {
         self::addRelation($rootResource, $relatedResource, self::ONE_TO_ONE);
     }
 
+    /**
+     * Creates Many to One relation
+     *
+     * @param string $rootResource
+     * @param string $relatedResource
+     */
     public static function makeManyToOne(string $rootResource, string $relatedResource): void
     {
         self::addRelation($rootResource, $relatedResource, self::MANY_TO_ONE);
     }
 
+    /**
+     * Creates Many to Many relation
+     *
+     * @param string $rootResource
+     * @param string $relatedResource
+     */
     public static function makeManyToMany(string $rootResource, string $relatedResource): void
     {
         self::addRelation($rootResource, $relatedResource, self::MANY_TO_MANY);
@@ -36,9 +58,21 @@ class RelationMaker
         }
     }
 
+    /**
+     * Adds relation to resource class files
+     *
+     * @param string $rootResource
+     * @param string $relatedResource
+     * @param string $relationType
+     */
     private static function addRelation(string $rootResource, string $relatedResource, string $relationType): void
     {
-        $reflector = new ReflectionClass(new $rootResource());
+        try {
+            $reflector = new ReflectionClass(new $rootResource());
+        } catch (ReflectionException $e) {
+            ConsoleOutput::error($e->getMessage());
+            die();
+        }
         $rootResourceFileName = $reflector->getFileName();
 
         if ($rootResourceFileName === false) {
@@ -56,7 +90,7 @@ class RelationMaker
         if ($relationType !== self::MANY_TO_MANY) {
             $fieldName = explode('\\', $relatedResource);
             $fieldName = end($fieldName);
-            $fieldName = strtolower($fieldName) . '_id';
+            $fieldName = strtolower($fieldName).'_id';
             $relationDefinition .= "'$fieldName' => ";
         }
         $relationDefinition

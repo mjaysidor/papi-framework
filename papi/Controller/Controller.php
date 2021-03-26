@@ -7,6 +7,9 @@ namespace papi\Controller;
 use Closure;
 use papi\Worker\App;
 
+/**
+ * Handles server route management
+ */
 abstract class Controller
 {
     protected App $api;
@@ -18,6 +21,12 @@ abstract class Controller
 
     abstract public function init(): void;
 
+    /**
+     * Adds POST route
+     *
+     * @param string  $endpoint
+     * @param Closure $callback
+     */
     protected function post(
         string $endpoint,
         Closure $callback
@@ -29,6 +38,12 @@ abstract class Controller
         );
     }
 
+    /**
+     * Adds GET route
+     *
+     * @param string  $endpoint
+     * @param Closure $callback
+     */
     protected function get(
         string $endpoint,
         Closure $callback
@@ -40,6 +55,12 @@ abstract class Controller
         );
     }
 
+    /**
+     * Adds DELETE route
+     *
+     * @param string  $endpoint
+     * @param Closure $callback
+     */
     protected function delete(
         string $endpoint,
         Closure $callback
@@ -51,6 +72,12 @@ abstract class Controller
         );
     }
 
+    /**
+     * Adds PUT route
+     *
+     * @param string  $endpoint
+     * @param Closure $callback
+     */
     protected function put(
         string $endpoint,
         Closure $callback

@@ -9,6 +9,9 @@ use papi\Relation\ManyToMany;
 use papi\Resource\Field\Id;
 use papi\Worker\App;
 
+/**
+ * Controller handling many to many relation endpoints
+ */
 abstract class ManyToManyController extends RESTController
 {
     public ManyToMany $relation;
@@ -28,7 +31,7 @@ abstract class ManyToManyController extends RESTController
         ];
     }
 
-    public function getPOSTPUTBody(): array
+    public function getPOSTPUTBodyDoc(): array
     {
         return [
             $this->relation->rootResourceIdField    => [
@@ -40,12 +43,12 @@ abstract class ManyToManyController extends RESTController
         ];
     }
 
-    public function getGETResponseBody(): array
+    public function getGETResponseBodyDoc(): array
     {
-        return $this->getPOSTPUTBody();
+        return $this->getPOSTPUTBodyDoc();
     }
 
-    public function getQueryFilters(): array
+    public function getQueryFiltersDoc(): array
     {
         return RouteParametersDocGenerator::generate(
             $this->relation->getFields(),

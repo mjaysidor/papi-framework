@@ -6,11 +6,16 @@ namespace papi\Controller;
 
 use papi\Documentation\RouteParametersDocGenerator;
 use papi\Relation\ManyToMany;
+use papi\Relation\ManyToOne;
+use papi\Relation\OneToOne;
 use papi\Relation\Relation;
 use papi\Resource\Resource;
 use papi\Resource\ResourceCRUDHandler;
 use papi\Worker\App;
 
+/**
+ * Controller handling resource endpoints
+ */
 abstract class ResourceController extends RESTController
 {
     public Resource $resource;
@@ -27,7 +32,7 @@ abstract class ResourceController extends RESTController
         return ['id'];
     }
 
-    public function getPOSTPUTBody(): array
+    public function getPOSTPUTBodyDoc(): array
     {
         $body = [];
         foreach ($this->resource->getEditableFields() as $fieldName) {
@@ -40,7 +45,7 @@ abstract class ResourceController extends RESTController
         return $body;
     }
 
-    public function getGETResponseBody(): array
+    public function getGETResponseBodyDoc(): array
     {
         $body = [];
         foreach ($this->resource->getDefaultSELECTFields() as $fieldName) {
@@ -53,20 +58,23 @@ abstract class ResourceController extends RESTController
         return $body;
     }
 
-    public function getQueryFilters(): array
+    public function getQueryFiltersDoc(): array
     {
         $filters = [];
         foreach ($this->resource->getFields() as $key => $field) {
+            if (! $field instanceof Relation) {
+                $filters[] = $key;
+                continue;
+            }
+
             if ($field instanceof ManyToMany) {
                 continue;
             }
 
-            if ($field instanceof Relation) {
-                $filters[] = $field->getRelationFieldName();
+            if ($field instanceof OneToOne || $field instanceof ManyToOne) {
+                $filters[] = $field->getColumnName();
                 continue;
             }
-
-            $filters[] = $key;
         }
 
         return RouteParametersDocGenerator::generate($filters, RouteParametersDocGenerator::QUERY);

@@ -25,8 +25,8 @@ class ManyToMany extends Relation
         string $onDelete = self::ON_DELETE_CASCADE
     ) {
         parent::__construct($rootResource, $relatedResource, $onUpdate, $onDelete);
-        $this->rootResourceIdField = $this->rootTableName . '_id';
-        $this->relatedResourceIdField = $this->relatedTableName . '_id';
+        $this->rootResourceIdField = $this->rootTableName.'_id';
+        $this->relatedResourceIdField = $this->relatedTableName.'_id';
     }
 
     public function getFields(): array
@@ -38,14 +38,9 @@ class ManyToMany extends Relation
         ];
     }
 
-    public function getRelationFieldName(): ?string
-    {
-        return null;
-    }
-
     public function getTableName(): string
     {
-        return $this->rootTableName . '_' . $this->relatedTableName;
+        return $this->rootTableName.'_'.$this->relatedTableName;
     }
 
     public function getColumnDefinitions(): array
@@ -71,14 +66,23 @@ class ManyToMany extends Relation
     public function getIndexDefinition(): array
     {
         return [
-            "index FK_" . $this->rootTableName . '_' . $this->relatedTableName . '_' . "$this->rootTableName ON "
-            . $this->getTableName() . "($this->rootResourceIdField)"
+            "index FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->rootTableName ON "
+            .$this->getTableName()."($this->rootResourceIdField)"
             ,
-            "index FK_" . $this->rootTableName . '_' . $this->relatedTableName . '_' . "$this->relatedTableName ON "
-            . $this->getTableName() . "($this->relatedResourceIdField)",
+            "index FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->relatedTableName ON "
+            .$this->getTableName()."($this->relatedResourceIdField)",
         ];
     }
 
+    /**
+     * Get relation objects from database
+     *
+     * @param array    $filters
+     * @param string   $order
+     * @param int|null $limit
+     *
+     * @return array
+     */
     public function get(
         array $filters = [],
         string $order = 'desc',
@@ -96,6 +100,14 @@ class ManyToMany extends Relation
             ;
     }
 
+    /**
+     * Create relation object in db
+     *
+     * @param string $rootResourceId
+     * @param string $relatedResourceId
+     *
+     * @return array
+     */
     public function create(
         string $rootResourceId,
         string $relatedResourceId
@@ -111,6 +123,14 @@ class ManyToMany extends Relation
             ;
     }
 
+    /**
+     * Remove relation object from db
+     *
+     * @param string $rootResourceId
+     * @param string $relatedResourceId
+     *
+     * @return int
+     */
     public function delete(
         string $rootResourceId,
         string $relatedResourceId
@@ -126,6 +146,14 @@ class ManyToMany extends Relation
             ;
     }
 
+    /**
+     * Check if relation exists in db
+     *
+     * @param string $rootResourceId
+     * @param string $relatedResourceId
+     *
+     * @return bool
+     */
     public function exists(
         string $rootResourceId,
         string $relatedResourceId

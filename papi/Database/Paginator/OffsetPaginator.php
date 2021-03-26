@@ -6,6 +6,9 @@ namespace papi\Database\Paginator;
 
 use papi\Resource\Resource;
 
+/**
+ * Handles offset pagination
+ */
 class OffsetPaginator extends Paginator
 {
     private ?string $offset;

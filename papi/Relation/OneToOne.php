@@ -6,14 +6,19 @@ namespace papi\Relation;
 
 class OneToOne extends Relation
 {
-    public function getRelationFieldName(): string
+    /**
+     * Get name of the field containing id of relation
+     *
+     * @return string
+     */
+    public function getColumnName(): string
     {
         return $this->relatedTableName . "_id";
     }
 
     public function getColumnDefinitions(): array
     {
-        return [$this->getRelationFieldName() => "INT"];
+        return [$this->getColumnName() => "INT"];
     }
 
     public function getForeignKeyDefinition(): array

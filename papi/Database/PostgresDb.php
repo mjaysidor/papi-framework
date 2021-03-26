@@ -8,6 +8,9 @@ use config\DatabaseConfig;
 use papi\Utils\CacheStorage;
 use RuntimeException;
 
+/**
+ * Handles basic queries to Postgresql database
+ */
 class PostgresDb
 {
     public mixed $connection;
@@ -16,6 +19,11 @@ class PostgresDb
 
     private array $aliasValues = [];
 
+    /**
+     * Returns connection to database specified in DatabaseConfig
+     *
+     * @return mixed
+     */
     public static function getConnection(): mixed
     {
         $isLocal = DatabaseConfig::isLocal();
@@ -37,6 +45,13 @@ class PostgresDb
         $this->connection = self::getConnection();
     }
 
+    /**
+     * Executes provided query
+     *
+     * @param string $sql
+     *
+     * @return bool
+     */
     public function query(
         string $sql
     ): bool {
@@ -47,6 +62,11 @@ class PostgresDb
         return true;
     }
 
+    /**
+     * Returns last db connection error
+     *
+     * @return RuntimeException
+     */
     private function throwError(): RuntimeException
     {
         return new RuntimeException(pg_last_error($this->connection));
@@ -58,6 +78,14 @@ class PostgresDb
         $this->aliasCount = 0;
     }
 
+    /**
+     * Checks for existence of a db table element
+     *
+     * @param string $table
+     * @param array  $filters
+     *
+     * @return bool
+     */
     public function exists(
         string $table,
         array $filters = [],
@@ -79,6 +107,21 @@ class PostgresDb
         return $result[0] === 't';
     }
 
+    /**
+     * SQL query SELECT
+     *
+     * @param string      $from
+     * @param array       $columns
+     * @param array       $filters
+     * @param string|null $orderBy
+     * @param string|null $order
+     * @param int|null    $limit
+     * @param string|null $offset
+     * @param bool        $cache
+     * @param int|null    $cacheTtl
+     *
+     * @return array
+     */
     public function select(
         string $from,
         array $columns = [],
@@ -91,7 +134,7 @@ class PostgresDb
         ?int $cacheTtl = 300
     ): array {
         if ($columns !== []) {
-            $query = 'select ' . implode(',', $columns) . " from $from";
+            $query = 'select '.implode(',', $columns)." from $from";
         } else {
             $query = "select * from $from";
         }
@@ -102,7 +145,7 @@ class PostgresDb
             if ($order !== 'desc') {
                 $order = 'asc';
             }
-            $query .= ' order by ' . pg_escape_string($orderBy) . " $order";
+            $query .= ' order by '.pg_escape_string($orderBy)." $order";
         }
         if ($limit !== null) {
             $query .= " limit $limit";
@@ -144,6 +187,14 @@ class PostgresDb
         return pg_fetch_all($queryParams);
     }
 
+    /**
+     * SQL query DELETE
+     *
+     * @param string $table
+     * @param array  $where
+     *
+     * @return int
+     */
     public function delete(
         string $table,
         array $where = []
@@ -158,6 +209,14 @@ class PostgresDb
         return pg_affected_rows($queryParams);
     }
 
+    /**
+     * SQL query INSERT
+     *
+     * @param string $table
+     * @param array  $data
+     *
+     * @return array
+     */
     public function insert(
         string $table,
         array $data
@@ -197,6 +256,15 @@ class PostgresDb
         return $result;
     }
 
+    /**
+     * SQL query UPDATE
+     *
+     * @param string $table
+     * @param array  $data
+     * @param array  $where
+     *
+     * @return int
+     */
     public function update(
         string $table,
         array $data,
@@ -212,7 +280,7 @@ class PostgresDb
             if ($firstKey !== $key) {
                 $query .= ',';
             }
-            $query .= pg_escape_string($key) . '=';
+            $query .= pg_escape_string($key).'=';
             $this->addAlias($query, $condition);
         }
         $this->addWhereConditions($query, $where);
@@ -224,14 +292,26 @@ class PostgresDb
         return pg_affected_rows($queryParams);
     }
 
+    /**
+     * Adds value as query alias
+     *
+     * @param string $query
+     * @param mixed  $value
+     */
     private function addAlias(
         string &$query,
         mixed $value
     ): void {
-        $query .= ' $' . ++$this->aliasCount;
+        $query .= ' $'.++$this->aliasCount;
         $this->aliasValues[] = $value;
     }
 
+    /**
+     * Adds where conditions to query
+     *
+     * @param string $query
+     * @param array  $where
+     */
     private function addWhereConditions(
         string &$query,
         array $where
@@ -251,6 +331,12 @@ class PostgresDb
         }
     }
 
+    /**
+     * Adds filters to SELECT query (parameter equal/larger than/less than value etc.)
+     *
+     * @param string $query
+     * @param array  $filters
+     */
     private function addQueryFilters(
         string &$query,
         array $filters

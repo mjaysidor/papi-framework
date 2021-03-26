@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace papi\Relation;
 
+/**
+ * Resource object field type, Contains info on database schema storage of a given relation type
+ */
 abstract class Relation
 {
     public const ON_UPDATE_RESTRICT = 'on update restrict';
@@ -33,13 +36,31 @@ abstract class Relation
         $this->relatedTableName = (new $relatedResource())->getTableName();
     }
 
-    abstract public function getRelationFieldName(): ?string;
-
+    /**
+     * Get SQL definitions of columns making up the relation in format ['name' => 'field_type']
+     *
+     * @return array
+     */
     abstract public function getColumnDefinitions(): array;
 
+    /**
+     * Get SQL definition of db foreign keys included in relation
+     *
+     * @return array
+     */
     abstract public function getForeignKeyDefinition(): array;
 
+    /**
+     * Get SQL definition of db indexes included in relation
+     *
+     * @return array
+     */
     abstract public function getIndexDefinition(): array;
 
+    /**
+     * Get name of the db table containing relation ids
+     *
+     * @return string
+     */
     abstract public function getTableName(): string;
 }

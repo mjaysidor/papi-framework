@@ -1,25 +1,7 @@
 DOING:
 
 DOC:
-    - phpdoc
-        - Controller
-        - Database
-        - Relation
-        + Auth
-        + Callbacks
-        + CLI
-        + Config
-        + Documentation
-        + Exception
-        + Generator
-        + Migrations
-        + Resource
-        + Response
-        + Utils
-        + Validator
-        + Worker
-        + DotEnv.php
-
+    - readthedocs
 
 BUGS:
 
@@ -27,10 +9,9 @@ BUGS:
 TESTY:
 
 TODO:
-    - readthedocs
+    - batch operations (create stats for appointment, etc.)
 
 BACKLOG:
-
     - export papi to separate repo & composer package
 
 REFACTORING:

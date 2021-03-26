@@ -7,6 +7,9 @@ namespace papi\Database\Paginator;
 use papi\Relation\ManyToMany;
 use papi\Resource\Resource;
 
+/**
+ * Handles cursor pagination
+ */
 class CursorPaginator extends Paginator
 {
     private string $cursor;
@@ -57,6 +60,14 @@ class CursorPaginator extends Paginator
         );
     }
 
+    /**
+     * Returns paginated query result for many to many relation queries
+     *
+     * @param ManyToMany $relation
+     * @param array      $filters
+     *
+     * @return array
+     */
     public function getPaginatedManyToManyResults(ManyToMany $relation, array $filters): array
     {
         if ($this->cursor !== '') {
