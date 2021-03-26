@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\Utils;
@@ -19,10 +20,10 @@ class ErrorLogger
     {
         file_put_contents(
             'var/log/error.log',
-            '['.(new \DateTime())->format('Y-m-d H:i:s').']'.
-            ': '.$exception->getMessage().
-            ' @ '.$exception->getFile().
-            ': '.$exception->getLine().
+            '[' . (new \DateTime())->format('Y-m-d H:i:s') . ']' .
+            ': ' . $exception->getMessage() .
+            ' @ ' . $exception->getFile() .
+            ': ' . $exception->getLine() .
             PHP_EOL,
             FILE_APPEND
         );

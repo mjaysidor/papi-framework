@@ -76,10 +76,10 @@ class ConsoleOutput extends Console
     ): void {
         $output = "\n";
         if (isset(self::COLORS[$color])) {
-            $output .= "\e[".self::COLORS[$color]."m";
+            $output .= "\e[" . self::COLORS[$color] . "m";
         }
         if (isset(self::BACKGROUNDS[$background])) {
-            $output .= "\e[".self::BACKGROUNDS[$background]."m";
+            $output .= "\e[" . self::BACKGROUNDS[$background] . "m";
         }
 
         $output .= "   $message   \033[0m";

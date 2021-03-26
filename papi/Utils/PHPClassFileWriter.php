@@ -50,7 +50,7 @@ class PHPClassFileWriter
      */
     public function write(): void
     {
-        $path = $this->dir."/$this->name.php";
+        $path = $this->dir . "/$this->name.php";
         if (file_exists($path)) {
             throw new RuntimeException("File $path already exists");
         }
@@ -59,7 +59,7 @@ class PHPClassFileWriter
                 throw new RuntimeException("Directory $concurrentDirectory was not created");
             }
         }
-        file_put_contents($this->dir."/$this->name.php", $this->getTemplate());
+        file_put_contents($this->dir . "/$this->name.php", $this->getTemplate());
     }
 
     /**

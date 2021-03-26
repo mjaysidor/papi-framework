@@ -90,7 +90,7 @@ class RelationMaker
         if ($relationType !== self::MANY_TO_MANY) {
             $fieldName = explode('\\', $relatedResource);
             $fieldName = end($fieldName);
-            $fieldName = strtolower($fieldName).'_id';
+            $fieldName = strtolower($fieldName) . '_id';
             $relationDefinition .= "'$fieldName' => ";
         }
         $relationDefinition

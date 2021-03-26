@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\CLI\Commands\Make;
@@ -27,7 +28,7 @@ class MakeController implements Command
 
     public function execute(): void
     {
-        $directory = ConsoleInput::getInput('Directory (inside '.ProjectStructure::getControllersPath().'):');
+        $directory = ConsoleInput::getInput('Directory (inside ' . ProjectStructure::getControllersPath() . '):');
         if (($name = ConsoleInput::getInput('Class name:')) === '') {
             ConsoleOutput::errorDie('Name cannot be empty');
         }

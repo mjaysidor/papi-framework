@@ -34,8 +34,8 @@ class AuthGenerator
     {
         $writer = new PHPClassFileWriter(
             self::USER_RESOURCE_NAME,
-            ProjectStructure::getResourcesNamespace().'\\Auth',
-            ProjectStructure::getResourcesPath().'/Auth',
+            ProjectStructure::getResourcesNamespace() . '\\Auth',
+            ProjectStructure::getResourcesPath() . '/Auth',
             'Resource',
             null
         );
@@ -133,7 +133,7 @@ class AuthGenerator
             'AuthConfig',
             ProjectStructure::getConfigNamespace(),
             ProjectStructure::getConfigPath(),
-            implements: '\\'.AuthConfig::class
+            implements: '\\' . AuthConfig::class
         );
         $writer->addFunction(
             'public static',
@@ -153,11 +153,11 @@ class AuthGenerator
         $resourceName = self::USER_RESOURCE_NAME;
         $writer = new PHPClassFileWriter(
             'UserController',
-            ProjectStructure::getControllersNamespace().'\\Auth',
-            ProjectStructure::getControllersPath().'/Auth',
+            ProjectStructure::getControllersNamespace() . '\\Auth',
+            ProjectStructure::getControllersPath() . '/Auth',
             'ResourceController'
         );
-        $writer->addImport(ProjectStructure::getResourcesNamespace()."\\Auth\\$resourceName");
+        $writer->addImport(ProjectStructure::getResourcesNamespace() . "\\Auth\\$resourceName");
         $writer->addImport(EncodePassword::class);
         $writer->addImport(AddRole::class);
         $writer->addImport(ResourceController::class);
@@ -227,14 +227,14 @@ class AuthGenerator
         $resourceName = self::USER_RESOURCE_NAME;
         $writer = new PHPClassFileWriter(
             'AuthController',
-            ProjectStructure::getControllersNamespace().'\\Auth',
-            ProjectStructure::getControllersPath().'/Auth',
-            '\\'.AuthController::class,
+            ProjectStructure::getControllersNamespace() . '\\Auth',
+            ProjectStructure::getControllersPath() . '/Auth',
+            '\\' . AuthController::class,
             null
         );
 
         if ($withUserResource === true) {
-            $writer->addImport(ProjectStructure::getResourcesNamespace()."\\Auth\\$resourceName");
+            $writer->addImport(ProjectStructure::getResourcesNamespace() . "\\Auth\\$resourceName");
             $writer->addImport(PasswordEncoder::class);
             $writer->addVariable('private', 'array', 'userData');
             $writer->addFunction(

@@ -33,7 +33,7 @@ class MigrationManager
             ConsoleOutput::info('Schema is up to date');
             die();
         }
-        $className = "Migration_".(new \DateTime())->format('Y_m_d_h_i_s');
+        $className = "Migration_" . (new \DateTime())->format('Y_m_d_h_i_s');
         $writer = new PHPClassFileWriter(
             $className,
             ProjectStructure::getMigrationsNamespace(),
@@ -45,13 +45,13 @@ class MigrationManager
             'public',
             'array',
             'getSQL',
-            'return '.var_export($sql, true).';'
+            'return ' . var_export($sql, true) . ';'
         );
         $writer->addFunction(
             'public',
             'array',
             'getMapping',
-            'return '.var_export($queryBuilder->getCodeMappingArray(), true).';'
+            'return ' . var_export($queryBuilder->getCodeMappingArray(), true) . ';'
         );
         $writer->write();
     }
@@ -79,7 +79,7 @@ class MigrationManager
                     ]
                 );
             } catch (\JsonException $exception) {
-                ConsoleOutput::errorDie('ERROR: '.$exception->getMessage());
+                ConsoleOutput::errorDie('ERROR: ' . $exception->getMessage());
             }
             $executionCount++;
         }

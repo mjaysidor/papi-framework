@@ -92,7 +92,7 @@ class ResourceCRUDHandler
         return new JsonResponse(
             201,
             $response,
-            ['Location' => $request->host().$request->uri()."/".$response['id']]
+            ['Location' => $request->host() . $request->uri() . "/" . $response['id']]
         );
     }
 
@@ -163,7 +163,8 @@ class ResourceCRUDHandler
         $filters = [];
         if ($stringQuery = $request->queryString()) {
             parse_str($stringQuery, $filters);
-            if (($queryValidationErrors = (new ResourceQueryValidator())->getValidationErrors($resource, $filters))
+            if (
+                ($queryValidationErrors = (new ResourceQueryValidator())->getValidationErrors($resource, $filters))
                 !== null
             ) {
                 return new ValidationErrorResponse($queryValidationErrors);

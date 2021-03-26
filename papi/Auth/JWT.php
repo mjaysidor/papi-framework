@@ -29,7 +29,7 @@ class JWT
         $base64UrlHeader = self::getEncodedHeader();
         $base64UrlPayload = self::base64UrlEncode(json_encode($payload, JSON_THROW_ON_ERROR));
 
-        return $base64UrlHeader.".".$base64UrlPayload.".".self::getSignature(
+        return $base64UrlHeader . "." . $base64UrlPayload . "." . self::getSignature(
             $base64UrlHeader,
             $base64UrlPayload,
             $secret
@@ -88,7 +88,7 @@ class JWT
         string $base64UrlPayload,
         string $secret
     ): string {
-        return self::base64UrlEncode(hash_hmac('sha256', $base64UrlHeader.".".$base64UrlPayload, $secret, true));
+        return self::base64UrlEncode(hash_hmac('sha256', $base64UrlHeader . "." . $base64UrlPayload, $secret, true));
     }
 
     /**

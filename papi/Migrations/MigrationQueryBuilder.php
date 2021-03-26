@@ -190,7 +190,7 @@ class MigrationQueryBuilder
         string $name,
         string $options
     ): string {
-        return "alter table $table add constraint $table".'_'.$name."_fkey foreign key ($name) $options";
+        return "alter table $table add constraint $table" . '_' . $name . "_fkey foreign key ($name) $options";
     }
 
     /**
@@ -205,7 +205,7 @@ class MigrationQueryBuilder
         string $table,
         string $name
     ): string {
-        return "alter table $table drop constraint $table".'_'.$name."_fkey";
+        return "alter table $table drop constraint $table" . '_' . $name . "_fkey";
     }
 
     /**

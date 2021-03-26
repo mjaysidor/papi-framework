@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\CLI\Commands\Make;
@@ -27,13 +28,13 @@ class MakeResource implements Command
 
     public function execute(): void
     {
-        $directory = ConsoleInput::getInput('Directory (inside '.ProjectStructure::getResourcesPath().'):');
+        $directory = ConsoleInput::getInput('Directory (inside ' . ProjectStructure::getResourcesPath() . '):');
         if (($name = ConsoleInput::getInput('Class name:')) === '') {
             ConsoleOutput::errorDie('Name cannot be empty');
         }
         $customCrud = ConsoleInput::getInput(
             'Do you want a full, predefined CRUD or customizable'
-            .' endpoints? (type "crud" or hit ENTER for customizable):'
+            . ' endpoints? (type "crud" or hit ENTER for customizable):'
         );
         $customCrud = $customCrud !== 'crud';
 

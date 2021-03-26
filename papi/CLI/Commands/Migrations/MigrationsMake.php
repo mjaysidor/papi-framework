@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace papi\CLI\Commands\Migrations;
@@ -20,7 +21,7 @@ class MigrationsMake implements Command
     public function getDescription(): string
     {
         return 'Generates migrations based on differences '
-               .'between code (PHP Resource objects) and current database schema';
+               . 'between code (PHP Resource objects) and current database schema';
     }
 
     public function execute(): void

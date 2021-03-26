@@ -31,6 +31,6 @@ class InArray extends AbstractValidator
 
     protected function getErrorMessage(): string
     {
-        return 'Not in specified array of values: ['.implode(',', $this->array).']';
+        return 'Not in specified array of values: [' . implode(',', $this->array) . ']';
     }
 }

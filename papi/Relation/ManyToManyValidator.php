@@ -21,11 +21,12 @@ class ManyToManyValidator
         ManyToMany $relation,
         array $data
     ): ?string {
-        if (! (array_key_exists($relation->rootResourceIdField, $data)
+        if (
+            ! (array_key_exists($relation->rootResourceIdField, $data)
                && array_key_exists($relation->relatedResourceIdField, $data)
-        )
+            )
         ) {
-            return 'Both IDs must be specified in the request body: '.
+            return 'Both IDs must be specified in the request body: ' .
                    "$relation->rootResourceIdField, $relation->relatedResourceIdField";
         }
 

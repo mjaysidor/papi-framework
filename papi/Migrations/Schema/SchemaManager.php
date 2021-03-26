@@ -61,8 +61,8 @@ class SchemaManager
         $migrationPathLength = strlen(ProjectStructure::getMigrationsPath()) + 35;
         $idDefinition = (new Id())->getProperties();
         $this->query(
-            "create table ".self::MIGRATION_COLUMN_NAME
-            ." (id $idDefinition, migration VARCHAR($migrationPathLength), current_state TEXT)"
+            "create table " . self::MIGRATION_COLUMN_NAME
+            . " (id $idDefinition, migration VARCHAR($migrationPathLength), current_state TEXT)"
         );
     }
 
@@ -74,7 +74,7 @@ class SchemaManager
     private function initConnection(string $params): void
     {
         if (empty($this->connection = pg_connect($params))) {
-            ConsoleOutput::errorDie('database connection error: '.pg_last_error());
+            ConsoleOutput::errorDie('database connection error: ' . pg_last_error());
         }
     }
 

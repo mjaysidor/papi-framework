@@ -35,7 +35,7 @@ class ClassGetter
             if (! $file->isDir()) {
                 $name = $file->getBasename();
                 if (str_contains($name, '.php') && $namespace = self::getNamespace($file->getPathname())) {
-                    $files[] = $namespace.'\\'.str_replace('.php', '', $name);
+                    $files[] = $namespace . '\\' . str_replace('.php', '', $name);
                 }
             }
         }
