@@ -17,7 +17,8 @@ Papi is a framework designed to help developers implement performant PHP APIs bo
 
 * **Postgres database wrapper** - no need to write SQLs - Papi provides a module covering all the basic db operations (including query escaping to prevent SQL injections)
 
-* **Custom database query result cache** - no more complicated Redis implementations - you can choose to store results for SELECT queries in our custom app cache mechanism. After testing the framework with our cache mechanism - at least for small result sets - it was much faster (about 5 times!)! **WE ARE NOT CLAIMING THAT OUR CACHE IS UNIVERSALLY FASTER THAN REDIS, AS WE HAVE NOT CARRIED OUT ANY EXTENSIVE RESEARCH**. With that said - **it is damn fast**.
+* **Custom database query result cache** - no more complicated Redis implementations - you can choose to store results for SELECT queries in our custom app cache mechanism. After testing the framework with our cache mechanism - at least for small result sets - it was much faster (about 5 times!)!  
+  **WE ARE NOT CLAIMING THAT OUR CACHE IS UNIVERSALLY FASTER THAN REDIS, AS WE HAVE NOT CARRIED OUT ANY EXTENSIVE RESEARCH**. With that said - **it is damn fast**.
 
 * **Cursor & Offset Pagination System** - Papi automatically paginates resource-GET-collection endpoints. If possible - cursor pagination is used for better performance, otherwise offset pagination is applied. Of course, you can easily disable pagination on any given endpoint.
 
