@@ -63,4 +63,9 @@ abstract class Relation
      * @return string
      */
     abstract public function getTableName(): string;
+
+    public function getPHPTypeName(): string
+    {
+        return 'integer';
+    }
 }

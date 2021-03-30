@@ -20,8 +20,8 @@ abstract class DocumentationConfig
             [
                 'openapi' => $this->getOpenApiVersion(),
                 'info'    => [
-                    'description' => $this->getDescription(),
-                    'title'       => $this->getTitle(),
+                    'description' => $this->getAppDescription(),
+                    'title'       => $this->getAppTitle(),
                     'version'     => $this->getAppVersion(),
                 ],
             ];
@@ -39,14 +39,14 @@ abstract class DocumentationConfig
      *
      * @return string
      */
-    abstract public function getDescription(): string;
+    abstract public function getAppDescription(): string;
 
     /**
      * Return OpenAPI app title/name (ex. "Messenger")
      *
      * @return string
      */
-    abstract public function getTitle(): string;
+    abstract public function getAppTitle(): string;
 
     /**
      * Return app version (ex. 1.0.7)

@@ -11,12 +11,12 @@ class DocumentationConfig extends \papi\Config\DocumentationConfig
         return '3.0.0';
     }
 
-    public function getDescription(): string
+    public function getAppDescription(): string
     {
         return 'The description of the application';
     }
 
-    public function getTitle(): string
+    public function getAppTitle(): string
     {
         return 'App title';
     }

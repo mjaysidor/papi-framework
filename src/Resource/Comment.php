@@ -20,7 +20,7 @@ class Comment extends Resource
     {
         return [
             'id'      => new Id(),
-            'content'      => new Varchar(100),
+            'content' => new Varchar(100),
             new ManyToMany(__CLASS__, Post::class),
         ];
     }

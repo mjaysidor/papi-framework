@@ -1,7 +1,6 @@
 DOING:
 
 DOC:
-    - readthedocs
 
 BUGS:
 

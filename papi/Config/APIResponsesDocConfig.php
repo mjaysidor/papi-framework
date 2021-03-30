@@ -7,7 +7,7 @@ namespace papi\Config;
 /**
  * Contains default OpenAPI responses for various request methods
  */
-abstract class APIResponsesConfig
+abstract class APIResponsesDocConfig
 {
     /**
      * Get response doc based on provided method

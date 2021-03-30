@@ -9,7 +9,7 @@ use papi\CLI\ConsoleOutput;
 use papi\Migrations\MigrationManager;
 
 /**
- * Generates migrations based on differences between code (PHP Resource objects) and current database schema
+ * Generates migrations based on differences between code (PHP Resource classes) and current database schema
  */
 class MigrationsMake implements Command
 {
@@ -21,7 +21,7 @@ class MigrationsMake implements Command
     public function getDescription(): string
     {
         return 'Generates migrations based on differences '
-               . 'between code (PHP Resource objects) and current database schema';
+               . 'between code (PHP Resource classes) and current database schema';
     }
 
     public function execute(): void

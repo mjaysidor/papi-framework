@@ -234,6 +234,8 @@ paths:
                             properties:
                                 content:
                                     type: string
+                                comment_id:
+                                    type: integer
             responses:
                 201:
                     description: 'Resource created'
@@ -253,6 +255,11 @@ paths:
                     in: query
                     schema:
                         type: string
+                -
+                    name: comment_id
+                    in: query
+                    schema:
+                        type: string
             responses:
                 200:
                     description: 'Retrieves resource data'
@@ -262,6 +269,7 @@ paths:
                                 type: object
                                 properties:
                                     id: { type: integer }
+                                    comment_id: { type: integer }
                 404:
                     description: 'Resource not found'
             tags:
@@ -276,6 +284,8 @@ paths:
                             properties:
                                 content:
                                     type: string
+                                comment_id:
+                                    type: integer
             parameters:
                 -
                     name: id
@@ -324,6 +334,7 @@ paths:
                                 type: object
                                 properties:
                                     id: { type: integer }
+                                    comment_id: { type: integer }
                 404:
                     description: 'Resource not found'
             tags:

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace papi;
+namespace papi\Utils;
 
 use InvalidArgumentException;
 use RuntimeException;

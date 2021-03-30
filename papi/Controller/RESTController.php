@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace papi\Controller;
 
 use Closure;
-use config\APIResponses;
+use config\APIResponsesDocConfig;
 use papi\Documentation\RouteParametersDocGenerator;
 use papi\Worker\App;
 
@@ -48,7 +48,7 @@ abstract class RESTController
      */
     private function initDoc(): void
     {
-        $apiResponses = new APIResponses();
+        $apiResponses = new APIResponsesDocConfig();
         [
             $this->getResponses,
             $this->postResponses,

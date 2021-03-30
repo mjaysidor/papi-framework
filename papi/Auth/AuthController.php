@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace papi\Auth;
 
-use config\APIResponses;
+use config\APIResponsesDocConfig;
 use config\AuthConfig;
 use JsonException;
 use papi\Response\AccessDeniedResponse;
@@ -39,7 +39,7 @@ abstract class AuthController
             },
             $this->getOpenApiDocRequestBody(),
             [],
-            (new APIResponses())->getAuthResponses(),
+            (new APIResponsesDocConfig())->getAuthResponses(),
             'Auth'
         );
     }

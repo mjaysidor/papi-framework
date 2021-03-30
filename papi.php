@@ -5,7 +5,7 @@ require 'vendor/autoload.php';
 use papi\Config\ProjectStructure;
 use papi\Controller\ControllerInitializer;
 use papi\Documentation\DocGenerator;
-use papi\DotEnv;
+use papi\Utils\DotEnv;
 use papi\Worker\App;
 
 $api = new App();

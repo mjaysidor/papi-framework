@@ -80,6 +80,11 @@ abstract class ResourceController extends RESTController
         return RouteParametersDocGenerator::generate($filters, RouteParametersDocGenerator::QUERY);
     }
 
+    /**
+     * Initializes default, plain CRUD endpoints for resource. GET with pagination, PUT, DELETE & POST.
+     * If you want any custom features, such as access restrictions, custom request body modifiers, etc. - do not use
+     * this method.
+     */
     protected function standardCRUD(): void
     {
         $this->post(

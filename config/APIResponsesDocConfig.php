@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace config;
 
-use papi\Config\APIResponsesConfig;
-
-class APIResponses extends APIResponsesConfig
+class APIResponsesDocConfig extends \papi\Config\APIResponsesDocConfig
 {
     public function getGETResponses(array $body = []): array
     {

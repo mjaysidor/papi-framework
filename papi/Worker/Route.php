@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace papi\Worker;
 
-use config\APIResponses;
+use config\APIResponsesDocConfig;
 
 /**
  * Contains Papi route data
@@ -41,7 +41,7 @@ class Route
         $this->method = $method;
         $this->tag = $resourceName;
         if (empty($responses)) {
-            $this->responses = (new APIResponses())->getResponses($method);
+            $this->responses = (new APIResponsesDocConfig())->getResponses($method);
         } else {
             $this->responses = $responses;
         }
