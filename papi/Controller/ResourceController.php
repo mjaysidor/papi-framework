@@ -12,6 +12,7 @@ use papi\Relation\Relation;
 use papi\Resource\Resource;
 use papi\Resource\ResourceCRUDHandler;
 use papi\Worker\App;
+use Workerman\Protocols\Http\Request;
 
 /**
  * Controller handling resource endpoints
@@ -88,31 +89,31 @@ abstract class ResourceController extends RESTController
     protected function standardCRUD(): void
     {
         $this->post(
-            function ($request) {
+            function (Request $request) {
                 return ResourceCRUDHandler::create($this->resource, $request);
             }
         );
 
         $this->put(
-            function ($request, $id) {
+            function (Request $request, $id) {
                 return ResourceCRUDHandler::update($this->resource, $id, $request);
             }
         );
 
         $this->delete(
-            function ($request, $id) {
+            function (Request $request, $id) {
                 return ResourceCRUDHandler::delete($this->resource, $id);
             }
         );
 
         $this->getById(
-            function ($request, $id) {
+            function (Request $request, $id) {
                 return ResourceCRUDHandler::getById($this->resource, $id);
             }
         );
 
         $this->get(
-            function ($request) {
+            function (Request $request) {
                 return ResourceCRUDHandler::getCollection($this->resource, $request);
             }
         );

@@ -7,7 +7,9 @@ namespace papi\Controller;
 use papi\Documentation\RouteParametersDocGenerator;
 use papi\Relation\ManyToMany;
 use papi\Resource\Field\Id;
+use papi\Resource\ManyToManyHandler;
 use papi\Worker\App;
+use Workerman\Protocols\Http\Request;
 
 /**
  * Controller handling many to many relation endpoints
@@ -53,6 +55,27 @@ abstract class ManyToManyController extends RESTController
         return RouteParametersDocGenerator::generate(
             $this->relation->getFields(),
             RouteParametersDocGenerator::QUERY
+        );
+    }
+
+    protected function standardCRUD(): void
+    {
+        $this->post(
+            function (Request $request) {
+                return ManyToManyHandler::createRelation($this->relation, $request);
+            }
+        );
+
+        $this->delete(
+            function (Request $request, $rootResourceId, $relatedResourceId) {
+                return ManyToManyHandler::deleteRelation($this->relation, $rootResourceId, $relatedResourceId);
+            }
+        );
+
+        $this->get(
+            function (Request $request) {
+                return ManyToManyHandler::getRelation($this->relation, $request);
+            }
         );
     }
 }
