@@ -1,8 +1,13 @@
 # Welcome to Papi framework!
 
-**WARNING: Papi is an experimental project. It is still in early stages of development and has not been battle-tested in a production environment. At this stage nothing is guaranteed to work 100% properly. In the near future there will probably be some fixes, tweaks and changes to be made.**
+### WARNING: PAPI IS AN EXPERIMENTAL PROJECT CURRENTLY IN THE ALPHA DEVELOPMENT STAGE.  
+**Papi is still in early stages of 
+development and has not been battle-tested in a production environment. At this stage nothing is guaranteed to work 100% properly. In the near 
+future there will probably be some fixes, tweaks and changes to be made.  
+At this stage Papi will not be exported to a separate composer package to allow full customization, which might be 
+needed, given the early stage of the development process.**
 
-Papi is a framework designed to help developers implement performant PHP APIs both easily and quickly. It is a minimalistic framework focused on performance and ease of use.
+### Papi is a framework designed to help developers implement performant PHP APIs both easily and quickly. It is a minimalistic framework focused on performance and ease of use.
 
 ### What it provides:
 * **[A built-in server based on Workerman][app]**
