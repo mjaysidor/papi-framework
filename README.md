@@ -34,10 +34,13 @@ needed, given the early stage of the development process.**
 
 * **Automatic error logging** - all the errors are logged in /var/log/error.log log file
 
-[resources]: https://github.com/mjaysidor/papi-skeleton/wiki/Resources
-[migrations]: https://github.com/mjaysidor/papi-skeleton/wiki/Migrations
-[validators]: https://github.com/mjaysidor/papi-skeleton/wiki/Validators
-[controllers]: https://github.com/mjaysidor/papi-skeleton/wiki/Controllers
-[app]: https://github.com/mjaysidor/papi-skeleton/wiki/App-instance
-[doc]: https://github.com/mjaysidor/papi-skeleton/wiki/Documentation
-[jwt]: https://github.com/mjaysidor/papi-skeleton/wiki/JWT-Auth
+
+### To get started, visit: https://github.com/mjaysidor/papi-framework/wiki
+
+[resources]: https://github.com/mjaysidor/papi-framework/wiki/Resources
+[migrations]: https://github.com/mjaysidor/papi-framework/wiki/Migrations
+[validators]: https://github.com/mjaysidor/papi-framework/wiki/Validators
+[controllers]: https://github.com/mjaysidor/papi-framework/wiki/Controllers
+[app]: https://github.com/mjaysidor/papi-framework/wiki/App-instance
+[doc]: https://github.com/mjaysidor/papi-framework/wiki/Documentation
+[jwt]: https://github.com/mjaysidor/papi-framework/wiki/JWT-Auth
