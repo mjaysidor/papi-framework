@@ -10,6 +10,7 @@ use papi\Callbacks\EncodePassword;
 use papi\Config\AuthConfig;
 use papi\Config\ProjectStructure;
 use papi\Controller\ResourceController;
+use papi\Database\PostgresDb;
 use papi\Resource\Field\Id;
 use papi\Resource\Field\Varchar;
 use papi\Resource\Resource;
@@ -236,6 +237,7 @@ class AuthGenerator
         if ($withUserResource === true) {
             $writer->addImport(ProjectStructure::getResourcesNamespace() . "\\Auth\\$resourceName");
             $writer->addImport(PasswordEncoder::class);
+            $writer->addImport(PostgresDb::class);
             $writer->addVariable('private', 'array', 'userData');
             $writer->addFunction(
                 'protected',
@@ -245,6 +247,7 @@ class AuthGenerator
             return false;
         }
         $user = (new User())->get(
+            new PostgresDb(),
             [
                 \'username\' => $requestBody[\'username\'],
             ],

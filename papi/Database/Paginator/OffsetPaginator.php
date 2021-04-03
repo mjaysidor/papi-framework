@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace papi\Database\Paginator;
 
+use papi\Database\PostgresDb;
 use papi\Resource\Resource;
 
 /**
@@ -39,6 +40,7 @@ class OffsetPaginator extends Paginator
     ): array {
         return $this->addPaginationLinks(
             (new $resource())->get(
+                new PostgresDb(),
                 $filters,
                 [],
                 $this->column,

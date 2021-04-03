@@ -9,11 +9,6 @@ use papi\Resource\Field\Id;
 
 class ManyToMany extends Relation
 {
-    public function getDbHandler(): PostgresDb
-    {
-        return new PostgresDb();
-    }
-
     public string $rootResourceIdField;
 
     public string $relatedResourceIdField;
@@ -25,8 +20,8 @@ class ManyToMany extends Relation
         string $onDelete = self::ON_DELETE_CASCADE
     ) {
         parent::__construct($rootResource, $relatedResource, $onUpdate, $onDelete);
-        $this->rootResourceIdField = $this->rootTableName . '_id';
-        $this->relatedResourceIdField = $this->relatedTableName . '_id';
+        $this->rootResourceIdField = $this->rootTableName.'_id';
+        $this->relatedResourceIdField = $this->relatedTableName.'_id';
     }
 
     public function getFields(): array
@@ -40,7 +35,7 @@ class ManyToMany extends Relation
 
     public function getTableName(): string
     {
-        return $this->rootTableName . '_' . $this->relatedTableName;
+        return $this->rootTableName.'_'.$this->relatedTableName;
     }
 
     public function getColumnDefinitions(): array
@@ -66,29 +61,31 @@ class ManyToMany extends Relation
     public function getIndexDefinition(): array
     {
         return [
-            "index FK_" . $this->rootTableName . '_' . $this->relatedTableName . '_' . "$this->rootTableName ON "
-            . $this->getTableName() . "($this->rootResourceIdField)"
+            "index FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->rootTableName ON "
+            .$this->getTableName()."($this->rootResourceIdField)"
             ,
-            "index FK_" . $this->rootTableName . '_' . $this->relatedTableName . '_' . "$this->relatedTableName ON "
-            . $this->getTableName() . "($this->relatedResourceIdField)",
+            "index FK_".$this->rootTableName.'_'.$this->relatedTableName.'_'."$this->relatedTableName ON "
+            .$this->getTableName()."($this->relatedResourceIdField)",
         ];
     }
 
     /**
      * Get relation objects from database
      *
-     * @param array    $filters
-     * @param string   $order
-     * @param int|null $limit
+     * @param PostgresDb $dbConnection
+     * @param array      $filters
+     * @param string     $order
+     * @param int|null   $limit
      *
      * @return array
      */
     public function get(
+        PostgresDb $dbConnection,
         array $filters = [],
         string $order = 'desc',
         ?int $limit = null,
     ): array {
-        return $this->getDbHandler()
+        return $dbConnection
                     ->select(
                         $this->getTableName(),
                         $this->getFields(),
@@ -103,16 +100,18 @@ class ManyToMany extends Relation
     /**
      * Create relation object in db
      *
-     * @param string $rootResourceId
-     * @param string $relatedResourceId
+     * @param PostgresDb $dbConnection
+     * @param string     $rootResourceId
+     * @param string     $relatedResourceId
      *
      * @return array
      */
     public function create(
+        PostgresDb $dbConnection,
         string $rootResourceId,
         string $relatedResourceId
     ): array {
-        return $this->getDbHandler()
+        return $dbConnection
                     ->insert(
                         $this->getTableName(),
                         [
@@ -126,16 +125,18 @@ class ManyToMany extends Relation
     /**
      * Remove relation object from db
      *
-     * @param string $rootResourceId
-     * @param string $relatedResourceId
+     * @param PostgresDb $dbConnection
+     * @param string     $rootResourceId
+     * @param string     $relatedResourceId
      *
      * @return int
      */
     public function delete(
+        PostgresDb $dbConnection,
         string $rootResourceId,
         string $relatedResourceId
     ): int {
-        return $this->getDbHandler()
+        return $dbConnection
                     ->delete(
                         $this->getTableName(),
                         [
@@ -149,16 +150,18 @@ class ManyToMany extends Relation
     /**
      * Check if relation exists in db
      *
-     * @param string $rootResourceId
-     * @param string $relatedResourceId
+     * @param PostgresDb $dbConnection
+     * @param string     $rootResourceId
+     * @param string     $relatedResourceId
      *
      * @return bool
      */
     public function exists(
+        PostgresDb $dbConnection,
         string $rootResourceId,
         string $relatedResourceId
     ): bool {
-        return $this->getDbHandler()
+        return $dbConnection
                     ->exists(
                         $this->getTableName(),
                         [

@@ -13,7 +13,7 @@ use RuntimeException;
  */
 class PostgresDb
 {
-    public mixed $connection;
+    private mixed $connection;
 
     private int $aliasCount = 0;
 
@@ -50,16 +50,16 @@ class PostgresDb
      *
      * @param string $sql
      *
-     * @return bool
+     * @return array
      */
     public function query(
         string $sql
-    ): bool {
-        if (pg_query($this->connection, $sql) === false) {
+    ): array {
+        if (($result = pg_query($this->connection, $sql)) === false) {
             throw  $this->throwError();
         }
 
-        return true;
+        return pg_fetch_all($result);
     }
 
     /**
@@ -134,7 +134,7 @@ class PostgresDb
         ?int $cacheTtl = 300
     ): array {
         if ($columns !== []) {
-            $query = 'select ' . implode(',', $columns) . " from $from";
+            $query = 'select '.implode(',', $columns)." from $from";
         } else {
             $query = "select * from $from";
         }
@@ -145,7 +145,7 @@ class PostgresDb
             if ($order !== 'desc') {
                 $order = 'asc';
             }
-            $query .= ' order by ' . pg_escape_string($orderBy) . " $order";
+            $query .= ' order by '.pg_escape_string($orderBy)." $order";
         }
         if ($limit !== null) {
             $query .= " limit $limit";
@@ -210,6 +210,22 @@ class PostgresDb
     }
 
     /**
+     * Start transaction query (use if executing multiple POST/PUT/DELETE operations in a row)
+     */
+    public function beginTransaction(): void
+    {
+        pg_query($this->connection, 'begin');
+    }
+
+    /**
+     * Commit (execute) started transaction
+     */
+    public function executeTransaction(): void
+    {
+        pg_query($this->connection, 'commit');
+    }
+
+    /**
      * SQL query INSERT
      *
      * @param string $table
@@ -253,6 +269,8 @@ class PostgresDb
             throw $this->throwError();
         }
 
+        $this->clearAliases();
+
         return $result;
     }
 
@@ -280,7 +298,7 @@ class PostgresDb
             if ($firstKey !== $key) {
                 $query .= ',';
             }
-            $query .= pg_escape_string($key) . '=';
+            $query .= pg_escape_string($key).'=';
             $this->addAlias($query, $condition);
         }
         $this->addWhereConditions($query, $where);
@@ -288,6 +306,8 @@ class PostgresDb
         if (($queryParams = pg_query_params($this->connection, $query, $this->aliasValues)) === false) {
             throw $this->throwError();
         }
+
+        $this->clearAliases();
 
         return pg_affected_rows($queryParams);
     }
@@ -302,7 +322,7 @@ class PostgresDb
         string &$query,
         mixed $value
     ): void {
-        $query .= ' $' . ++$this->aliasCount;
+        $query .= ' $'.++$this->aliasCount;
         $this->aliasValues[] = $value;
     }
 

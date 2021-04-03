@@ -2,7 +2,7 @@
     "name": "mjaysidor/papi-framework",
     "type": "project",
     "license": "MIT",
-    "description": "Skeleton to create new papi API application",
+    "description": "Papi framework application skeleton",
     "minimum-stability": "dev",
     "require": {
         "php": "^8.0",

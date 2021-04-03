@@ -9,7 +9,6 @@ use papi\Resource\Field\Id;
 use papi\Resource\Field\Text;
 use papi\Resource\Resource;
 use papi\Validator\Email;
-use papi\Validator\MaxLength;
 use papi\Validator\MinLength;
 use papi\Validator\NotBlank;
 
@@ -59,14 +58,12 @@ class Post extends Resource
     public function getPOSTValidators(): array
     {
         return [
-            [
-                'content' => [
-                    new MinLength(10),
-                    new NotBlank(),
-                ],
-                'email' => [
-                    new Email()
-                ]
+            'content' => [
+                new MinLength(10),
+                new NotBlank(),
+            ],
+            'email'   => [
+                new Email(),
             ],
         ];
     }

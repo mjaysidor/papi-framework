@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Controller\Auth;
 
 use App\Resource\Auth\User;
-use papi\Utils\PasswordEncoder;
+use papi\Database\PostgresDb;
 
 class AuthController extends \papi\Auth\AuthController
 {
@@ -17,6 +17,7 @@ class AuthController extends \papi\Auth\AuthController
             return false;
         }
         $user = (new User())->get(
+            new PostgresDb(),
             [
                 'username' => $requestBody['username'],
             ],
@@ -35,7 +36,7 @@ class AuthController extends \papi\Auth\AuthController
     protected function getPayload(?array $requestBody): array
     {
         return [
-            'roles' => $this->userData['roles']
+            'roles' => $this->userData['roles'],
         ];
     }
 

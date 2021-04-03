@@ -6,6 +6,7 @@ namespace papi\Resource;
 
 use JsonException;
 use papi\Database\Paginator\PaginatorFactory;
+use papi\Database\PostgresDb;
 use papi\Relation\ManyToMany;
 use papi\Relation\ManyToManyValidator;
 use papi\Response\ErrorResponse;
@@ -43,16 +44,19 @@ class ManyToManyHandler
             return new ValidationErrorResponse($validationErrors);
         }
 
-        if (
-            $relation->exists(
-                $body[$relation->rootResourceIdField],
-                $body[$relation->relatedResourceIdField],
-            )
+        $postgres = new PostgresDb();
+
+        if ($relation->exists(
+            $postgres,
+            $body[$relation->rootResourceIdField],
+            $body[$relation->relatedResourceIdField],
+        )
         ) {
             return new ErrorResponse('Relation already exists');
         }
 
         $relation->create(
+            $postgres,
             $body[$relation->rootResourceIdField],
             $body[$relation->relatedResourceIdField],
         );
@@ -79,6 +83,7 @@ class ManyToManyHandler
         string $relatedResourceId
     ): JsonResponse {
         $response = $relation->delete(
+            new PostgresDb(),
             $rootResourceId,
             $relatedResourceId
         );
@@ -122,7 +127,7 @@ class ManyToManyHandler
             $paginator = PaginatorFactory::getCursorPaginator($filters, $paginationItems);
             $result = $paginator->getPaginatedManyToManyResults($relation, $filters);
         } else {
-            $result = $relation->get($filters);
+            $result = $relation->get(new PostgresDb(), $filters);
         }
 
         return new OKResponse($result);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace papi\Database\Paginator;
 
+use papi\Database\PostgresDb;
 use papi\Relation\ManyToMany;
 use papi\Resource\Resource;
 
@@ -49,6 +50,7 @@ class CursorPaginator extends Paginator
 
         return $this->addPaginationLinks(
             (new $resource())->get(
+                new PostgresDb(),
                 $filters,
                 [],
                 $this->column,
@@ -74,7 +76,14 @@ class CursorPaginator extends Paginator
             $filters[$this->column] = [$this->cursorComparisonOperator => $this->cursor];
         }
 
-        return $this->addPaginationLinks($relation->get($filters, $this->order, $this->limit + 1));
+        return $this->addPaginationLinks(
+            $relation->get(
+                new PostgresDb(),
+                $filters,
+                $this->order,
+                $this->limit + 1
+            )
+        );
     }
 
     protected function addPaginationLinks(array $response): array

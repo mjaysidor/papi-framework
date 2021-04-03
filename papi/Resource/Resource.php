@@ -12,16 +12,6 @@ use papi\Database\PostgresDb;
 abstract class Resource
 {
     /**
-     * Returns db handler object
-     *
-     * @return PostgresDb
-     */
-    private function getDbHandler(): PostgresDb
-    {
-        return new PostgresDb();
-    }
-
-    /**
      * Returns resource database table name
      */
     abstract public function getTableName(): string;
@@ -55,6 +45,7 @@ abstract class Resource
     /**
      * Gets resource by id
      *
+     * @param PostgresDb $dbConnection
      * @param string     $id
      * @param array|null $fields
      * @param bool       $cache
@@ -63,27 +54,28 @@ abstract class Resource
      * @return array
      */
     public function getById(
+        PostgresDb $dbConnection,
         string $id,
         ?array $fields = null,
         bool $cache = false,
-        ?int $cacheTtl = 300
+        ?int $cacheTtl = 300,
     ): array {
-        return $this->getDbHandler()
-                    ->select(
-                        $this->getTableName(),
-                        $fields ?? $this->getDefaultSELECTFields(),
-                        [
-                            'id=' => $id,
-                        ],
-                        cache: $cache,
-                        cacheTtl: $cacheTtl
-                    )
-            ;
+        return $dbConnection
+            ->select(
+                $this->getTableName(),
+                $fields ?? $this->getDefaultSELECTFields(),
+                [
+                    'id=' => $id,
+                ],
+                cache: $cache,
+                cacheTtl: $cacheTtl
+            );
     }
 
     /**
      * Gets resources
      *
+     * @param PostgresDb  $dbConnection
      * @param array       $filters
      * @param array|null  $fields
      * @param string|null $orderBy
@@ -96,6 +88,7 @@ abstract class Resource
      * @return array
      */
     public function get(
+        PostgresDb $dbConnection,
         array $filters = [],
         ?array $fields = null,
         ?string $orderBy = null,
@@ -105,78 +98,81 @@ abstract class Resource
         bool $cache = false,
         ?int $cacheTtl = 300
     ): array {
-        return $this->getDbHandler()
-                    ->select(
-                        $this->getTableName(),
-                        $fields ?? $this->getDefaultSELECTFields(),
-                        $filters,
-                        $orderBy,
-                        $order,
-                        $limit,
-                        $offset,
-                        $cache,
-                        $cacheTtl
-                    )
-            ;
+        return $dbConnection
+            ->select(
+                $this->getTableName(),
+                $fields ?? $this->getDefaultSELECTFields(),
+                $filters,
+                $orderBy,
+                $order,
+                $limit,
+                $offset,
+                $cache,
+                $cacheTtl
+            );
     }
 
     /**
      * Creates resource
      *
-     * @param array $data
+     * @param PostgresDb $dbConnection
+     * @param array      $data
      *
      * @return array
      */
-    public function create(array $data): array
-    {
-        return $this->getDbHandler()
-                    ->insert(
-                        $this->getTableName(),
-                        $data
-                    )
-            ;
+    public function create(
+        PostgresDb $dbConnection,
+        array $data
+    ): array {
+        return $dbConnection
+            ->insert(
+                $this->getTableName(),
+                $data
+            );
     }
 
     /**
      * Updates resource
      *
-     * @param string $id
-     * @param array  $data
+     * @param PostgresDb $dbConnection
+     * @param string     $id
+     * @param array      $data
      *
      * @return int
      */
     public function update(
+        PostgresDb $dbConnection,
         string $id,
         array $data
     ): int {
-        return $this->getDbHandler()
-                    ->update(
-                        $this->getTableName(),
-                        $data,
-                        [
-                            'id=' => $id,
-                        ]
-                    )
-            ;
+        return $dbConnection
+            ->update(
+                $this->getTableName(),
+                $data,
+                [
+                    'id=' => $id,
+                ]
+            );
     }
 
     /**
      * Deletes object
      *
-     * @param string $id
+     * @param PostgresDb $dbConnection
+     * @param string     $id
      *
      * @return int
      */
     public function delete(
+        PostgresDb $dbConnection,
         string $id
     ): int {
-        return $this->getDbHandler()
-                    ->delete(
-                        $this->getTableName(),
-                        [
-                            'id=' => $id,
-                        ]
-                    )
-            ;
+        return $dbConnection
+            ->delete(
+                $this->getTableName(),
+                [
+                    'id=' => $id,
+                ]
+            );
     }
 }

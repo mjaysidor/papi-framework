@@ -7,6 +7,7 @@ namespace papi\Resource;
 use JsonException;
 use papi\Callbacks\PreExecutionBodyModifier;
 use papi\Database\Paginator\PaginatorFactory;
+use papi\Database\PostgresDb;
 use papi\Response\JsonResponse;
 use papi\Response\NotFoundResponse;
 use papi\Response\OKResponse;
@@ -48,6 +49,7 @@ class ResourceCRUDHandler
         }
 
         $response = $resource->update(
+            new PostgresDb(),
             $id,
             $body
         );
@@ -87,12 +89,12 @@ class ResourceCRUDHandler
             return new ValidationErrorResponse($validationErrors);
         }
 
-        $response = $resource->create($body);
+        $response = $resource->create(new PostgresDb(), $body);
 
         return new JsonResponse(
             201,
             $response,
-            ['Location' => $request->host() . $request->uri() . "/" . $response['id']]
+            ['Location' => $request->host().$request->uri()."/".$response['id']]
         );
     }
 
@@ -108,7 +110,7 @@ class ResourceCRUDHandler
         Resource $resource,
         string $id
     ): JsonResponse {
-        $response = $resource->delete($id);
+        $response = $resource->delete(new PostgresDb(), $id);
 
         if ($response === 0) {
             return new NotFoundResponse();
@@ -132,7 +134,7 @@ class ResourceCRUDHandler
         bool $cache = false,
         ?int $cacheTtl = 300
     ): JsonResponse {
-        $response = $resource->getById($id, cache: $cache, cacheTtl: $cacheTtl);
+        $response = $resource->getById(new PostgresDb(), $id, cache: $cache, cacheTtl: $cacheTtl);
 
         if ($response === []) {
             return new NotFoundResponse();
@@ -163,8 +165,7 @@ class ResourceCRUDHandler
         $filters = [];
         if ($stringQuery = $request->queryString()) {
             parse_str($stringQuery, $filters);
-            if (
-                ($queryValidationErrors = (new ResourceQueryValidator())->getValidationErrors($resource, $filters))
+            if (($queryValidationErrors = (new ResourceQueryValidator())->getValidationErrors($resource, $filters))
                 !== null
             ) {
                 return new ValidationErrorResponse($queryValidationErrors);
@@ -176,6 +177,7 @@ class ResourceCRUDHandler
             $result = $paginator->getPaginatedResults($resource, $filters, $cache, $cacheTtl);
         } else {
             $result = $resource->get(
+                new PostgresDb(),
                 $filters,
                 orderBy: $filters['orderBy'] ?? null,
                 order: $filters['order'] ?? null,
