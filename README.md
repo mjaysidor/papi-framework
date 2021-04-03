@@ -1,10 +1,10 @@
 # Welcome to Papi framework!
 
-### WARNING: PAPI IS AN EXPERIMENTAL PROJECT CURRENTLY IN THE ALPHA DEVELOPMENT STAGE.  
-**Papi is still in early stages of 
-development and has not been battle-tested in a production environment. At this stage nothing is guaranteed to work 100% properly. In the near 
+### WARNING: PAPI IS AN EXPERIMENTAL PROJECT CURRENTLY IN THE ALPHA DEVELOPMENT STAGE.
+**Papi is still in early stages of
+development and has not been battle-tested in a production environment. At this stage nothing is guaranteed to work 100% properly. In the near
 future there will probably be some fixes, tweaks and changes to be made.  
-At this stage Papi will not be exported to a separate composer package to allow full customization, which might be 
+At this stage Papi will not be exported to a separate composer package to allow full customization, which might be
 needed, given the early stage of the development process.**
 
 ### Papi is a framework designed to help developers implement performant PHP APIs both easily and quickly. It is a minimalistic framework focused on performance and ease of use.
@@ -20,9 +20,9 @@ needed, given the early stage of the development process.**
 
 * **[Endpoint Validation System][validators]** - you can set up different validation rules for PUT/POST requests in resource classes by choosing from available validators (ex. MinLength, NotBlank, Email, Url, Regex, etc.). Need custom validation? Easy - just create a class extending AbstractValidator & fill out 2 methods - isValid($data):bool and getErrorMessage():string. Now you can use your validators the same way you would use the built-in ones.
 
-* **Postgres database wrapper** - no need to write SQLs - Papi provides a module covering all the basic db operations (including query escaping to prevent SQL injections)
+* **[Postgres database wrapper][db]** - no need to write SQLs - Papi provides a module covering all the basic db operations (including query escaping to prevent SQL injections)
 
-* **Custom database query result cache** - no more complicated Redis implementations - you can choose to store 
+* **[Custom database query result cache][cache]** - no more complicated Redis implementations - you can choose to store
   results for SELECT queries in our custom app cache mechanism. After testing the framework with our cache mechanism - at least for small result sets - it was much faster (about 5 times!).  
   **WE ARE NOT CLAIMING THAT OUR CACHE IS UNIVERSALLY FASTER THAN REDIS, AS WE HAVE NOT CARRIED OUT ANY EXTENSIVE RESEARCH**. With that said - **it is damn fast**.
 
@@ -44,3 +44,5 @@ needed, given the early stage of the development process.**
 [app]: https://github.com/mjaysidor/papi-framework/wiki/App-instance
 [doc]: https://github.com/mjaysidor/papi-framework/wiki/Documentation
 [jwt]: https://github.com/mjaysidor/papi-framework/wiki/JWT-Auth
+[cache]: https://github.com/mjaysidor/papi-framework/wiki/Caching-query-results
+[db]: https://github.com/mjaysidor/papi-framework/wiki/Custom-endpoints,-db-handling-&-transactions
