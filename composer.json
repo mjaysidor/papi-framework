@@ -1,8 +1,8 @@
 {
-    "name": "mjaysidor/papi-framework",
+    "name": "mjaysidor/papi-cdn",
     "type": "project",
     "license": "MIT",
-    "description": "Papi framework application skeleton",
+    "description": "CDN solution based on Papi framework",
     "minimum-stability": "dev",
     "require": {
         "php": "^8.0",
