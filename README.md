@@ -1,5 +1,7 @@
 # Welcome to Papi framework!
 
+![logo]
+
 ### WARNING: PAPI IS AN EXPERIMENTAL PROJECT CURRENTLY IN THE ALPHA DEVELOPMENT STAGE.
 **Papi is still in early stages of
 development and has not been battle-tested in a production environment. At this stage nothing is guaranteed to work 100% properly. In the near
@@ -46,3 +48,4 @@ needed, given the early stage of the development process.**
 [jwt]: https://github.com/mjaysidor/papi-framework/wiki/JWT-Auth
 [cache]: https://github.com/mjaysidor/papi-framework/wiki/Caching-query-results
 [db]: https://github.com/mjaysidor/papi-framework/wiki/Custom-endpoints,-db-handling-&-transactions
+[logo]: papi.png
