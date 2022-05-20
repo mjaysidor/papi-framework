@@ -1,10 +1,10 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Controller\Auth;
 
 use App\Resource\Auth\User;
+use papi\Utils\PasswordEncoder;
 use papi\Database\PostgresDb;
 
 class AuthController extends \papi\Auth\AuthController
@@ -27,7 +27,6 @@ class AuthController extends \papi\Auth\AuthController
         if (isset($user[0]) !== true) {
             return false;
         }
-
         $this->userData = $user[0];
 
         return password_verify($requestBody['password'], $this->userData['password']);
@@ -36,7 +35,8 @@ class AuthController extends \papi\Auth\AuthController
     protected function getPayload(?array $requestBody): array
     {
         return [
-            'roles' => $this->userData['roles'],
+            'id' => $this->userData['id'],
+            'roles' => $this->userData['roles']
         ];
     }
 
