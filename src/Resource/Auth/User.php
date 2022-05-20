@@ -1,28 +1,27 @@
 <?php
-
 declare(strict_types=1);
 
 namespace App\Resource\Auth;
 
-use papi\Resource\Field\Id;
-use papi\Resource\Field\Varchar;
 use papi\Resource\Resource;
 use papi\Validator\NotBlank;
+use papi\Resource\Field\Varchar;
+use papi\Resource\Field\Id;
 
 class User extends Resource
 {
     public function getTableName(): string
     {
-        return 'users';
+        return 'app_user';
     }
 
     public function getFields(): array
     {
         return [
-            'id'       => new Id(),
+            'id' => new Id(),
             'username' => new Varchar(30, 'unique'),
-            'roles'    => new Varchar(100),
-            'password' => new Varchar(110),
+            'roles' => new Varchar(100),
+            'password' => new Varchar(110)
         ];
     }
 
@@ -31,7 +30,7 @@ class User extends Resource
         return [
             'id',
             'username',
-            'roles',
+            'roles'
         ];
     }
 
@@ -40,13 +39,8 @@ class User extends Resource
         return [
             'username',
             'password',
-            'roles',
+            'roles'
         ];
-    }
-
-    public function getPUTValidators(): array
-    {
-        return [];
     }
 
     public function getPOSTValidators(): array
@@ -54,6 +48,12 @@ class User extends Resource
         return [
             'username' => [new NotBlank()],
             'password' => [new NotBlank()],
+        ];
+    }
+
+    public function getPUTValidators(): array
+    {
+        return [
         ];
     }
 
