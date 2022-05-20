@@ -1,4 +1,4 @@
-## What, how & why:
+## Overview:
 In Papi endpoints are managed and defined via use of controllers.  
 There are 3 controller types:
 * Controller - a plain controller, handles custom endpoints

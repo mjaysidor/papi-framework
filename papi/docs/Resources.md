@@ -1,4 +1,4 @@
-### What, how & why:
+### Overview:
 Resource classes are used to represent an API resource. They are stored in Postgresql database as tables. Creating resource classes allows you to create controllers with automated CRUD endpoints and migrations which bring database schema up to date, no more custom SQL statements!
 There are two ways to create a resource - recommended way is to use CLI module (**"php cli make:resource"**), but you can also create a class extending \papi\Resource\Resource. **The CLI way saves you some time by creating corresponding CRUD controller on the spot.**
 

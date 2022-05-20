@@ -1,4 +1,4 @@
-## What, how & why:
+## Overview:
 Papi provides classes allowing you to automatically edit incoming request's body - ex. you can automatically add "created_at" field with current date, or encode sent plain password into argon2i-encoded password.
 
 Papi comes with following modifier classes out of the box:

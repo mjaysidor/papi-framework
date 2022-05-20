@@ -1,4 +1,4 @@
-## What, how & why:
+## Overview:
 Papi includes caching system, which can be used to store database query results. Currently, it is supported in PostgresDb class (basic database handler), resource classes & ResourceCRUDHandler for SELECT operations. On standard resource endpoints all you have to do is set "cache" parameter to true (& optionally cache TTL in seconds):
 ```
 $this->get(

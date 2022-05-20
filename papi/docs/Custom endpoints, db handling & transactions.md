@@ -1,4 +1,4 @@
-## What, how & why:
+## Overview:
 If you need to create endpoint which does more than just a standard REST handling you need to know a few things:
 
 ### Responses

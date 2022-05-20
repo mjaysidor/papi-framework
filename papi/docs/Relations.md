@@ -1,4 +1,4 @@
-## What, how & why:
+## Overview:
 In Papi - relations are managed inside resource classes. To add a relation you can either call **"make:relation"** command or add a new relation object (OneToOne, ManyToOne or ManyToMany) to the resource class. The preferred way is using the CLI command, as it handles not only adding all the necessary code in the resource class, but also creating controllers for new endpoints, if necessary (many to many relations).
 ### There are 3 types of relations in Papi:
 * OneToOne

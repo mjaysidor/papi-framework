@@ -1,4 +1,4 @@
-### What, how & why:
+### Overview:
 Papi handles database schema via migrations. The way it works is that there are two db schemas - the state of actual database and the state of PHP coded resource classes. If there are any differences - an SQL migration with statements to bring the Postgresql database up to date can be created. After creating it - you can execute it via command line. Migrations are stored in /migrations directory of the project.
 
 ### Commands:

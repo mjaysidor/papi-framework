@@ -1,4 +1,4 @@
-### What, how & why:
+### Overview:
 Validators are used to validate data on incoming resource POST/PUT requests. In getPUTValidators/getPOSTValidators methods of resource class validators are specified in following format: 'field_name' => [new SomeValidator(options), new SomeOtherValidator(options)]. Each validator class extends AbstractValidator and contains 2 methods - isValid, which performs any checks to confirm or deny provided data validity, and getErrorMessage, which specifies what message is returned to client on validation failure, so you can create as many custom validators, as you'd like.
 
 ### Example use of validators:

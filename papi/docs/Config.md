@@ -1,4 +1,4 @@
-### What, how & why:
+### Overview:
 Papi comes with a few configuration files you need to be aware of - API Responses Documentation, Auth, Database and Documentation config. You'd probably want to change the default values they come with.
 
 ### Config files:

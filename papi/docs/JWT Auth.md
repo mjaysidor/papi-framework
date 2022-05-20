@@ -1,6 +1,6 @@
 ## READ: https://jwt.io/
 
-### What, how & why:
+## Overview:
 JWT Authentication system allows you to restrict access to specific endpoints and verify user identity. In order to create Auth system use **"php cli auth:create".**
 
 ### Auth system elements:

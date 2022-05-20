@@ -1,3 +1,4 @@
+## Overview:
 The core of any Papi application is the papi.php file. It runs the app and runs any needed peripherals, such as DotEnv component, DocGenerator component, the ControllerInitalizer, etc.. DotEnv imports environment variables from specified .env files, DocGenerator generates OpenAPI documentation for resource endpoints, and ControllerInitalizer initializes endpoints specified in any app controllers.
 
 To run the app use **"php papi.php start"** command.

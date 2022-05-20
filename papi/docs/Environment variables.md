@@ -1,4 +1,4 @@
-## What, how & why:
+## Overview:
 Papi comes with a DotEnv component. It loads specified .env files on application startup, so that they can be accessed via getenv($variableName) method anywhere in the app. Loading .env files is best configured inside papi.php file. To load variables from file simply call DotEnv::load($fileName) method.
 
 ### Examples:

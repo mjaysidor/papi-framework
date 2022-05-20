@@ -1,4 +1,4 @@
-## What, how & why:
+## Overview:
 CLI Commands module is accessed via calling **"php cli"** from project root. It lists and describes all the available commands. To call a specific command use **"php cli group:command"** (ex. "php cli db:drop").
 
 ## Available commands:
